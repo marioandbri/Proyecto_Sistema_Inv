@@ -1,0 +1,22 @@
+{
+  "name": "proyectosistemainv",
+  "version": "1.0.0",
+  "description": "proyecto de desarrollo sistema de gestion de inventario de equipos, gestion y validacion de operaciones.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marioandbri/Proyecto_Sistema_Inv.git"
+  },
+  "author": "Mario Brito",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marioandbri/Proyecto_Sistema_Inv/issues"
+  },
+  "homepage": "https://github.com/marioandbri/Proyecto_Sistema_Inv#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
