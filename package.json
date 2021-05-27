@@ -4,7 +4,8 @@
   "description": "proyecto de desarrollo sistema de gestion de inventario de equipos, gestion y validacion de operaciones.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,19 @@
   },
   "homepage": "https://github.com/marioandbri/Proyecto_Sistema_Inv#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.2",
+    "express-session": "^1.17.2",
+    "handlebars": "^4.7.7",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.12.11",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
