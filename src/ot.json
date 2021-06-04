@@ -1,0 +1,14 @@
+{
+   "cliente" : "1234567-k",
+   "ubicacion" : "id_ubicacion",
+   "pedido" : [
+      {
+         "partnumber" : "PN_equipo",
+         "cantidad" : 9,
+         "mem_total" : "8Gb",
+         "capacidad_alm" : "1TB HDD"
+      }
+   ],
+   "fechaEntrega" : "YYYY-MM-DD",
+   "tecnico" : "nombreTecnico"
+}
