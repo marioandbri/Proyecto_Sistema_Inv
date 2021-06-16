@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+   <title>Crear una OT</title>
+</head>
+<body>
+   <form action="/ot" method="post">
+      <div></div>
+      <label for="cliente">Ingrese Rut Cliente</label>
+      <input type="text" name="cliente">
+      <div></div>
+      <label for="ubicacion">Seleccione una Ubicacion</label>
+      <select name="ubicacion">
+         <option value="id_ubicacion_1">Ubicacion 1</option>
+         <option value="id_ubicacion_2">Ubicacion 2</option>
+         <option value="id_ubicacion_3">Ubicacion 3</option>
+         <option value="id_ubicacion_4">Ubicacion 4</option>
+         <option value="id_ubicacion_5">Ubicacion 5</option>
+      </select>
+      <fieldset >
+         <legend>Pedido: </legend>
+         <div>Item #1</div>
+         <label for="tipoequipo">Tipo de Equipo</label>
+         <select name="pedidos.0.tipoEquipo">
+            <option value="Notebook">Notebook</option>
+            <option value="PC Escritorio">PC Escritorio</option>
+            <option value="Impresora">Impresora</option>
+            <option value="Monitor">Monitor</option>
+         </select>
+         <label for="partnumber">PartNumber</label>
+         <input type="text" name="pedidos.0.partnumber">
+         <label for="pedido.cantidad">Cantidad</label>
+         <input type="number" name="pedidos.0.cantidad">
+         <div>Item #2</div>
+         <label for="tipoequipo">Tipo de Equipo</label>
+         <select name="pedidos.1.tipoEquipo">
+            <option value="Notebook">Notebook</option>
+            <option value="PC Escritorio">PC Escritorio</option>
+            <option value="Impresora">Impresora</option>
+            <option value="Monitor">Monitor</option>
+         </select>
+         <label for="partnumber">PartNumber</label>
+         <input type="text" name="pedidos.1.partnumber">
+         <label for="pedido.cantidad">Cantidad</label>
+         <input type="number" name="pedidos.1.cantidad">
+      </fieldset>
+      <label for="fechaEntrega">Indique Fecha de Entrega</label>
+      <input type="datetime-local" name="fechaEntrega">
+      <div></div>
+      <button type="submit" class="button is-primary">Enviar OT</button>
+
+      
+   </form>
+</body>
+</html>

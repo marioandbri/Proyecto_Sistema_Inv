@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
+const PedidoSchema = require('./pedido');
 const {Schema, model} = mongoose;
+const objPedido = require('./pedido');
+// const EquipoSchema = require('./equipo');
+// const ImpresoraSchema = require('./impresora');
 
-const OT_Schema = new Schema({
+const OTSchema = new Schema({
 
    cliente: {
       type: String
@@ -10,23 +14,7 @@ const OT_Schema = new Schema({
    ubicacion: {
       type: String
    },
-   pedido: [
-      {
-      partnumber: {
-         type: String
-      },
-      cantidad: {
-         type: Number
-      },
-      mem_total: {
-         type: String
-      },
-      capacidad_alm: {
-         type: String
-      }
-      
-   }
-   ],
+   pedidos: [PedidoSchema],
    fechaEntrega: {
       type: Date
    },
@@ -40,4 +28,4 @@ const OT_Schema = new Schema({
 })
 
 
-module.exports = model('OT', OT_Schema);
+module.exports = model('OT', OTSchema);

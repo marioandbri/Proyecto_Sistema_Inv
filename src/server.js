@@ -12,7 +12,7 @@ app.set('port', process.env.PORT || 4000);
 //Middleware
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 
 //Globals
 
