@@ -1,55 +1,30 @@
-const express = require('express');
-const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-const example_ot = require('../ot.json');
+
+const express = require ('express');
+const router = express.Router()
+// const fs = require('fs');
+// const path = require('path');
+// const example_ot = require('../ot.json');
+// const { urlencoded } = require('express');
 
 // const OTModel = require('../model/ot');
-const OTs = require('../model/ot');
-const { urlencoded } = require('express');
 // const OTs = OTModel
+import { createOt, deleteOt, getOtById, getOtByQuery, updateOt } from '../controllers/ot.controller.js';
+
 
 //Read
 //By ID
-router.get('/ot/:_id', async (req, res) => {
-   const result = await OTs.findById(req.params._id);
-   console.log(result);
-   res.json(result);
-
-});
+router.get('/ot/:id', getOtById);
 //By Query
-router.get('/ot', async (req, res) => {
-   const query = req.query
-   const result = await OTs.find(query);
-   console.log(result);
-   res.json(result);
-   
-});
+router.get('/ot', getOtByQuery);
+
 //Create
-router.post('/ot', async (req, res) => {
-   const data_in = req.body;
-   const data_ot = new OTs(data_in);
-   await data_ot.save();
-   console.log(data_in);
-   res.json('data recieved');
-});
+router.post('/ot', createOt);
 
 //Update
-router.put('/ot/:_id', async (req, res) => {
-   const id = req.params._id;
-   console.log(id);
-   console.log(req.body);
-   const result = await OTs.findByIdAndUpdate(id, req.body);
-   console.log(result);
-   res.json(result);
-   
-});
+router.put('/ot/:id', updateOt);
 
 //Delete
-router.delete('/ot/:_id', async (req, res) => {
-   const id = req.params._id;
-   await OTs.findByIdAndDelete(id);
-   res.json({status: "OK", message: `Document [${id}] deleted`});
-});
+router.delete('/ot/:id', deleteOt);
 
 module.exports = router;
+// export default router;

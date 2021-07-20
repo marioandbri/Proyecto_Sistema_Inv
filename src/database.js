@@ -10,5 +10,5 @@ mongo.connect(MONGODB_URL, {
    useNewUrlParser: true
 
 })
-   .then(db => console.log('Database connected...'))
+   .then(db => console.log('MongoDB connected...'))
    .catch(err => console.log(err));
