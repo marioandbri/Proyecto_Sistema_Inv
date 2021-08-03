@@ -1,13 +1,13 @@
 const mongo = require("mongoose");
 
 
-const { MONGODB_HOST, MONGODB_DATABASE } = process.env;
-const MONGODB_URL = `mongodb://${ MONGODB_HOST }/${ MONGODB_DATABASE }`;
-
+const { MONGODB_HOST, MONGODB_DATABASE, MONGODB_USERNAME, MONGODB_PASSWORD } = process.env;
+const MONGODB_URL = `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${ MONGODB_HOST }/${ MONGODB_DATABASE }`;
 
 mongo.connect(MONGODB_URL, {
    useUnifiedTopology: true,
-   useNewUrlParser: true
+   useNewUrlParser: true,
+   authSource: "admin"
 
 })
    .then(db => console.log('MongoDB connected...'))

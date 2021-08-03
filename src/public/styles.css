@@ -1,8 +1,58 @@
-.navbar-item>img{
-   margin: 0 10px;
-   /* box-shadow: -1px 1px 2px black; */
+html {
+  background-image: url("./bg.jpg");
+  background-size: cover;
+}
+.navbar-item > img {
+  margin: 0 10px;
+  /* box-shadow: -1px 1px 2px black; */
+}
+.box {
+  background-color: rgba(255, 255, 255, 0.933);
+}
+.navbar .title {
+  color: white;
 }
 
-.navbar, .title {
-   color: white;
+tbody tr:hover {
+  background-color: #f2f2f2;
+}
+tr .button {
+  visibility: hidden;
+  width: 100%;
+}
+tr .button.is-success,
+tr .button.is-danger.cancelar {
+  visibility: visible;
+}
+tr:hover .button {
+  animation: displayer 1s forwards;
+}
+@keyframes displayer {
+  from {
+    color: #f2f2f200;
+    background-color: #f2f2f200;
+  }
+  to {
+    visibility: visible;
+  }
+}
+.notification {
+  position: absolute;
+  bottom: 2%;
+  padding: 0.5rem;
+  animation: notificacion 0.5s;
+}
+.notification > .delete {
+  position: relative;
+  right: 0%;
+  top: 0%;
+  margin-left: 0.5rem;
+}
+@keyframes notificacion {
+  from {
+    bottom: -10%;
+  }
+  to {
+    bottom: 2%;
+  }
 }
