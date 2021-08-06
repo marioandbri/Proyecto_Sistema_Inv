@@ -1,6 +1,8 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
+import Cliente from './Cliente';
 import FormCliente from './formcliente';
-import PlusCliente from './PlusCliente'
+import PlusCliente from './PlusCliente';
+import Pagination from './Pagination'
 // const results = require('../result.json');
 
 // const results = response.json();
@@ -13,6 +15,8 @@ class JsonCliente extends Component {
       this.handleEdit = this.handleEdit.bind(this)
       this.updateCliente = this.updateCliente.bind(this)
       this.cancelarAccion = this.cancelarAccion.bind(this)
+      this.deleteCliente = this.deleteCliente.bind(this)
+      this.paginate = this.paginate.bind(this)
       this.state={
          data : [<tr><td>'No ha cargado nada aun'</td></tr>],
          select : 'rut',
@@ -22,19 +26,29 @@ class JsonCliente extends Component {
          input2 : '',
          input3 : '',
          input4 : '',
-         notification:''
+         notification:'',
+         loading: true,
+         currentPage: 1,
+         clientesPerPage: 4
          
       }
       // this.crearCliente = this.crearCliente.bind(this)
+   }
+
+   //Pagination
+   paginate = (number) => {
+      this.setState({currentPage: number})
    }
 
    componentDidMount(){
       this.fetchClientes()
    }
    fetchClientes = async () =>{
-      const results = await fetch('/cliente/').then(res => res.json());
+      this.setState({ loading : true})
+      const results = await fetch('/cliente/').then(res => res.json())
       // const datos = results.map((cliente) => {return <Cliente key={cliente.rut} {...cliente}/>})
       this.setState({data: results})
+      this.setState({ loading: false})
       console.log('Se Ejecuto Fetch cliente')
       // return datos;
    }
@@ -236,18 +250,21 @@ class JsonCliente extends Component {
             </tr>   
          </thead>
          <tbody>
-            {this.state.data.map((cliente, key) => {return(
-               <tr key={key}>
-               <Cliente key={cliente.rut} {...cliente}/>
-               <td align="center"><button className="button is-link is-small" onClick={() => this.handleEdit(cliente.rut)}><span className="icon"><i className="fas fa-edit"></i></span></button></td>
-               <td align="center"><button className="button is-danger is-small" onClick={()=> this.deleteCliente(cliente.rut, cliente.razonsocial)}><span className="icon"><i className="fas fa-minus-circle"></i></span></button></td>
-               </tr>
-               )})} 
+            {/* {console.log(this.state.data, 'pre client component @JsonCliente')} */}
+            <Cliente 
+            clientes={this.state.data} 
+            loading={this.state.loading} 
+            handleEdit={this.handleEdit} 
+            deleteCliente={this.deleteCliente}
+            clientesPerPage={this.state.clientesPerPage}
+            currentPage={this.state.currentPage}
+            />
             {this.state.crearcliente}
          </tbody>
       </table>
       </div>
       </div>
+      <Pagination itemsPerPage={this.state.clientesPerPage} totalItems={this.state.data.length} paginate={this.paginate} currentPage={this.state.currentPage}/>
       </div>
       </div>
       <div className="is-flex is-justify-content-center">{this.state.notification}</div>
@@ -256,18 +273,6 @@ class JsonCliente extends Component {
 }
 }
 
-const Cliente = (props) =>{
-   const{rut, razonsocial,ubicacion,contacto,createdAt} = props;
-  
-   return(
-         <>    
-         <td>{razonsocial}</td>
-         <td>{rut}</td>
-         <td>{ubicacion}</td>
-         <td>{contacto}</td>
-         <td>{createdAt}</td>
-         </>
-   )
-}
+
 
 export default JsonCliente;
