@@ -21,8 +21,22 @@ tr .button {
   width: 100%;
 }
 tr .button.is-success,
-tr .button.is-danger.cancelar {
+tr .button.is-danger.cancelar,
+.is-info.buscar {
   visibility: visible;
+}
+.flex-container {
+  height: 2.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+tr .button.is-success.aceptar,
+tr .button.is-danger.cancelar {
+  width: 45%;
+  /* margin: auto 0.5rem; */
 }
 tr:hover .button {
   animation: displayer 1s forwards;
@@ -55,4 +69,14 @@ tr:hover .button {
   to {
     bottom: 2%;
   }
+}
+
+.flex-container-buscar {
+  display: flex;
+  width: 100%;
+  height: 4em;
+}
+.buscar {
+  align-self: flex-end;
+  align-content: space-around;
 }

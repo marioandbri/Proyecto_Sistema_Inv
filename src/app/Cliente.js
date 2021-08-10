@@ -28,7 +28,7 @@ const Cliente = ({ clientes, loading, handleEdit, deleteCliente, clientesPerPage
                <td>{cliente.rut}</td>
                <td>{cliente.ubicacion}</td>
                <td>{cliente.contacto}</td>
-               <td>{cliente.createdAt}</td>
+               <td>{cliente.createdat}</td>
                <td align="center"><button className="button is-link is-small" onClick={() => handleEdit(cliente.rut)}><span className="icon"><i className="fas fa-edit"></i></span></button></td>
                <td align="center"><button className="button is-danger is-small" onClick={() => deleteCliente(cliente.rut, cliente.razonsocial)}><span className="icon"><i className="fas fa-minus-circle"></i></span></button></td>
             </tr>

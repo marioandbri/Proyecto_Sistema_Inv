@@ -1,8 +1,8 @@
 import Sequelize from 'sequelize';
-import {sequelize} from '../sequelize';
+import { sequelize } from '../sequelize';
 
 const Cliente = sequelize.define('cliente', {
-   rut : {
+   rut: {
       type: Sequelize.TEXT,
       primaryKey: true
    },
@@ -16,8 +16,10 @@ const Cliente = sequelize.define('cliente', {
       type: Sequelize.INTEGER
    }
 },
-{
-   tableName: 'clientes'
-});
+   {
+      createdAt: 'createdat',
+      updatedAt: 'updatedat',
+      tableName: 'clientes'
+   });
 
 export default Cliente;

@@ -22,9 +22,12 @@ class FormCliente extends Component {
                <td><input type="text" className="input" defaultValue={this.state.input2} value={this.input2} onChange={this.props.updateInputValue2}/></td>
                <td><input type="text" className="input" defaultValue={this.state.input3} value={this.input3} onChange={this.props.updateInputValue3}/></td>
                <td><input type="number" className="input" defaultValue={this.state.input4} value={this.input4} onChange={this.props.updateInputValue4}/></td>
-               <td></td>
-               <td><button className="button is-success" onClick={this.props.handleClick}><span className="icon"><i className="fas fa-check"></i></span></button></td>
-               <td><button className="button is-danger cancelar" onClick={this.props.cancelarAccion}><span className="icon"><i className="fas fa-times"></i></span></button></td>
+               <td>
+               <div className="flex-container is-size-6">
+               <button className="button  is-small is-success aceptar" onClick={this.props.handleClick}><span className=" icon"><i className="fas fa-check"></i></span><span className="">Aceptar</span></button>
+               <button className="button  is-small is-danger cancelar" onClick={this.props.cancelarAccion}><span className=" icon"><i className="fas fa-times"></i></span><span className="">Cancelar</span></button>
+               </div>
+               </td>
             </tr>
          </>
       );

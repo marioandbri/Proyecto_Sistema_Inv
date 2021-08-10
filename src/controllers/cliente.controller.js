@@ -30,9 +30,32 @@ export async function getClienteByQuery(req, res) {
    console.log(query);
    if (JSON.stringify(query) != "{}") {
       const queryvalues = JSON.stringify(query).match(/([\w]+)([\w\d\s\-]+)/g);
-      const querystring = `SELECT * FROM clientes WHERE ${queryvalues[0]} ILIKE '%${queryvalues[1]}%'`;
-      const result = await Cliente.sequelize.query(querystring, { type: QueryTypes.SELECT });
-      res.json(result);
+      console.log(queryvalues)
+      if (queryvalues.length == 2) {
+         const querystring = `SELECT * FROM clientes WHERE CAST(${queryvalues[0]} as TEXT) ILIKE '%${queryvalues[1]}%'`;
+         const result = await Cliente.sequelize.query(querystring, { type: QueryTypes.SELECT });
+         res.json(result);
+      } if (queryvalues.length == 4) {
+         const querystring = `SELECT * FROM clientes WHERE CAST(${queryvalues[0]} as TEXT) ILIKE '%${queryvalues[1]}%' AND CAST(${queryvalues[2]} as TEXT) ILIKE '%${queryvalues[3]}%'`;
+         const result = await Cliente.sequelize.query(querystring, { type: QueryTypes.SELECT });
+         res.json(result);
+      } if (queryvalues.length == 6) {
+         const querystring = `SELECT * FROM clientes WHERE CAST(${queryvalues[0]} as TEXT) ILIKE '%${queryvalues[1]}%' AND CAST(${queryvalues[2]} as TEXT) ILIKE '%${queryvalues[3]}%' AND CAST(${queryvalues[4]} as TEXT) ILIKE '%${queryvalues[5]}%'`;
+         console.log(querystring)
+         const result = await Cliente.sequelize.query(querystring, { type: QueryTypes.SELECT });
+         res.json(result);
+      } if (queryvalues.length == 8) {
+         const querystring = `SELECT * FROM clientes WHERE CAST(${queryvalues[0]} as TEXT) ILIKE '%${queryvalues[1]}%' AND CAST(${queryvalues[2]} as TEXT) ILIKE '%${queryvalues[3]}%' AND CAST(${queryvalues[4]} as TEXT) ILIKE '%${queryvalues[5]}%' AND CAST(${queryvalues[6]} as TEXT) ILIKE '%${queryvalues[7]}%'`;
+         console.log(querystring)
+         const result = await Cliente.sequelize.query(querystring, { type: QueryTypes.SELECT });
+         res.json(result);
+      } if (queryvalues.length == 10) {
+         const querystring = `SELECT * FROM clientes WHERE CAST(${queryvalues[0]} as TEXT) ILIKE '%${queryvalues[1]}%' AND CAST(${queryvalues[2]} as TEXT) ILIKE '%${queryvalues[3]}%' AND CAST(${queryvalues[4]} as TEXT) ILIKE '%${queryvalues[5]}%' AND CAST(${queryvalues[6]} as TEXT) ILIKE '%${queryvalues[7]}%' AND CAST(${queryvalues[8]} as TEXT) ILIKE '%${queryvalues[9]}%'`;
+         console.log(querystring)
+         const result = await Cliente.sequelize.query(querystring, { type: QueryTypes.SELECT });
+         res.json(result);
+      }
+
    } else {
       const result = await Cliente.findAll({});
       res.json(result);
