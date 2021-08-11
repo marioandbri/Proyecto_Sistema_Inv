@@ -20,6 +20,7 @@ class JsonCliente extends Component {
       this.paginate = this.paginate.bind(this)
       this.state = {
          data: [<tr><td>'No ha cargado nada aun'</td></tr>],
+         actualData: [],
          select: 'rut',
          razonsocial: "",
          rut: "",
@@ -51,7 +52,7 @@ class JsonCliente extends Component {
    }
 
    componentDidMount() {
-      this.fetchClientes()
+      this.fetchClientes().then(()=>this.setState({ actualData: this.state.data}))
    }
    fetchClientes = async () => {
       this.setState({ loading: true })
@@ -249,7 +250,7 @@ class JsonCliente extends Component {
       })
    } 
 
-   pruebaChildren = (id) =>{
+   sortingClientes = (id) =>{
       let icon = document.getElementById(id).children[0].children[0].children[0]
       let sortedData = [...this.state.data]
       if(icon.classList.contains('fa-chevron-down')){
@@ -263,12 +264,13 @@ class JsonCliente extends Component {
             return 0
          })
          this.setState({
-            data: sortedData
+            actualData: sortedData
          })
          icon.classList.remove('fa-chevron-down')
          icon.classList.add('fa-chevron-up')
       }else
       if(icon.classList.contains('fa-chevron-up')){
+         this.setState({ actualData : this.state.data})
          icon.classList.remove('fa-chevron-up')
          
       }
@@ -284,7 +286,7 @@ class JsonCliente extends Component {
             return 0
          })
          this.setState({
-            data: sortedData
+            actualData: sortedData
          })
       }
 
@@ -320,19 +322,19 @@ class JsonCliente extends Component {
                         <table className="table is-fullwidth is-narrow is-size-6 has-text-weight-semibold">
                            <thead>
                               <tr>
-                                 <th id="razonsocial"><a onClick={() => this.pruebaChildren('razonsocial')} className="has-text-black is-unselectable">Razon Social<span className="icon"><i className="fas"></i></span></a>
+                                 <th id="razonsocial"><a onClick={() => this.sortingClientes('razonsocial')} className="has-text-black is-unselectable">Razon Social<span className="icon"><i className="fas"></i></span></a>
                                     <div className="filtering"><input name="razonsocial" type="text" className="input is-small filtering" defaultValue={this.state.razonsocial} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th id="rut"><a onClick={() => this.pruebaChildren('rut')} className="has-text-black is-unselectable">RUT<span className="icon"><i className="fas"></i></span></a>
+                                 <th id="rut"><a onClick={() => this.sortingClientes('rut')} className="has-text-black is-unselectable">RUT<span className="icon"><i className="fas"></i></span></a>
                                     <div><input name="rut" type="text" className="input is-small filtering" value={this.state.rut} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th id="ubicacion"><a onClick={() => this.pruebaChildren('ubicacion')} className="has-text-black is-unselectable">Casa Matriz<span className="icon"><i className="fas"></i></span></a>
+                                 <th id="ubicacion"><a onClick={() => this.sortingClientes('ubicacion')} className="has-text-black is-unselectable">Casa Matriz<span className="icon"><i className="fas"></i></span></a>
                                     <div><input name="ubicacion" type="text" className="input is-small filtering" value={this.state.ubicacion} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th id="contacto"><a onClick={() => this.pruebaChildren('contacto')} className="has-text-black is-unselectable">Contacto<span className="icon"><i className="fas"></i></span></a>
+                                 <th id="contacto"><a onClick={() => this.sortingClientes('contacto')} className="has-text-black is-unselectable">Contacto<span className="icon"><i className="fas"></i></span></a>
                                     <div><input name="contacto" type="text" className="input is-small filtering" value={this.state.contacto} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th id="createdat"><a onClick={() => this.pruebaChildren('createdat')} className="has-text-black is-unselectable">Creado<span className="icon"><i className="fas"></i></span></a>
+                                 <th id="createdat"><a onClick={() => this.sortingClientes('createdat')} className="has-text-black is-unselectable">Creado<span className="icon"><i className="fas"></i></span></a>
                                     <div><input name="createdat" type="text" className="input is-small filtering" placeholder="aaaa-mm-dd" value={this.state.createdat} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
                                  <th colSpan="2">
@@ -343,7 +345,7 @@ class JsonCliente extends Component {
                            <tbody>
                               {/* {console.log(this.state.data, 'pre client component @JsonCliente')} */}
                               <Cliente
-                                 clientes={this.state.data}
+                                 clientes={this.state.actualData}
                                  loading={this.state.loading}
                                  handleEdit={this.handleEdit}
                                  deleteCliente={this.deleteCliente}
