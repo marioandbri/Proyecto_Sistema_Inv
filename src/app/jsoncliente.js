@@ -247,6 +247,48 @@ class JsonCliente extends Component {
       this.setState({
          clientesPerPage: e.target.value
       })
+   } 
+
+   pruebaChildren = (id) =>{
+      let icon = document.getElementById(id).children[0].children[0].children[0]
+      let sortedData = [...this.state.data]
+      if(icon.classList.contains('fa-chevron-down')){
+         sortedData.sort((a,b)=>{
+            if(a[id] > b[id]){
+               return -1;
+            }
+            if(a[id] < b[id]){
+               return 1;
+            }
+            return 0
+         })
+         this.setState({
+            data: sortedData
+         })
+         icon.classList.remove('fa-chevron-down')
+         icon.classList.add('fa-chevron-up')
+      }else
+      if(icon.classList.contains('fa-chevron-up')){
+         icon.classList.remove('fa-chevron-up')
+         
+      }
+      else{
+         icon.classList.add('fa-chevron-down')
+         sortedData.sort((a,b)=>{
+            if(a[id] < b[id]){
+               return -1;
+            }
+            if(a[id]>b[id]){
+               return 1;
+            }
+            return 0
+         })
+         this.setState({
+            data: sortedData
+         })
+      }
+
+
    }
 
 
@@ -278,20 +320,20 @@ class JsonCliente extends Component {
                         <table className="table is-fullwidth is-narrow is-size-6 has-text-weight-semibold">
                            <thead>
                               <tr>
-                                 <th>Razon Social
-                                    <div><input name="razonsocial" type="text" className="input" defaultValue={this.state.razonsocial} onChange={(e) => this.handleChangeInput(e)} /></div>
+                                 <th id="razonsocial"><a onClick={() => this.pruebaChildren('razonsocial')} className="has-text-black is-unselectable">Razon Social<span className="icon"><i className="fas"></i></span></a>
+                                    <div className="filtering"><input name="razonsocial" type="text" className="input is-small filtering" defaultValue={this.state.razonsocial} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th>RUT
-                                    <div><input name="rut" type="text" className="input" value={this.state.rut} onChange={(e) => this.handleChangeInput(e)} /></div>
+                                 <th id="rut"><a onClick={() => this.pruebaChildren('rut')} className="has-text-black is-unselectable">RUT<span className="icon"><i className="fas"></i></span></a>
+                                    <div><input name="rut" type="text" className="input is-small filtering" value={this.state.rut} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th>Casa Matriz
-                                    <div><input name="ubicacion" type="text" className="input" value={this.state.ubicacion} onChange={(e) => this.handleChangeInput(e)} /></div>
+                                 <th id="ubicacion"><a onClick={() => this.pruebaChildren('ubicacion')} className="has-text-black is-unselectable">Casa Matriz<span className="icon"><i className="fas"></i></span></a>
+                                    <div><input name="ubicacion" type="text" className="input is-small filtering" value={this.state.ubicacion} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th>Contacto
-                                    <div><input name="contacto" type="text" className="input" value={this.state.contacto} onChange={(e) => this.handleChangeInput(e)} /></div>
+                                 <th id="contacto"><a onClick={() => this.pruebaChildren('contacto')} className="has-text-black is-unselectable">Contacto<span className="icon"><i className="fas"></i></span></a>
+                                    <div><input name="contacto" type="text" className="input is-small filtering" value={this.state.contacto} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th>Creado
-                                    <div><input name="createdat" type="date" className="input" value={this.state.createdat} onChange={(e) => this.handleChangeInput(e)} /></div>
+                                 <th id="createdat"><a onClick={() => this.pruebaChildren('createdat')} className="has-text-black is-unselectable">Creado<span className="icon"><i className="fas"></i></span></a>
+                                    <div><input name="createdat" type="text" className="input is-small filtering" placeholder="aaaa-mm-dd" value={this.state.createdat} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
                                  <th colSpan="2">
                                     <div className="flex-container-buscar"><button className="button is-info buscar" onClick={this.createQuery}><span className="icon"><i className="fas fa-search"></i></span><span>Buscar</span></button></div>
