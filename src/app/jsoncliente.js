@@ -25,17 +25,19 @@ class JsonCliente extends Component {
          razonsocial: "",
          rut: "",
          ubicacion: "",
-         contacto: "",
+         telefonocontacto: "",
+         personacontacto:"",
          createdat: "",
          crearcliente: <PlusCliente key={"agregar"} cC={this.crearCliente} />,
          input: '',
          input2: '',
          input3: '',
          input4: '',
+         input5: '',
          notification: '',
          loading: true,
          currentPage: 1,
-         clientesPerPage: 5,
+         clientesPerPage: 20,
 
       }
       // this.crearCliente = this.crearCliente.bind(this)
@@ -43,25 +45,58 @@ class JsonCliente extends Component {
 
    //Pagination
    paginate = (number, e) => {
-      const prevState = this.state.currentPage
-      document.getElementById(`${prevState}`).classList.remove('is-current')
-      document.getElementById(`${number}`).classList.toggle('is-current')
+      // const prevState = this.state.currentPage
       this.setState({
          currentPage: number
-      })
+      }, () => { this.updateCurrentPage()})
+      document.getElementById(`${this.state.currentPage}`).classList.remove('is-current')
+      
+   }
+   updateCurrentPage = () =>{
+      // console.log(this.state.currentPage)
+      document.getElementById(`${this.state.currentPage}`).classList.add('is-current')
    }
 
    componentDidMount() {
-      this.fetchClientes().then(()=>this.setState({ actualData: this.state.data}))
+      this.fetchClientes()
    }
+   // componentDidUpdate(prevProps, prevState){
+   //    if(this.state.actualData == prevState.actualDatas){
+   //       this.sortingClientes('razonsocial')
+   //    }
+   // }
+   // componentDidUpdate(prevProps, prevState){
+   //    if(this.state.actualData != prevState.actualData){
+   //       this.setState({ actualData : this.state.data})
+   //    }
+
+   // }
    fetchClientes = async () => {
       this.setState({ loading: true })
       const results = await fetch('/cliente/').then(res => res.json())
       // const datos = results.map((cliente) => {return <Cliente key={cliente.rut} {...cliente}/>})
-      this.setState({ data: results })
+      this.setState({
+         input: '',
+         input2: '',
+         input3: '',
+         input4: '',
+         input5:''
+      })
+      const sortedData = [...results]
+      sortedData.sort((a,b) =>{
+         if(a['razonsocial']>b['razonsocial']){
+            return 1
+         }
+         if(a['razonsocial'] < b['razonsocial']){
+            return -1
+         }
+         return 0
+      })
+      this.setState({ data: sortedData })
       this.setState({ loading: false })
       console.log('Se Ejecuto Fetch cliente')
-      // return datos;
+      this.setState({ actualData: this.state.data})
+      
    }
    postClientes = async (data) => {
       const results = await fetch('/cliente', {
@@ -87,7 +122,7 @@ class JsonCliente extends Component {
 
    }
    createQuery = async () => {
-      const { razonsocial, rut, ubicacion, contacto, createdat } = this.state
+      const { razonsocial, rut, ubicacion, telefonocontacto, createdat } = this.state
       console.log(createdat)
       let fullquery = "";
       if (razonsocial != "" && razonsocial.length > 2) {
@@ -97,22 +132,24 @@ class JsonCliente extends Component {
          fullquery += `rut=${rut}&`;
       } if (ubicacion != "") {
          fullquery += `ubicacion=${ubicacion}&`
-      } if (contacto != "") {
-         fullquery += `contacto=${contacto}&`
+      } if (telefonocontacto != "") {
+         fullquery += `telefonocontacto=${telefonocontacto}&`
+      } if (personacontacto != "") {
+         fullquery += `personacontacto=${personacontacto}&`
       } if (createdat != "") {
          fullquery += `createdat=${createdat}&`
       }
       console.log(fullquery)
-      // if(objectQuery.razonsocial === "" && objectQuery.rut === "" && objectQuery.ubicacion === "" && objectQuery.contacto === ""){
+      // if(objectQuery.razonsocial === "" && objectQuery.rut === "" && objectQuery.ubicacion === "" && objectQuery.telefonocontacto === ""){
       if (fullquery == "") {
          const results = await fetch('/cliente').then(res => res.json());
          // const datos = results.map((cliente) => {return <Cliente key={cliente.rut} {...cliente}/>})
-         this.setState({ data: results })
+         this.setState({ data: results }, ()=>{this.setState({actualData : this.state.data})})
          console.log(true)
       } else {
          const results = await fetch(`/cliente?${fullquery}`).then(res => res.json());
          // const datos = results.map((cliente) => {return <Cliente key={cliente.rut} {...cliente}/>})
-         this.setState({ data: results })
+         this.setState({ data: results }, ()=>{this.setState({actualData : this.state.data})})
          console.log(false)
       }
 
@@ -125,7 +162,8 @@ class JsonCliente extends Component {
             razonsocial: this.state.input,
             rut: this.state.input2,
             ubicacion: this.state.input3,
-            contacto: this.state.input4
+            telefonocontacto: this.state.input4,
+            personacontacto: this.state.input5
          }
          // console.log('input validation true')
          console.log(inputs)
@@ -137,7 +175,7 @@ class JsonCliente extends Component {
                crearcliente: <PlusCliente cC={this.crearCliente} />
             })
          })
-         this.setState({ input: '', input2: '', input3: '', input4: '' })
+         this.setState({ input: '', input2: '', input3: '', input4: '' , input5: ''})
 
       } else {
          // console.log('input validation false')
@@ -148,11 +186,11 @@ class JsonCliente extends Component {
 
    }
    crearCliente() {
-      this.setState({ input: '', input2: '', input3: '', input4: '' })
+      this.setState({ input: '', input2: '', input3: '', input4: '' , input5:''})
       this.setState({
          crearcliente: <FormCliente props={this.state} crearCliente={this.crearcliente} handleClick={this.handleClick} cancelarAccion={this.cancelarAccion}
             updateInputValue={this.updateInputValue} updateInputValue2={this.updateInputValue2} updateInputValue3={this.updateInputValue3}
-            updateInputValue4={this.updateInputValue4}
+            updateInputValue4={this.updateInputValue4} updateInputValue5={this.updateInputValue5}
          />
       })
    }
@@ -169,7 +207,8 @@ class JsonCliente extends Component {
          razonsocial: this.state.input,
          rut: this.state.input2,
          ubicacion: this.state.input3,
-         contacto: this.state.input4
+         telefonocontacto: this.state.input4,
+         personacontacto: this.state.input5
       }
       await fetch(`/cliente/${inputs.rut}`, {
          method: 'PUT',
@@ -184,23 +223,25 @@ class JsonCliente extends Component {
             crearcliente: <PlusCliente cC={this.crearCliente} />
          })
       })
-      this.setState({ input: '', input2: '', input3: '', input4: '' })
+      this.setState({ input: '', input2: '', input3: '', input4: '', input5: '' })
+      
    }
    async handleEdit(rut) {
       const results = await fetch(`/cliente/${rut}`).then(res => res.json()).then(data => {
          this.setState({
-            data: [],
+            actualData: [],
             input: data[0].razonsocial,
             input2: data[0].rut,
             input3: data[0].ubicacion,
-            input4: data[0].contacto
+            input4: data[0].telefonocontacto,
+            input5: data[0].personacontacto
          })
       }
       )
       this.setState({
          crearcliente: <FormCliente crearCliente={this.crearCliente} handleClick={this.updateCliente} cancelarAccion={this.cancelarAccion}
             props={this.state} updateInputValue={this.updateInputValue} updateInputValue2={this.updateInputValue2} updateInputValue3={this.updateInputValue3}
-            updateInputValue4={this.updateInputValue4} />
+            updateInputValue4={this.updateInputValue4} updateInputValue5={this.updateInputValue5} />
       })
    }
    updateInputValue = (e) => {
@@ -220,11 +261,23 @@ class JsonCliente extends Component {
    }
    updateInputValue4 = (e) => {
       this.setState({
-         input4: e.target.value
+         input4: Number.parseInt(e.target.value)
+      });
+   }
+   updateInputValue5 = (e) => {
+      this.setState({
+         input5: e.target.value
       });
    }
    cancelarAccion = () => {
-      this.fetchClientes();
+      // this.fetchClientes();
+      this.setState({
+         input: '',
+         input2: '',
+         input3: '',
+         input4: '',
+         input5:''
+      })
       this.setState({
          crearcliente: <PlusCliente cC={this.crearCliente} />,
          notification: ''
@@ -297,9 +350,9 @@ class JsonCliente extends Component {
    render() {
       return (
          <>
-            <div className="container">
+            <div className="container is-fluid">
                <div className='box'>
-                  <div className='title is-small'>Menu de clientes</div>
+                  <div className='title is-small'>Empresas</div>
                   {/* <div className="field has-addons">
          <p className="control">
             <span className="select">
@@ -317,22 +370,25 @@ class JsonCliente extends Component {
             <button className="button is-info" onClick={this.createQuery}>Buscar</button>
          </p>
       </div> */}
-                  <div className="box is-flex is-justify-content-center ">
+                  <div className="box is-flex is-justify-content-center">
                      <div className="table-container">
-                        <table className="table is-fullwidth is-narrow is-size-6 has-text-weight-semibold">
+                        <table className="table is-narrow clientes-table">
                            <thead>
                               <tr>
                                  <th id="razonsocial"><a onClick={() => this.sortingClientes('razonsocial')} className="has-text-black is-unselectable">Razon Social<span className="icon"><i className="fas"></i></span></a>
                                     <div className="filtering"><input name="razonsocial" type="text" className="input is-small filtering" defaultValue={this.state.razonsocial} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
                                  <th id="rut"><a onClick={() => this.sortingClientes('rut')} className="has-text-black is-unselectable">RUT<span className="icon"><i className="fas"></i></span></a>
-                                    <div><input name="rut" type="text" className="input is-small filtering" value={this.state.rut} onChange={(e) => this.handleChangeInput(e)} /></div>
+                                    <div><input name="rut" type="text" className="input is-small filtering rut-filter" value={this.state.rut} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
                                  <th id="ubicacion"><a onClick={() => this.sortingClientes('ubicacion')} className="has-text-black is-unselectable">Casa Matriz<span className="icon"><i className="fas"></i></span></a>
                                     <div><input name="ubicacion" type="text" className="input is-small filtering" value={this.state.ubicacion} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
-                                 <th id="contacto"><a onClick={() => this.sortingClientes('contacto')} className="has-text-black is-unselectable">Contacto<span className="icon"><i className="fas"></i></span></a>
-                                    <div><input name="contacto" type="text" className="input is-small filtering" value={this.state.contacto} onChange={(e) => this.handleChangeInput(e)} /></div>
+                                 <th id="telefonocontacto"><a onClick={() => this.sortingClientes('telefonocontacto')} className="has-text-black is-unselectable">Teléfono<span className="icon"><i className="fas"></i></span></a>
+                                    <div><input name="telefonocontacto" type="text" className="input is-small filtering" value={this.state.telefonocontacto} onChange={(e) => this.handleChangeInput(e)} /></div>
+                                 </th>
+                                 <th id="personacontacto"><a onClick={() => this.sortingClientes('personacontacto')} className="has-text-black is-unselectable">Persona<span className="icon"><i className="fas"></i></span></a>
+                                    <div><input name="personacontacto" type="text" className="input is-small filtering" value={this.state.personacontacto} onChange={(e) => this.handleChangeInput(e)} /></div>
                                  </th>
                                  <th id="createdat"><a onClick={() => this.sortingClientes('createdat')} className="has-text-black is-unselectable">Creado<span className="icon"><i className="fas"></i></span></a>
                                     <div><input name="createdat" type="text" className="input is-small filtering" placeholder="aaaa-mm-dd" value={this.state.createdat} onChange={(e) => this.handleChangeInput(e)} /></div>
@@ -357,11 +413,14 @@ class JsonCliente extends Component {
                         </table>
                      </div>
                   </div>
-                  <span>Clientes por Pagina: </span><select className="select" value={this.state.clientesPerPage} onChange={this.changeClientesPerPage}>
-                     <option defaultValue value="5">5</option>
+                  <label htmlFor="itemsPerPage" className="label mb-0">Elementos por página</label>
+                  <div className="select is-small mb-2">
+                  <select id="itemsPerPage" value={this.state.clientesPerPage} onChange={this.changeClientesPerPage}>
                      <option value="10">10</option>
-                     <option value="20">20</option>
+                     <option defaultValue value="20">20</option>
+                     <option value="50">50</option>
                   </select>
+                  </div>
                   <Pagination itemsPerPage={this.state.clientesPerPage} totalItems={this.state.data.length} paginate={this.paginate} currentPage={this.state.currentPage} />
                </div>
             </div>

@@ -10,16 +10,32 @@ const Cliente = sequelize.define('cliente', {
       type: Sequelize.TEXT
    },
    ubicacion: {
-      type: Sequelize.TEXT
+      type: Sequelize.TEXT,
+      allowNull: true
    },
-   contacto: {
-      type: Sequelize.INTEGER
+   telefonocontacto: {
+      type: Sequelize.INTEGER,
+      allowNull: true
+   },
+   personacontacto: {
+      type: Sequelize.TEXT,
+      allowNull: true
+   },
+   cargo: {
+      type: Sequelize.TEXT,
+      allowNull: true
+   },
+   createdat: {
+      type: Sequelize.DATEONLY,
+      defaultValue: Sequelize.NOW
    }
 },
    {
-      createdAt: 'createdat',
+      timestamps: true,
       updatedAt: 'updatedat',
       tableName: 'clientes'
    });
+
+// Cliente.sync({ force: true }).then(console.log('modelo Cliente actualizado'));
 
 export default Cliente;

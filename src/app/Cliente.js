@@ -23,11 +23,12 @@ const Cliente = ({ clientes, loading, handleEdit, deleteCliente, clientesPerPage
             )
          })} */}
          {currentClientes.map((cliente, index) => (
-            <tr key={index}>
-               <td>{cliente.razonsocial}</td>
+            <tr key={cliente.rut}>
+               <td title={cliente.razonsocial}>{cliente.razonsocial/*.length > 30 ? cliente.razonsocial.slice(0, 20) + '...' : cliente.razonsocial*/}</td>
                <td>{cliente.rut}</td>
-               <td>{cliente.ubicacion}</td>
-               <td>{cliente.contacto}</td>
+               <td title={cliente.ubicacion}>{cliente.ubicacion.length > 30 ? cliente.ubicacion.slice(0, 30) + '...' : cliente.ubicacion}</td>
+               <td>{cliente.telefonocontacto}</td>
+               <td>{cliente.personacontacto}</td>
                <td>{cliente.createdat}</td>
                <td align="center"><button className="button is-link is-small" onClick={() => handleEdit(cliente.rut)}><span className="icon"><i className="fas fa-edit"></i></span></button></td>
                <td align="center"><button className="button is-danger is-small" onClick={() => deleteCliente(cliente.rut, cliente.razonsocial)}><span className="icon"><i className="fas fa-minus-circle"></i></span></button></td>

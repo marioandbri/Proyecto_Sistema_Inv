@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
+import {
+   BrowserRouter as Router,
+   Switch,
+   Route,
+   Link
+} from "react-router-dom";
+import JsonCliente from "./jsoncliente";
+import ProductosUI from "./productosUI"
 
 class Navbar extends Component {
    render() {
       return (
+         <Router>
          <nav className="navbar is-info" role="navigation" aria-label="main navigation">
             <div className='container'>
                <div className="navbar-brand">
-                  <a href="/" className="navbar-item">
+                  <Link to="/" className="navbar-item">
                      <img src="./arrienda.webp" className="is-spaced"></img>
-                  </a>
+                  </Link>
                   <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
                      <span aria-hidden="true"></span>
                      <span aria-hidden="true"></span>
@@ -16,15 +25,25 @@ class Navbar extends Component {
                   </a>
                </div>
                <div className="navbar-menu" id="navMenu">
-                  <div className="navbar-start title is-4">
-                     <a className="navbar-item" href="/">Inicio</a>
-                     <a className="navbar-item" href="/cliente">Gestion de Clientes</a>
-                     <a className="navbar-item" href="/ubicaciones">Gestion de Ubicaciones</a>
-                     <a className="navbar-item" href="/ot">Ordenes de Trabajo</a>
+                  <div className="navbar-start title is-5">
+                     <Link className="navbar-item" to="/">Inicio</Link>
+                     <Link className="navbar-item" to="/clientes">Gestion de Clientes</Link>
+                     <Link className="navbar-item" to="/productos">Gestion de Productos</Link>
+                     <Link className="navbar-item" to="/ot">Ordenes de Trabajo</Link>
                   </div>
                </div>
             </div>
          </nav>
+
+         <Switch>
+            <Route path="/clientes">
+               <JsonCliente/>
+            </Route>
+            <Route path="/productos">
+               <ProductosUI/>
+            </Route>
+         </Switch>
+         </Router>
       );
    }
 }
