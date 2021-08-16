@@ -1,0 +1,22 @@
+{
+    "_id": "6116cd8f10f372095ccf1682",
+    "partNumber": "partnumberExample4",
+    "marca": "hp",
+    "tipoProducto": "impresora",
+    "impresora": {
+      "_id": "6116cd8f10f372095ccf1683",
+      "consumibles": [
+        {
+          "_id": "6116cd8f10f372095ccf1684",
+          "tipoConsumible": "toner negro",
+          "numeroParte": "123456asd"
+        },
+        {
+          "_id": "6116cd8f10f372095ccf1685",
+          "tipoConsumible": "kit mantenimiento",
+          "numeroParte": "1232sd"
+        }
+      ],
+      "modelo": "impresora hp model x"
+    }
+   }

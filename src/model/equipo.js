@@ -1,18 +1,19 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
+import { DesktopSchema } from './desktop';
+import { NotebookSchema } from './notebook';
 
-const EquipoSchema = new Schema ({
-   serialnumber: {
-      type:String,
-      unique: true
-   },
-   partnumber: {
-      type:String
-   },
+export const EquipoSchema = new Schema({
    tipoEquipo: {
-      type:String
+      type: String,
+      required: true
    },
-   descripcion: {
-      type:String
+   notebook: NotebookSchema,
+   desktop: DesktopSchema,
+   procesador: {
+      type: String
+   },
+   genProcesador: {
+      type: String
    },
    almacenamiento: {
       tipoAlmacenamiento: {
@@ -24,15 +25,15 @@ const EquipoSchema = new Schema ({
    },
    socketsMemoria: [
       {
-         tipoMemoria:{
+         tipoMemoria: {
             type: String
          },
-         memPartnumber:{
+         memPartnumber: {
             type: String
          }
       }
-   ] 
+   ]
 })
 
-module.exports = model('Equipos', EquipoSchema);
-module.exports = EquipoSchema;
+export default model('Equipos', EquipoSchema);
+// module.exports = EquipoSchema;

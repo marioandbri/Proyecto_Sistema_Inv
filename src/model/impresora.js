@@ -1,27 +1,20 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const ImpresoraSchema = new Schema ({
-   serialnumber: {
-      type:String,
-      unique: true
+export const ImpresoraSchema = new Schema({
+   modelo: {
+      type: String
    },
-   partnumber: {
-      type:String
-   },
-   tipoEquipo: {
-      type:String
-   },
-   consumibles:[
+   consumibles: [
       {
-         tipoConsumible:{
+         tipoConsumible: {
             type: String
          },
-         descripcion:{
+         numeroParte: {
             type: String
          }
       }
-   ] 
+   ]
 })
 
-module.exports = model('Impresoras', ImpresoraSchema);
-module.exports = ImpresoraSchema;
+export default model('Impresora', ImpresoraSchema);
+// module.exports = ImpresoraSchema;

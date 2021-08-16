@@ -1,6 +1,6 @@
 html {
   background-image: url("./bg.jpg");
-  background-size: cover;
+  background-size: contain;
 }
 .navbar-item > img {
   margin: 0 10px;
@@ -86,3 +86,13 @@ tr:hover .button {
   height: 100%;
   align-items: flex-end;
 }
+.clientes-table {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.rut-filter {
+  max-width: 6rem;
+}
+/* .box {
+  min-height: 100vh;
+} */
