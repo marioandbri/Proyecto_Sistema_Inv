@@ -1,12 +1,10 @@
 import React from 'react';
 
-const LoadingBar = (key) => {
+const LoadingBar = () => {
    return (
-      <tr key={key}>
-         <td colSpan='8'>
-            <progress className="progress is-info" max="100"></progress>
-         </td>
-      </tr>
+
+      <progress className="progress is-info" max="100"></progress>
+
    );
 }
 

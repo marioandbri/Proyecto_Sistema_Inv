@@ -1,26 +1,31 @@
-import producto from "../model/producto";
+import impresoras from "../model/impresora";
 
 
 export async function getProductoById(req, res) {
-   const result = await producto.findById(req.params.id);
+   const result = await impresoras.findById(req.params.id);
    console.log(result);
    res.json(result);
 };
 
 export async function getProductoByQuery(req, res) {
    const query = req.query
-   const result = await producto.find(query);
+   const result = await impresoras.find(query);
    console.log(result);
    // res.json({ data: result, description: result.map(e => e.detProducto.map(e => e.descriptionOf())) });
-   res.json(result.map(e => ({ item: e, description: e.detProducto[0].descriptionOf() })))
+   res.json({
+      result:
+         result.map(e => ({ item: e, description: e.descriptionOf() })),
+      headers:
+         result[0].headersOf()
+   })
 }
 
 export async function createProducto(req, res) {
    const data_in = req.body;
-   const data_ot = new producto(data_in);
+   const data_ot = new impresoras(data_in);
    await data_ot.save();
    console.log(data_in);
-   console.log(data_ot.detProducto.map(e => e.descriptionOf()))
+   // console.log(data_ot.map(e => e.descriptionOf()))
    res.json('data recieved');
 };
 
@@ -28,13 +33,13 @@ export async function updateProducto(req, res) {
    const id = req.params.id;
    console.log(id);
    console.log(req.body);
-   const result = await producto.updateOne({ _id: id }, req.body);
+   const result = await impresoras.updateOne({ _id: id }, req.body);
    console.log(result);
    res.json(result);
 };
 
 export async function deleteProducto(req, res) {
    const id = req.params.id;
-   await producto.deleteOne({ _id: id });
+   await impresoras.deleteOne({ _id: id });
    res.json({ status: "OK", message: `Document [${id}] deleted` });
 };

@@ -1,22 +1,163 @@
-{
-    "_id": "6116cd8f10f372095ccf1682",
-    "partNumber": "partnumberExample4",
-    "marca": "hp",
-    "tipoProducto": "impresora",
-    "impresora": {
-      "_id": "6116cd8f10f372095ccf1683",
-      "consumibles": [
+[
+  {
+    "item": {
+      "_id": "611c2b801c26c8108433d55d",
+      "partNumber": "PNENTB7",
+      "marca": "HP",
+      "modelo": "HP PROBOOK 4000",
+      "detProducto": [
         {
-          "_id": "6116cd8f10f372095ccf1684",
-          "tipoConsumible": "toner negro",
-          "numeroParte": "123456asd"
-        },
-        {
-          "_id": "6116cd8f10f372095ccf1685",
-          "tipoConsumible": "kit mantenimiento",
-          "numeroParte": "1232sd"
+          "tipoComputador": [
+            "Notebook"
+          ],
+          "tipoProducto": "Computador",
+          "_id": "611c2b801c26c8108433d55e",
+          "procesador": "Core i5",
+          "genProcesador": "10ma",
+          "almacenamiento": [
+            {
+              "_id": "611c2b801c26c8108433d55f",
+              "tipoAlmacenamiento": "HDD",
+              "capacidadGB": 1000
+            }
+          ],
+          "socketsMemoria": [
+            {
+              "_id": "611c2b801c26c8108433d560",
+              "dimm": "A",
+              "tipoMemoria": "DDR4 SoDIMM",
+              "capacidadGB": 8,
+              "memPartnumber": "PC4-2133"
+            },
+            {
+              "_id": "611c2b801c26c8108433d561",
+              "dimm": "B",
+              "tipoMemoria": "DDR4 SoDIMM",
+              "capacidadGB": 8,
+              "memPartnumber": "PC4-2133"
+            }
+          ],
+          "detComputador": []
         }
       ],
-      "modelo": "impresora hp model x"
-    }
-   }
+      "__v": 0
+    },
+    "description": "Notebook Core i5 10ma 2 * DDR4 SoDIMM, HDD 1000GB"
+  },
+  {
+    "item": {
+      "_id": "611c2b831c26c8108433d563",
+      "partNumber": "PNEIMP1",
+      "marca": "HP",
+      "modelo": "HP LASERJET 2000",
+      "detProducto": [
+        {
+          "tipoImpresora": [
+            "Laser"
+          ],
+          "conexiones": [
+            "USB"
+          ],
+          "tipoProducto": "Impresora",
+          "_id": "611c2b831c26c8108433d564",
+          "modoImpresion": "Color",
+          "consumibles": [
+            {
+              "_id": "611c2b831c26c8108433d565",
+              "tipoConsumible": "kit de mantenimiento",
+              "numeroParte": "122212123"
+            }
+          ]
+        }
+      ],
+      "__v": 0
+    },
+    "description": "Impresora Laser Color, Consumibles: kit de mantenimiento "
+  },
+  {
+    "item": {
+      "_id": "611d5bf9ebbe180ab46b2c15",
+      "partNumber": "PNENTB2E",
+      "marca": "HP",
+      "modelo": "HP PROBOOK 4000",
+      "detProducto": [
+        {
+          "tipoComputador": [
+            "Notebook"
+          ],
+          "tipoProducto": "Computador",
+          "_id": "611d5bf9ebbe180ab46b2c16",
+          "detComputador": {
+            "tamañoPantalla": "14Pulgadas",
+            "tipoTransformador": "45W Punta Azul"
+          },
+          "procesador": "Core i5",
+          "genProcesador": "10ma",
+          "almacenamiento": [
+            {
+              "_id": "611d5bf9ebbe180ab46b2c17",
+              "tipoAlmacenamiento": "HDD",
+              "capacidadGB": 1000
+            }
+          ],
+          "socketsMemoria": [
+            {
+              "_id": "611d5bf9ebbe180ab46b2c18",
+              "dimm": "A",
+              "tipoMemoria": "DDR4 SoDIMM",
+              "capacidadGB": 8,
+              "memPartnumber": "PC4-2133"
+            },
+            {
+              "_id": "611d5bf9ebbe180ab46b2c19",
+              "dimm": "B",
+              "tipoMemoria": "DDR4 SoDIMM",
+              "capacidadGB": 8,
+              "memPartnumber": "PC4-2133"
+            }
+          ]
+        }
+      ],
+      "__v": 0
+    },
+    "description": "Notebook Core i5 10ma 2 * DDR4 SoDIMM, HDD 1000GB"
+  },
+  {
+    "item": {
+      "_id": "611d5ef80abd26249400f28d",
+      "partNumber": "PNEIMP1E",
+      "marca": "HP",
+      "modelo": "HP LASERJET 2000",
+      "detProducto": [
+        {
+          "tipoImpresora": [
+            "Laser"
+          ],
+          "conexiones": [
+            "Wireless",
+            "USB",
+            "Ethernet",
+            "Bluetooth"
+          ],
+          "tipoProducto": "Impresora",
+          "_id": "611d5ef80abd26249400f28e",
+          "modoImpresion": "Monocromatica",
+          "detImpresora": {
+            "ppmImpresion": 120,
+            "cuotaMensual": 10000,
+            "maxPapelTam": "A3"
+          },
+          "consumibles": [
+            {
+              "_id": "611d5ef80abd26249400f28f",
+              "tipoConsumible": "Cartucho Negro Toner",
+              "numeroParte": "122212123"
+            }
+          ]
+        }
+      ],
+      "__v": 0
+    },
+    "description": "Impresora Laser Monocromatica, Consumibles: Cartucho Negro Toner "
+  }
+]

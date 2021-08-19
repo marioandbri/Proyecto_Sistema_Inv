@@ -1,36 +1,67 @@
 import React, { useEffect, useState } from 'react';
+import ProductoItem from './ProductoItem';
+import LoadingBar from "../LoadingBar";
 
-const ProductosData = (props) => {
-   
-   const [tableHeader, setTableHeader] = useState(["loading"]);
-   console.log(tableHeader)
+const ProductosData = ({ loading, data, headers, productType }) => {
+   console.log(loading, productType)
+   if (loading) {
+      return <LoadingBar />
+   }
+   const initialState = {
+      tableHeader: [],
+      tableData: [],
+   }
+
+
+
+
+   const [tableHeader, setTableHeader] = useState(initialState.tableHeader);
+   const [tableData, setTableData] = useState(initialState.tableData);
+   const [items, setItems] = useState(initialState.items);
+
+   const cargarHeaders = () => {
+      setTableHeader(headers)
+   }
+   const cargarData = () => {
+      setTableData(data)
+   }
+
    useEffect(() => {
-      setTableHeader(() => {
-         let theader =[]
-         for(let prop in props.JSONDATA){
-            theader.push(prop)
-
-         }
-         return theader
-      })
+      cargarHeaders();
+      cargarData();
       return () => {
-         cleanup
+      };
+   }, [headers]);
+   useEffect(() => {
+      setTableHeader(headers)
+      setTableData(data)
+      return () => {
+         setTableHeader(initialState.tableHeader)
       };
    }, []);
 
+
+
    return (
       <>
-         <div className="box">
+         <div className="box block">
             <table className="table is-narrow is-hoverable">
                <thead>
                   <tr>
-                  {tableHeader.map((elem, index)=>(
-                     <th key={index}>
-                        {elem}
-                     </th>
-                  ))}
+                     {console.log(data)}
+                     {tableHeader !== initialState.tableHeader ? tableHeader.map((elem, index) => (
+                        <th key={index}>
+                           {elem}
+                        </th>
+                     )) : <th>LOADING</th>}
+                     <th>Descripcion</th>
                   </tr>
                </thead>
+               <tbody>
+                  {tableData.map((elem) => (
+                     <ProductoItem productType={productType} key={elem.item.partNumber} item={elem.item} descripcion={elem.description} />
+                  ))}
+               </tbody>
             </table>
          </div>
       </>

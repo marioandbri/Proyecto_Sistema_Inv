@@ -1,7 +1,12 @@
+/**
+ * @deprecated
+ */
 import { Schema, model } from 'mongoose';
-import { EquipoSchema } from './equipo';
-import { ImpresoraSchema } from './impresora'
+import { ComputadorSchema } from "./computador";
+import { ImpresoraSchema } from "./impresora";
 
+const EquipoSchema = new Schema({}, { discriminatorKey: 'tipoProducto' })
+const Equipo = model('Equipo', EquipoSchema)
 
 export const ProductoSchema = new Schema({
    partNumber: {
@@ -12,12 +17,12 @@ export const ProductoSchema = new Schema({
    marca: {
       type: String
    },
-   tipoProducto: {
-      type: String,
-      required: true
-   },
-   impresora: ImpresoraSchema,
-   equipo: EquipoSchema
+   detProducto: [EquipoSchema]
+
 });
+
+// ProductoSchema.path('detProducto').discriminator('Computador', ComputadorSchema)
+// ProductoSchema.path('detProducto').discriminator('Impresora', ImpresoraSchema)
+
 
 export default model('Producto', ProductoSchema);

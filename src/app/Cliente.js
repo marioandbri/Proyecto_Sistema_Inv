@@ -5,7 +5,13 @@ import { currentItems } from './Pagination';
 const Cliente = ({ clientes, loading, handleEdit, deleteCliente, clientesPerPage, currentPage }) => {
 
    if (loading) {
-      return <LoadingBar />
+      return <tr>
+         <td colSpan="8">
+
+            <LoadingBar />
+         </td>
+
+      </tr>
    }
    // console.log(clientes, 'pre const declaration @Cliente')
    // console.log(clientesPerPage, currentPage)
