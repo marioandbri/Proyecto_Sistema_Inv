@@ -1,6 +1,6 @@
-html {
+:root {
   background-image: url("./bg.jpg");
-  background-size: contain;
+  background-size: cover;
 }
 .navbar-item > img {
   margin: 0 10px;

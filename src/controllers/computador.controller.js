@@ -11,22 +11,31 @@ export async function getProductoByQuery(req, res) {
    const query = req.query
    const result = await computadores.find(query);
    console.log(result);
+   let computador = new computadores
    // res.json({ data: result, description: result.map(e => e.detProducto.map(e => e.descriptionOf())) });
-   res.json({
+
+   JSON.stringify(result) == '[]' ? res.json([]) : res.json({
       result:
          result.map(e => ({ item: e, description: e.descriptionOf() })),
       headers:
-         result[0].headersOf()
+         computador.headersOf()
    })
 }
 
 export async function createProducto(req, res) {
    const data_in = req.body;
    const data_ot = new computadores(data_in);
-   await data_ot.save();
-   console.log(data_in);
+   try {
+
+      await data_ot.save()
+      res.json('data recieved')
+
+   } catch (error) {
+      res.json(error)
+   }
+   // console.log(data_in);
    // console.log(data_ot.map(e => e.descriptionOf()))
-   res.json('data recieved');
+
 };
 
 export async function updateProducto(req, res) {

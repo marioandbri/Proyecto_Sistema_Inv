@@ -11,12 +11,13 @@ export async function getProductoByQuery(req, res) {
    const query = req.query
    const result = await impresoras.find(query);
    console.log(result);
+   let impresora = new impresoras
    // res.json({ data: result, description: result.map(e => e.detProducto.map(e => e.descriptionOf())) });
    res.json({
       result:
          result.map(e => ({ item: e, description: e.descriptionOf() })),
       headers:
-         result[0].headersOf()
+         impresora.headersOf()
    })
 }
 

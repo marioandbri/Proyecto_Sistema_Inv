@@ -22,6 +22,8 @@ app.use(require('./routes/valida.routes.js'));
 app.use(require('./routes/producto.routes.js'))
 app.use(require('./routes/impresora.routes.js'))
 app.use(require('./routes/computador.routes.js'))
+app.use(require('./routes/monitor.routes.js'))
+
 
 
 //Static Files

@@ -10,52 +10,75 @@ export const ComputadorSchema = new Schema({
       unique: true
    },
    marca: {
-      type: String
+      type: String,
+      required: true
    },
    modelo: {
+      type: String,
+      required: true
+   },
+   factorForma: {
       type: String
    },
-   detComputador: {
-      type: {
-         tamañoPantalla: String,
-         tipoTransformador: String,
-         factorForma: String
-      }
+   tamañoPantalla: {
+      type: Number
+   },
+   transformador: {
+      type: String
    },
    procesador: {
-      type: String
-   },
-   genProcesador: {
-      type: String
-   },
-   almacenamiento: [{
-      tipoAlmacenamiento: {
-         type: String
-      },
-      capacidadGB: {
-         type: Number
+      type: {
+         marca: String,
+         tier: String,
+         modelo: String,
+         nucleos: Number,
+         hilos: Number,
+         minFreq: Number,
+         turboFreq: Number
+
       }
-   }],
-   socketsMemoria: [
-      {
-         dimm: {
-            type: String
-         },
-         tipoMemoria: {
+   },
+
+   almacenamiento: {
+
+      type: [{
+         tipoAlmacenamiento: {
             type: String
          },
          capacidadGB: {
             type: Number
-         },
-         memPartnumber: {
-            type: String
          }
-      }
-   ]
+      }]
+   },
+   tipoRam: {
+      type: String
+   },
+   socketsMemoria: {
+      type: [
+         {
+            dimm: {
+               type: Number
+
+            },
+            isInstalled: {
+               type: Boolean
+            },
+            capacidadGB: {
+               type: Number
+            },
+            memPartnumber: {
+               type: String
+            }
+         }
+      ]
+   },
+   tags: {
+      type: [String]
+   }
 })
 
 ComputadorSchema.methods.descriptionOf = function () {
-   return `${this.modelo} ${this.procesador} ${this.genProcesador} ,${this.socketsMemoria[0].tipoMemoria}, ${this.almacenamiento.map(e => e.tipoAlmacenamiento + ' ' + e.capacidadGB)}GB`
+   return `${this.marca} ${this.modelo} ${this.procesador.marca} ${this.procesador.tier}-${this.procesador.modelo} hasta ${this.procesador.turboFreq}Ghz, ${this.tipoRam} desde ${this.socketsMemoria[0].capacidadGB}GB, ${this.almacenamiento.map(e => e.tipoAlmacenamiento + ' ' + e.capacidadGB)}GB`
 }
 ComputadorSchema.methods.headersOf = function () {
    return ['Tipo Computador', 'Numero de Parte', 'Marca', 'Modelo', 'Procesador', 'Almacenamiento', 'Memoria RAM']

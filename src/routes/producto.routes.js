@@ -6,20 +6,20 @@ const router = Router();
 router.get('/productos', (req, res) => {
    res.redirect('/')
 })
-//Create
-// router.post('/producto', createProducto);
+// Create
+router.post('/producto/option', createProducto);
 
-// //Read
-// //By id
-// router.get('/producto/:id', getProductoById);
-// // By Query
-// router.get('/producto', getProductoByQuery);
+//Read
+//By id
+router.get('/producto/option/:id', getProductoById);
+// By Query
+router.get('/producto/option', getProductoByQuery);
 
-// //Update
-// router.put('/producto/:id', updateProducto);
+//Update
+router.put('/producto/option/:id', updateProducto);
 
-// //Delete
-// router.delete('/producto/:id', deleteProducto);
+//Delete
+router.delete('/producto/option/:id', deleteProducto);
 
 
 module.exports = router;
