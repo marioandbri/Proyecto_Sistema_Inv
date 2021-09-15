@@ -15,7 +15,7 @@ export async function getProductoByQuery(req, res) {
    // res.json({ data: result, description: result.map(e => e.detProducto.map(e => e.descriptionOf())) });
    res.json({
       result:
-         result.map(e => ({ item: e, description: e.descriptionOf() })),
+         result.map(item => ({ item, description: item.descriptionOf() })),
       headers:
          impresora.headersOf()
    })

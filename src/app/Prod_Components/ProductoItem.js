@@ -1,12 +1,64 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const ProductoItem = ({
   productType,
   descripcion,
   item,
   handleEdit,
+  handleEye,
   handleRemove,
 }) => {
+  // console.log(
+  //   productType.includes("generic/"),
+  //   "productType validation",
+  //   productType
+  // );
+  useEffect(() => {
+    return () => {};
+  }, [item]);
+
+  const Botonera = () => {
+    return (
+      <td align="center">
+        <div className="buttons are-small">
+          <a
+            title="Ver Item"
+            className="button m-1 is-outlined is-small is-primary is-light"
+            onClick={(e) => {
+              handleEye(e, item._id);
+            }}
+          >
+            <span className="icon">
+              <i className="far fa-eye"></i>
+            </span>
+          </a>
+          <a
+            title="Editar"
+            className="button m-1 is-outlined is-small is-info"
+            onClick={(e) => {
+              handleEdit(e, item._id);
+            }}
+          >
+            <span className="icon">
+              <i className="fas fa-pen"></i>
+            </span>
+          </a>
+          <a
+            title="Eliminar"
+            className="button m-1 is-outlined is-small is-danger"
+            onClick={(e) => {
+              handleRemove(e, item._id);
+            }}
+          >
+            <span className="icon">
+              <i className="fas fa-minus-circle"></i>
+            </span>
+          </a>
+        </div>
+      </td>
+    );
+  };
+
   //   console.log(descripcion);
   if (productType == "computadores") {
     return (
@@ -42,30 +94,7 @@ const ProductoItem = ({
                 .join(" ")}
           </td>
           <td>{descripcion}</td>
-          <td>
-            <a
-              title="Editar"
-              className="button m-1 is-outlined is-small is-info"
-              onClick={(e) => {
-                handleEdit(e, item._id);
-              }}
-            >
-              <span className="icon">
-                <i className="fas fa-pen"></i>
-              </span>
-            </a>
-            <a
-              title="Eliminar"
-              className="button m-1 is-outlined is-small is-danger"
-              onClick={(e) => {
-                handleRemove(e, item._id);
-              }}
-            >
-              <span className="icon">
-                <i className="fas fa-minus-circle"></i>
-              </span>
-            </a>
-          </td>
+          <Botonera />
         </tr>
       </>
     );
@@ -81,30 +110,7 @@ const ProductoItem = ({
           <td>{item.modoImpresion}</td>
           <td>{item.conexiones.map((e) => `${e} `)}</td>
           <td>{descripcion}</td>
-          <td>
-            <a
-              title="Editar"
-              className="button m-1 is-outlined is-small is-info"
-              onClick={(e) => {
-                handleEdit(e, item._id);
-              }}
-            >
-              <span className="icon">
-                <i className="fas fa-pen"></i>
-              </span>
-            </a>
-            <a
-              title="Eliminar"
-              className="button m-1 is-outlined is-small is-danger"
-              onClick={(e) => {
-                handleRemove(e, item._id);
-              }}
-            >
-              <span className="icon">
-                <i className="fas fa-minus-circle"></i>
-              </span>
-            </a>
-          </td>
+          <Botonera />
         </tr>
       </>
     );
@@ -120,35 +126,24 @@ const ProductoItem = ({
           <td>{item.tamañoPantalla + '"'}</td>
           {/* <td>{item.conexiones.map((e) => `${e} `)}</td> */}
           <td>{descripcion}</td>
-          <td>
-            <a
-              title="Editar"
-              className="button m-1 is-outlined is-small is-info"
-              onClick={(e) => {
-                handleEdit(e, item._id);
-              }}
-            >
-              <span className="icon">
-                <i className="fas fa-pen"></i>
-              </span>
-            </a>
-            <a
-              title="Eliminar"
-              className="button m-1 is-outlined is-small is-danger"
-              onClick={(e) => {
-                handleRemove(e, item._id);
-              }}
-            >
-              <span className="icon">
-                <i className="fas fa-minus-circle"></i>
-              </span>
-            </a>
-          </td>
+          <Botonera />
         </tr>
       </>
     );
   }
-  // console.log(productType)
+  if (productType.includes("generic")) {
+    // console.log(item.body);
+    return (
+      <tr>
+        <td>{item.PartNumber}</td>
+        {Object.getOwnPropertyNames(item.body).map((e, index) => (
+          <td key={index}>{item.body[e]}</td>
+        ))}
+        <Botonera />
+      </tr>
+    );
+  }
+
   return (
     <>
       <tr>

@@ -6,6 +6,7 @@ import TamañoPantalla from "./TamañoPantalla";
 const ComputersForm = ({
   handleCreationForm,
   isAnUpdate,
+  isAnEye,
   productUpdate,
   handleUpdate,
 }) => {
@@ -44,7 +45,15 @@ const ComputersForm = ({
   };
 
   const [arrayRam, setArrayRam] = useState(
-    isAnUpdate ? productUpdate.socketsMemoria : [objRam, objRam]
+    isAnUpdate ? productUpdate.socketsMemoria : [{
+      capacidadGB: "",
+      isInstalled: true,
+      memPartnumber: "",
+    }, {
+      capacidadGB: "",
+      isInstalled: "",
+      memPartnumber: "",
+    }]
   );
 
   const liftProduct = (e) => {
@@ -129,7 +138,7 @@ const ComputersForm = ({
   };
 
   return (
-    <>
+    <fieldset disabled={isAnEye ? true : false}>
       <form
         className="form"
         onSubmit={(e) => {
@@ -293,6 +302,8 @@ const ComputersForm = ({
               </div>
             </div>
           </div>
+        </div>
+        <div className="field is-horizontal">
           <div className="field mr-1">
             <label className="label">Velocidad</label>
             <div className="field has-addons">
@@ -410,13 +421,13 @@ const ComputersForm = ({
             </button>
           </div>
           <div className="control">
-            <button type="reset" className="button is-link is-light">
+            <button disabled={false} type="reset" className="button is-link is-light">
               Cancelar
             </button>
           </div>
         </div>
       </form>
-    </>
+    </fieldset>
   );
 };
 

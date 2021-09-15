@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LoadingBar from "../LoadingBar";
 import ComputersForm from "./ComputersForm";
+import GenericProductForm from "./GenericProductForm";
 import MonitorForm from "./MonitorForm";
 import PrinterForm from "./PrinterForm";
 import ProductTypeForm from "./ProductTypeForm";
@@ -10,15 +11,34 @@ const CreateProductForm = ({
   productOption,
   handleCreationForm,
   isAnUpdate,
+  isAnEye,
   productUpdate,
   handleUpdate,
+  options,
+  loadOptions
 }) => {
+  // useEffect(() => {
+  //   loadOptions()
+  //   return () => {
+
+  //   };
+  // }, []);
+  useEffect(() => {
+    console.log(productUpdate)
+    return () => {
+
+    };
+  }, [productUpdate]);
+
+
+
   if (productOption == "computadores") {
     return (
       <>
         <ComputersForm
           handleCreationForm={handleCreationForm}
           isAnUpdate={isAnUpdate}
+          isAnEye={isAnEye}
           productUpdate={productUpdate}
           handleUpdate={handleUpdate}
         />
@@ -31,6 +51,7 @@ const CreateProductForm = ({
         <PrinterForm
           handleCreationForm={handleCreationForm}
           isAnUpdate={isAnUpdate}
+          isAnEye={isAnEye}
           productUpdate={productUpdate}
           handleUpdate={handleUpdate}
         />
@@ -43,6 +64,7 @@ const CreateProductForm = ({
         <MonitorForm
           handleCreationForm={handleCreationForm}
           isAnUpdate={isAnUpdate}
+          isAnEye={isAnEye}
           productUpdate={productUpdate}
           handleUpdate={handleUpdate}
         />
@@ -55,25 +77,39 @@ const CreateProductForm = ({
         <ProyectorForm
           handleCreationForm={handleCreationForm}
           isAnUpdate={isAnUpdate}
+          isAnEye={isAnEye}
           productUpdate={productUpdate}
           handleUpdate={handleUpdate}
         />
       </>
     );
   }
-  if (productOption == "productType") {
+
+  if (productOption == "option") {
     return (
       <>
         <ProductTypeForm
           handleCreationForm={handleCreationForm}
           isAnUpdate={isAnUpdate}
+          isAnEye={isAnEye}
           productUpdate={productUpdate}
           handleUpdate={handleUpdate}
         />
       </>
     );
   }
-  return <LoadingBar />;
+  if (productOption != "") {
+    console.log(options, 'options cpf')
+    let productElement = options.filter((e) => (e.option == productOption))
+
+    return <GenericProductForm options={productElement[0]} handleCreationForm={handleCreationForm}
+      isAnUpdate={isAnUpdate}
+      isAnEye={isAnEye}
+      productUpdate={productUpdate}
+      handleUpdate={handleUpdate} />
+  }
+
+  return <LoadingBar />
 };
 
 export default CreateProductForm;

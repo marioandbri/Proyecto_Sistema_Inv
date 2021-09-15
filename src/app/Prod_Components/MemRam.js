@@ -70,7 +70,7 @@ const MemRam = ({
             <div className="field has-addons">
               <div className="control">
                 <input
-                  value={elem.capacidadGB}
+                  value={elem.capacidadGB || ""}
                   name="capacidadGB"
                   onChange={(e) => {
                     liftProductRam(index, e);
@@ -78,6 +78,7 @@ const MemRam = ({
                   className="input"
                   type="number"
                   placeholder="Capacidad"
+                  required={index == 0 ? true : false}
                 />
               </div>
               <div className="control">
@@ -88,7 +89,7 @@ const MemRam = ({
           <div className="field ml-1">
             <div className="control">
               <input
-                value={elem.memPartnumber}
+                value={elem.memPartnumber || ""}
                 name="memPartnumber"
                 onChange={(e) => {
                   liftProductRam(index, e);
@@ -96,6 +97,7 @@ const MemRam = ({
                 className="input"
                 type="text"
                 placeholder="Numero de Parte M.Ram"
+                required={index == 0 ? true : false}
               />
             </div>
           </div>
@@ -108,6 +110,7 @@ const MemRam = ({
                   liftProductRam(index, e);
                 }}
                 type="checkbox"
+                required={index == 0 ? true : false}
               />
             </div>
           </div>

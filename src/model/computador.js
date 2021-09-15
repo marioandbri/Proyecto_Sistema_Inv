@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 
+
 export const ComputadorSchema = new Schema({
    tipoComputador: {
       type: String
@@ -74,9 +75,17 @@ export const ComputadorSchema = new Schema({
    },
    tags: {
       type: [String]
-   }
+   },
+   // description: {
+   //    type: String,
+   //    get: () => `${this.marca} ${this.modelo} ${this.procesador.marca} ${this.procesador.tier}-${this.procesador.modelo} hasta ${this.procesador.turboFreq}Ghz, ${this.tipoRam} desde ${this.socketsMemoria[0].capacidadGB}GB, ${this.almacenamiento.map(e => e.tipoAlmacenamiento + ' ' + e.capacidadGB)}GB`
+   // }
+
 })
 
+// ComputadorSchema.statics.descriptionOf = function () {
+//    return `${this.marca} ${this.modelo} ${this.procesador.marca} ${this.procesador.tier}-${this.procesador.modelo} hasta ${this.procesador.turboFreq}Ghz, ${this.tipoRam} desde ${this.socketsMemoria[0].capacidadGB}GB, ${this.almacenamiento.map(e => e.tipoAlmacenamiento + ' ' + e.capacidadGB)}GB`
+// }
 ComputadorSchema.methods.descriptionOf = function () {
    return `${this.marca} ${this.modelo} ${this.procesador.marca} ${this.procesador.tier}-${this.procesador.modelo} hasta ${this.procesador.turboFreq}Ghz, ${this.tipoRam} desde ${this.socketsMemoria[0].capacidadGB}GB, ${this.almacenamiento.map(e => e.tipoAlmacenamiento + ' ' + e.capacidadGB)}GB`
 }

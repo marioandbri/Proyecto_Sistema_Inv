@@ -96,3 +96,14 @@ tr:hover .button {
 /* .box {
   min-height: 100vh;
 } */
+
+.buttons {
+  flex-wrap: nowrap;
+}
+span.icon.is-clickable {
+  color: blue;
+  display: inline;
+}
+.modal-content {
+  width: 85%;
+}

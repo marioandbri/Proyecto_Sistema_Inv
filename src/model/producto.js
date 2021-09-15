@@ -5,12 +5,14 @@ import { Schema, model } from 'mongoose';
 // import { ComputadorSchema } from "./computador";
 // import { ImpresoraSchema } from "./impresora";
 
-const EquipoSchema = new Schema({ }, { discriminatorKey: 'tipoProducto' })
-const Equipo = model('Equipo', EquipoSchema)
+// const EquipoSchema = new Schema({ }, { discriminatorKey: 'tipoProducto' })
+// const Equipo = model('Equipo', EquipoSchema)
 
 export const ProductoSchema = new Schema({
    option: {
-      type: String
+      type: String,
+      unique: true,
+      required: true
    },
    form: {
       type: [{

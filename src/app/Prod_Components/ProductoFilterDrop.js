@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const ProductoFilterDrop = ({ handleDropdownChange }) => {
+const ProductoFilterDrop = ({ handleDropdownChange, loadOptions, options }) => {
   const [isActive, setIsActive] = useState(false);
   const toggleActive = (e) => {
     setIsActive(!isActive);
@@ -14,6 +14,21 @@ const ProductoFilterDrop = ({ handleDropdownChange }) => {
     }
     return () => { };
   }, [isActive]);
+
+  // const [options, setOptions] = useState([]);
+  // const loadOptions = async () => {
+  //   let result = await fetch('/producto/option').then(res => res.json())
+  //   console.log(result)
+  //   setOptions(result)
+
+  // }
+  useEffect(() => {
+    loadOptions()
+    return () => {
+      options = ""
+
+    };
+  }, []);
 
   return (
     <>
@@ -83,10 +98,19 @@ const ProductoFilterDrop = ({ handleDropdownChange }) => {
             >
               Escáneres
             </a>
-            {/* <hr className="dropdown-divider"/>
-                  <a href="#" className="dropdown-item">
-                     With a divider
-                  </a> */}
+            <hr className="dropdown-divider" />
+
+            {options.map((elem, index) => (
+              <a key={index}
+                onClick={(e) => {
+                  handleDropdownChange(e);
+                }}
+                id={`generic/${elem.option}`}
+                className="dropdown-item"
+              >{elem.option}</a>
+
+
+            ))}
           </div>
         </div>
       </div>
