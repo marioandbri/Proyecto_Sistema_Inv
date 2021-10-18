@@ -31,13 +31,14 @@ const ProductModal = ({
             options={options}
             loading={loading}
           />
+          <button
+            style={{ position: "absolute", top: "1%", right: "0.5%" }}
+            onClick={() => {
+              closeModal();
+            }}
+            className="button delete is-danger"
+          ></button>
         </div>
-        <button
-          onClick={() => {
-            closeModal();
-          }}
-          className="modal-close is-danger"
-        ></button>
       </div>
     </>
   );

@@ -5,6 +5,7 @@ const MonitorForm = ({
   isAnUpdate,
   productUpdate,
   handleUpdate,
+  isAnEye
 }) => {
   const initialState = {
     tipoMonitor: "",

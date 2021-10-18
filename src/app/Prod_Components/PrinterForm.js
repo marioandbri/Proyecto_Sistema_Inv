@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import LoadingBar from "../LoadingBar";
 import Consumibles from "./Consumibles";
 
-const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpdate }) => {
+const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpdate, isAnEye }) => {
   const initialState = {
     partNumber: "",
     marca: "",
@@ -10,7 +10,7 @@ const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpda
     tipoImpresora: "",
     modoImpresion: "",
     conexiones: [""],
-    detImpresora: { }
+    detImpresora: {}
   };
 
   const [product, setProduct] = useState(isAnUpdate ? productUpdate : initialState);

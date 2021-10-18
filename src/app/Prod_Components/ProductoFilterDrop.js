@@ -12,7 +12,7 @@ const ProductoFilterDrop = ({ handleDropdownChange, loadOptions, options }) => {
     } else {
       document.getElementById("dropdown").classList.remove("is-active");
     }
-    return () => { };
+    return () => {};
   }, [isActive]);
 
   // const [options, setOptions] = useState([]);
@@ -23,10 +23,9 @@ const ProductoFilterDrop = ({ handleDropdownChange, loadOptions, options }) => {
 
   // }
   useEffect(() => {
-    loadOptions()
+    loadOptions();
     return () => {
-      options = ""
-
+      options = "";
     };
   }, []);
 
@@ -53,7 +52,7 @@ const ProductoFilterDrop = ({ handleDropdownChange, loadOptions, options }) => {
         </div>
         <div className="dropdown-menu" id="dropdown-menu" role="menu">
           <div className="dropdown-content">
-            <a
+            {/* <a
               onClick={(e) => {
                 handleDropdownChange(e);
               }}
@@ -98,18 +97,19 @@ const ProductoFilterDrop = ({ handleDropdownChange, loadOptions, options }) => {
             >
               Escáneres
             </a>
-            <hr className="dropdown-divider" />
+            <hr className="dropdown-divider" /> */}
 
             {options.map((elem, index) => (
-              <a key={index}
+              <a
+                key={index}
                 onClick={(e) => {
                   handleDropdownChange(e);
                 }}
-                id={`generic/${elem.option}`}
+                id={elem.option}
                 className="dropdown-item"
-              >{elem.option}</a>
-
-
+              >
+                {elem.option}
+              </a>
             ))}
           </div>
         </div>

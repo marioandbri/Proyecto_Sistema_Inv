@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createProducto, deleteProducto, getProductoById, getProductoByQuery, updateProducto } from '../controllers/computador.controller';
+import { createProducto, deleteProducto, getProductoById, getProductoByPartNumber, getProductoByQuery, updateProducto } from '../controllers/computador.controller';
 const router = Router();
 // const fs = require('fs');
 // const path = require('path');
@@ -10,6 +10,8 @@ router.post('/producto/computadores', createProducto);
 //Read
 //By id
 router.get('/producto/computadores/:id', getProductoById);
+//By PartNumber
+router.get('/producto/computadores/partnumber/:partnumber', getProductoByPartNumber);
 // By Query
 router.get('/producto/computadores', getProductoByQuery);
 

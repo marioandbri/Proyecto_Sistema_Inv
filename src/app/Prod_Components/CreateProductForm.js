@@ -15,7 +15,7 @@ const CreateProductForm = ({
   productUpdate,
   handleUpdate,
   options,
-  loadOptions
+  resetForm,
 }) => {
   // useEffect(() => {
   //   loadOptions()
@@ -23,69 +23,61 @@ const CreateProductForm = ({
 
   //   };
   // }, []);
-  useEffect(() => {
-    console.log(productUpdate)
-    return () => {
 
-    };
-  }, [productUpdate]);
+  // if (productOption == "computadores") {
+  //   return (
+  //     <>
+  //       <ComputersForm
+  //         handleCreationForm={handleCreationForm}
+  //         isAnUpdate={isAnUpdate}
+  //         isAnEye={isAnEye}
+  //         productUpdate={productUpdate}
+  //         handleUpdate={handleUpdate}
+  //       />
+  //     </>
+  //   );
+  // }
+  // if (productOption == "impresoras") {
+  //   return (
+  //     <>
+  //       <PrinterForm
+  //         handleCreationForm={handleCreationForm}
+  //         isAnUpdate={isAnUpdate}
+  //         isAnEye={isAnEye}
+  //         productUpdate={productUpdate}
+  //         handleUpdate={handleUpdate}
+  //       />
+  //     </>
+  //   );
+  // }
+  // if (productOption == "monitores") {
+  //   return (
+  //     <>
+  //       <MonitorForm
+  //         handleCreationForm={handleCreationForm}
+  //         isAnUpdate={isAnUpdate}
+  //         isAnEye={isAnEye}
+  //         productUpdate={productUpdate}
+  //         handleUpdate={handleUpdate}
+  //       />
+  //     </>
+  //   );
+  // }
+  // if (productOption == "proyectores") {
+  //   return (
+  //     <>
+  //       <ProyectorForm
+  //         handleCreationForm={handleCreationForm}
+  //         isAnUpdate={isAnUpdate}
+  //         isAnEye={isAnEye}
+  //         productUpdate={productUpdate}
+  //         handleUpdate={handleUpdate}
+  //       />
+  //     </>
+  //   );
+  // }
 
-
-
-  if (productOption == "computadores") {
-    return (
-      <>
-        <ComputersForm
-          handleCreationForm={handleCreationForm}
-          isAnUpdate={isAnUpdate}
-          isAnEye={isAnEye}
-          productUpdate={productUpdate}
-          handleUpdate={handleUpdate}
-        />
-      </>
-    );
-  }
-  if (productOption == "impresoras") {
-    return (
-      <>
-        <PrinterForm
-          handleCreationForm={handleCreationForm}
-          isAnUpdate={isAnUpdate}
-          isAnEye={isAnEye}
-          productUpdate={productUpdate}
-          handleUpdate={handleUpdate}
-        />
-      </>
-    );
-  }
-  if (productOption == "monitores") {
-    return (
-      <>
-        <MonitorForm
-          handleCreationForm={handleCreationForm}
-          isAnUpdate={isAnUpdate}
-          isAnEye={isAnEye}
-          productUpdate={productUpdate}
-          handleUpdate={handleUpdate}
-        />
-      </>
-    );
-  }
-  if (productOption == "proyectores") {
-    return (
-      <>
-        <ProyectorForm
-          handleCreationForm={handleCreationForm}
-          isAnUpdate={isAnUpdate}
-          isAnEye={isAnEye}
-          productUpdate={productUpdate}
-          handleUpdate={handleUpdate}
-        />
-      </>
-    );
-  }
-
-  if (productOption == "option") {
+  if (productOption == "types") {
     return (
       <>
         <ProductTypeForm
@@ -99,17 +91,23 @@ const CreateProductForm = ({
     );
   }
   if (productOption != "") {
-    console.log(options, 'options cpf')
-    let productElement = options.filter((e) => (e.option == productOption))
+    console.log(options, "options cpf");
+    let productElement = options.filter((e) => e.option == productOption);
 
-    return <GenericProductForm options={productElement[0]} handleCreationForm={handleCreationForm}
-      isAnUpdate={isAnUpdate}
-      isAnEye={isAnEye}
-      productUpdate={productUpdate}
-      handleUpdate={handleUpdate} />
+    return (
+      <GenericProductForm
+        options={productElement[0]}
+        handleCreationForm={handleCreationForm}
+        isAnUpdate={isAnUpdate}
+        isAnEye={isAnEye}
+        productUpdate={productUpdate}
+        handleUpdate={handleUpdate}
+        resetForm={resetForm}
+      />
+    );
   }
 
-  return <LoadingBar />
+  return <LoadingBar />;
 };
 
 export default CreateProductForm;

@@ -59,86 +59,87 @@ const ProductoItem = ({
     );
   };
 
-  //   console.log(descripcion);
-  if (productType == "computadores") {
-    return (
-      <>
-        <tr>
-          <td>{item.tipoComputador} </td>
-          <td>{item.partNumber} </td>
-          <td>{item.marca} </td>
-          <td>{item.modelo} </td>
-          <td>
-            {item.procesador.tier +
-              "-" +
-              item.procesador.modelo +
-              " " +
-              item.procesador.minFreq +
-              "-" +
-              item.procesador.turboFreq}
-            {"GHz"}
-          </td>
-          <td>
-            {item.almacenamiento.map(
-              (e, index) =>
-                `${index + 1}* ${e.tipoAlmacenamiento} ${e.capacidadGB}GB`
-            )}{" "}
-          </td>
-          <td>
-            {item.tipoRam +
-              "-" +
-              item.socketsMemoria
-                .map((e) =>
-                  e.isInstalled != false ? e.capacidadGB + "GB" : ""
-                )
-                .join(" ")}
-          </td>
-          <td>{descripcion}</td>
-          <Botonera />
-        </tr>
-      </>
-    );
-  }
-  if (productType == "impresoras") {
-    return (
-      <>
-        <tr>
-          <td>{item.tipoImpresora.map((e) => `${e} `)}</td>
-          <td>{item.partNumber}</td>
-          <td>{item.marca}</td>
-          <td>{item.modelo}</td>
-          <td>{item.modoImpresion}</td>
-          <td>{item.conexiones.map((e) => `${e} `)}</td>
-          <td>{descripcion}</td>
-          <Botonera />
-        </tr>
-      </>
-    );
-  }
-  if (productType == "monitores") {
-    return (
-      <>
-        <tr>
-          <td>{item.tipoMonitor.map((e) => `${e} `)}</td>
-          <td>{item.partNumber}</td>
-          <td>{item.marca}</td>
-          <td>{item.modelo}</td>
-          <td>{item.tamañoPantalla + '"'}</td>
-          {/* <td>{item.conexiones.map((e) => `${e} `)}</td> */}
-          <td>{descripcion}</td>
-          <Botonera />
-        </tr>
-      </>
-    );
-  }
-  if (productType.includes("generic")) {
-    // console.log(item.body);
+  // //   console.log(descripcion);
+  // if (productType == "computadores") {
+  //   return (
+  //     <>
+  //       <tr>
+  //         <td>{item.tipoComputador} </td>
+  //         <td>{item.partNumber} </td>
+  //         <td>{item.marca} </td>
+  //         <td>{item.modelo} </td>
+  //         <td>
+  //           {item.procesador.tier +
+  //             "-" +
+  //             item.procesador.modelo +
+  //             " " +
+  //             item.procesador.minFreq +
+  //             "-" +
+  //             item.procesador.turboFreq}
+  //           {"GHz"}
+  //         </td>
+  //         <td>
+  //           {item.almacenamiento.map(
+  //             (e, index) =>
+  //               `${index + 1}* ${e.tipoAlmacenamiento} ${e.capacidadGB}GB`
+  //           )}{" "}
+  //         </td>
+  //         <td>
+  //           {item.tipoRam +
+  //             "-" +
+  //             item.socketsMemoria
+  //               .map((e) =>
+  //                 e.isInstalled != false ? e.capacidadGB + "GB" : ""
+  //               )
+  //               .join(" ")}
+  //         </td>
+  //         <td>{descripcion}</td>
+  //         <Botonera />
+  //       </tr>
+  //     </>
+  //   );
+  // }
+  // if (productType == "impresoras") {
+  //   return (
+  //     <>
+  //       <tr>
+  //         <td>{item.tipoImpresora.map((e) => `${e} `)}</td>
+  //         <td>{item.partNumber}</td>
+  //         <td>{item.marca}</td>
+  //         <td>{item.modelo}</td>
+  //         <td>{item.modoImpresion}</td>
+  //         <td>{item.conexiones.map((e) => `${e} `)}</td>
+  //         <td>{descripcion}</td>
+  //         <Botonera />
+  //       </tr>
+  //     </>
+  //   );
+  // }
+  // if (productType == "monitores") {
+  //   return (
+  //     <>
+  //       <tr>
+  //         <td>{item.tipoMonitor.map((e) => `${e} `)}</td>
+  //         <td>{item.partNumber}</td>
+  //         <td>{item.marca}</td>
+  //         <td>{item.modelo}</td>
+  //         <td>{item.tamañoPantalla + '"'}</td>
+  //         {/* <td>{item.conexiones.map((e) => `${e} `)}</td> */}
+  //         <td>{descripcion}</td>
+  //         <Botonera />
+  //       </tr>
+  //     </>
+  //   );
+  // }
+  if (productType != "") {
+    // console.log(item.detalle);
     return (
       <tr>
-        <td>{item.PartNumber}</td>
-        {Object.getOwnPropertyNames(item.body).map((e, index) => (
-          <td key={index}>{item.body[e]}</td>
+        <td>{item.partnumber}</td>
+        {Object.getOwnPropertyNames(item.detalle).map((e, index) => (
+          <td key={index}>{item.detalle[e]}</td>
         ))}
+        <td>{item.description}</td>
         <Botonera />
       </tr>
     );

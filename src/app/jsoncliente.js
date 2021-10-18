@@ -26,7 +26,7 @@ class JsonCliente extends Component {
          rut: "",
          ubicacion: "",
          telefonocontacto: "",
-         personacontacto:"",
+         personacontacto: "",
          createdat: "",
          crearcliente: <PlusCliente key={"agregar"} cC={this.crearCliente} />,
          input: '',
@@ -44,18 +44,19 @@ class JsonCliente extends Component {
    }
 
    //Pagination
-   paginate = (number, e) => {
+   paginate = (number) => {
       // const prevState = this.state.currentPage
-      this.setState({
-         currentPage: number
-      }, () => { this.updateCurrentPage()})
-      document.getElementById(`${this.state.currentPage}`).classList.remove('is-current')
-      
+      this.setState({ currentPage: number })
+      // this.setState({
+      //    currentPage: number
+      // }, () => { this.updateCurrentPage() })
+      // document.getElementById(`${this.state.currentPage}`).classList.remove('is-current')
+
    }
-   updateCurrentPage = () =>{
-      // console.log(this.state.currentPage)
-      document.getElementById(`${this.state.currentPage}`).classList.add('is-current')
-   }
+   // updateCurrentPage = () => {
+   //    // console.log(this.state.currentPage)
+   //    document.getElementById(`${this.state.currentPage}`).classList.add('is-current')
+   // }
 
    componentDidMount() {
       this.fetchClientes()
@@ -80,14 +81,14 @@ class JsonCliente extends Component {
          input2: '',
          input3: '',
          input4: '',
-         input5:''
+         input5: ''
       })
       const sortedData = [...results]
-      sortedData.sort((a,b) =>{
-         if(a['razonsocial']>b['razonsocial']){
+      sortedData.sort((a, b) => {
+         if (a['razonsocial'] > b['razonsocial']) {
             return 1
          }
-         if(a['razonsocial'] < b['razonsocial']){
+         if (a['razonsocial'] < b['razonsocial']) {
             return -1
          }
          return 0
@@ -95,8 +96,8 @@ class JsonCliente extends Component {
       this.setState({ data: sortedData })
       this.setState({ loading: false })
       console.log('Se Ejecuto Fetch cliente')
-      this.setState({ actualData: this.state.data})
-      
+      this.setState({ actualData: this.state.data })
+
    }
    postClientes = async (data) => {
       const results = await fetch('/cliente', {
@@ -122,7 +123,7 @@ class JsonCliente extends Component {
 
    }
    createQuery = async () => {
-      const { razonsocial, rut, ubicacion, telefonocontacto, createdat } = this.state
+      const { razonsocial, rut, ubicacion, telefonocontacto, personacontacto, createdat } = this.state
       console.log(createdat)
       let fullquery = "";
       if (razonsocial != "" && razonsocial.length > 2) {
@@ -144,12 +145,12 @@ class JsonCliente extends Component {
       if (fullquery == "") {
          const results = await fetch('/cliente').then(res => res.json());
          // const datos = results.map((cliente) => {return <Cliente key={cliente.rut} {...cliente}/>})
-         this.setState({ data: results }, ()=>{this.setState({actualData : this.state.data})})
+         this.setState({ data: results }, () => { this.setState({ actualData: this.state.data }) })
          console.log(true)
       } else {
          const results = await fetch(`/cliente?${fullquery}`).then(res => res.json());
          // const datos = results.map((cliente) => {return <Cliente key={cliente.rut} {...cliente}/>})
-         this.setState({ data: results }, ()=>{this.setState({actualData : this.state.data})})
+         this.setState({ data: results }, () => { this.setState({ actualData: this.state.data }) })
          console.log(false)
       }
 
@@ -175,7 +176,7 @@ class JsonCliente extends Component {
                crearcliente: <PlusCliente cC={this.crearCliente} />
             })
          })
-         this.setState({ input: '', input2: '', input3: '', input4: '' , input5: ''})
+         this.setState({ input: '', input2: '', input3: '', input4: '', input5: '' })
 
       } else {
          // console.log('input validation false')
@@ -186,7 +187,7 @@ class JsonCliente extends Component {
 
    }
    crearCliente() {
-      this.setState({ input: '', input2: '', input3: '', input4: '' , input5:''})
+      this.setState({ input: '', input2: '', input3: '', input4: '', input5: '' })
       this.setState({
          crearcliente: <FormCliente props={this.state} crearCliente={this.crearcliente} handleClick={this.handleClick} cancelarAccion={this.cancelarAccion}
             updateInputValue={this.updateInputValue} updateInputValue2={this.updateInputValue2} updateInputValue3={this.updateInputValue3}
@@ -224,7 +225,7 @@ class JsonCliente extends Component {
          })
       })
       this.setState({ input: '', input2: '', input3: '', input4: '', input5: '' })
-      
+
    }
    async handleEdit(rut) {
       const results = await fetch(`/cliente/${rut}`).then(res => res.json()).then(data => {
@@ -276,7 +277,7 @@ class JsonCliente extends Component {
          input2: '',
          input3: '',
          input4: '',
-         input5:''
+         input5: ''
       })
       this.setState({
          crearcliente: <PlusCliente cC={this.crearCliente} />,
@@ -301,17 +302,17 @@ class JsonCliente extends Component {
       this.setState({
          clientesPerPage: e.target.value
       })
-   } 
+   }
 
-   sortingClientes = (id) =>{
+   sortingClientes = (id) => {
       let icon = document.getElementById(id).children[0].children[0].children[0]
       let sortedData = [...this.state.data]
-      if(icon.classList.contains('fa-chevron-down')){
-         sortedData.sort((a,b)=>{
-            if(a[id] > b[id]){
+      if (icon.classList.contains('fa-chevron-down')) {
+         sortedData.sort((a, b) => {
+            if (a[id] > b[id]) {
                return -1;
             }
-            if(a[id] < b[id]){
+            if (a[id] < b[id]) {
                return 1;
             }
             return 0
@@ -321,27 +322,27 @@ class JsonCliente extends Component {
          })
          icon.classList.remove('fa-chevron-down')
          icon.classList.add('fa-chevron-up')
-      }else
-      if(icon.classList.contains('fa-chevron-up')){
-         this.setState({ actualData : this.state.data})
-         icon.classList.remove('fa-chevron-up')
-         
-      }
-      else{
-         icon.classList.add('fa-chevron-down')
-         sortedData.sort((a,b)=>{
-            if(a[id] < b[id]){
-               return -1;
-            }
-            if(a[id]>b[id]){
-               return 1;
-            }
-            return 0
-         })
-         this.setState({
-            actualData: sortedData
-         })
-      }
+      } else
+         if (icon.classList.contains('fa-chevron-up')) {
+            this.setState({ actualData: this.state.data })
+            icon.classList.remove('fa-chevron-up')
+
+         }
+         else {
+            icon.classList.add('fa-chevron-down')
+            sortedData.sort((a, b) => {
+               if (a[id] < b[id]) {
+                  return -1;
+               }
+               if (a[id] > b[id]) {
+                  return 1;
+               }
+               return 0
+            })
+            this.setState({
+               actualData: sortedData
+            })
+         }
 
 
    }
@@ -415,11 +416,11 @@ class JsonCliente extends Component {
                   </div>
                   <label htmlFor="itemsPerPage" className="label mb-0">Elementos por página</label>
                   <div className="select is-small mb-2">
-                  <select id="itemsPerPage" value={this.state.clientesPerPage} onChange={this.changeClientesPerPage}>
-                     <option value="10">10</option>
-                     <option defaultValue value="20">20</option>
-                     <option value="50">50</option>
-                  </select>
+                     <select id="itemsPerPage" value={this.state.clientesPerPage} onChange={this.changeClientesPerPage}>
+                        <option value="10">10</option>
+                        <option defaultValue value="20">20</option>
+                        <option value="50">50</option>
+                     </select>
                   </div>
                   <Pagination itemsPerPage={this.state.clientesPerPage} totalItems={this.state.data.length} paginate={this.paginate} currentPage={this.state.currentPage} />
                </div>

@@ -13,9 +13,8 @@ const ProductoForm = ({
   options,
   loadOptions,
   loading,
+  resetForm,
 }) => {
-
-
   // const [options, setOptions] = useState([]);
   // const loadOptions = async () => {
   //   let result = await fetch('/producto/option').then(res => res.json())
@@ -30,9 +29,7 @@ const ProductoForm = ({
   //   };
   // }, []);
 
-
-
-  const ProductOption = [{}]
+  const ProductOption = [{}];
   if (!loading) {
     // console.log(options, 'productoForm')
     // console.log(loadOptions)
@@ -53,17 +50,18 @@ const ProductoForm = ({
                   className="select"
                 >
                   <option value="">Seleccione el tipo</option>
-                  <option value="computadores">Computador</option>
+                  {/* <option value="computadores">Computador</option>
                   <option value="impresoras">Impresora</option>
                   <option value="monitores">Monitor</option>
                   <option value="proyectores">Proyector</option>
-                  <option disabled>──────────</option>
+                  <option disabled>──────────</option> */}
                   {options.map((elem, index) => (
-                    <option key={index} value={`${elem.option}`}>{elem.option}</option>
+                    <option key={index} value={`${elem.option}`}>
+                      {elem.option}
+                    </option>
                   ))}
                   <option disabled>──────────</option>
-                  <option value="option">Nuevo tipo de Producto</option>
-
+                  <option value="types">Nuevo tipo de Producto</option>
                 </select>
               </div>
             </div>
@@ -77,14 +75,13 @@ const ProductoForm = ({
             handleUpdate={handleUpdate}
             options={options}
             loadOptions={loadOptions}
+            resetForm={resetForm}
           />
         </div>
       </>
     );
   }
-  return (
-    <LoadingBar />
-  );
+  return <LoadingBar />;
 };
 
 export default ProductoForm;

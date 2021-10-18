@@ -6,6 +6,12 @@ export async function getProductoById(req, res) {
    console.log(result);
    res.json(result);
 };
+export async function getProductoByPartNumber(req, res) {
+   const result = await computadores.findOne({ partNumber: req.params.partnumber });
+   console.log(result);
+   res.json(result);
+};
+
 
 export async function getProductoByQuery(req, res) {
    const query = req.query

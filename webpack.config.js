@@ -3,31 +3,39 @@ const path = require('path')
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 module.exports = {
-   entry: './src/app/index.js',
-   output:{
-      path: __dirname + '/src/public',
-      filename: 'bundle.js'
+   entry: path.join(__dirname, '/src/app/index.js'),
+   output: {
+      path: path.join(__dirname, '/src/public'),
+      filename: 'bundle.js',
+      publicPath: '/'
+   },
+   devServer: {
+      historyApiFallback: true
    },
    module: {
       rules: [
          {
             test: /\.m?js$/,
             exclude: /node_modules/,
-            use:["babel-loader"]
+            use: ["babel-loader"]
          },
          {
             test: /\.css$/i,
             use: ['style-loader', 'css-loader'],
-          }
+         }
       ],
-     
+
    },
    plugins: [
       new NodePolyfillPlugin()
    ],
    resolve: {
       fallback: {
-        util: require.resolve("util/")
+         util: require.resolve("util/")
       }
-  }
+   },
+   optimization: {
+      moduleIds: 'deterministic'
+   },
+   watch: true
 }

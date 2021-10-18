@@ -7,11 +7,12 @@ import {
 } from "react-router-dom";
 import JsonCliente from "./jsoncliente";
 import ProductosUI from "./productosUI"
+import Inventory from "./Inventory"
 
 class Navbar extends Component {
    render() {
       return (
-         <Router>
+         <>
             <nav className="navbar is-info" role="navigation" aria-label="main navigation">
                <div className='container'>
                   <div className="navbar-brand">
@@ -29,21 +30,14 @@ class Navbar extends Component {
                         <Link className="navbar-item" to="/">Inicio</Link>
                         <Link className="navbar-item" to="/clientes">Gestion de Clientes</Link>
                         <Link className="navbar-item" to="/productos">Gestion de Productos</Link>
-                        <Link className="navbar-item" to="/ot">Ordenes de Trabajo</Link>
+                        <Link className="navbar-item" to="/inventarios">Gestion de Inventario</Link>
                      </div>
                   </div>
                </div>
             </nav>
 
-            <Switch>
-               <Route path="/clientes">
-                  <JsonCliente />
-               </Route>
-               <Route path="/productos">
-                  <ProductosUI />
-               </Route>
-            </Switch>
-         </Router>
+
+         </>
       );
    }
 }

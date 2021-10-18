@@ -5,7 +5,9 @@ const GenericProductForm = ({
   handleCreationForm,
   handleUpdate,
   isAnUpdate,
+  isAnEye,
   productUpdate,
+  resetForm,
 }) => {
   // console.log(options, 'options')
   const [form, setForm] = useState(options.form);
@@ -14,56 +16,57 @@ const GenericProductForm = ({
     setForm(options.form);
     setProduct({ ...product, tipoProducto: options.option });
 
-    return () => { };
+    return () => {};
   }, [options]);
 
-  let bodyObj = {}
+  let detalleObj = {};
 
   useEffect(() => {
     if (!isAnUpdate) {
-      setProduct({ ...product, body: bodyObj });
+      setProduct({ ...product, detalle: detalleObj });
     }
-    return () => { };
+    return () => {};
   }, [form]);
 
   let initialState = {
     tipoProducto: options.option,
-    PartNumber: "",
+    partnumber: "",
     generic: true,
-    body: bodyObj
+    detalle: detalleObj,
   };
 
-
-
-
-  form.forEach(e => { bodyObj[e.titulo] = "" });
+  form.forEach((e) => {
+    detalleObj[e.titulo] = "";
+  });
   // form.map((e) => ({ [e.titulo]: "" }))
-  // const body = isAnUpdate ? productUpdate.body : bodyObj;
-  // console.log(bodyObj, 'bodyObj')
-  // console.log(body);
-  const [product, setProduct] = useState(isAnUpdate ? productUpdate : initialState);
+  // const detalle = isAnUpdate ? productUpdate.detalle : detalleObj;
+  // console.log(detalleObj, 'detalleObj')
+  // console.log(detalle);
+  const [product, setProduct] = useState(
+    isAnUpdate ? productUpdate : initialState
+  );
   // console.log(form, 'form')
 
-  // const [productBody, setProductBody] = useState(isAnUpdate ? productUpdate.body : bodyObj);
-  // console.log(productBody, 'product body')
+  // const [productdetalle, setProductdetalle] = useState(isAnUpdate ? productUpdate.detalle : detalleObj);
+  // console.log(productdetalle, 'product detalle')
 
   const liftProductForm = (e, i) => {
-    let newBody = product.body
-    newBody[e.target.name] = e.target.value
-    setProduct({ ...product, body: newBody });
+    let newdetalle = product.detalle;
+    newdetalle[e.target.name] = e.target.value;
+    setProduct({ ...product, detalle: newdetalle });
   };
 
   // useEffect(() => {
   //   setProduct({
   //     ...product,
-  //     body: productBody,
+  //     detalle: productdetalle,
   //   });
   //   return () => { };
-  // }, [productBody]);
+  // }, [productdetalle]);
   // useEffect(() => {
   //   setProduct({
   //     ...product,
-  //     body: productUpdate.body,
+  //     detalle: productUpdate.detalle,
   //   });
   //   return () => {
 
@@ -71,20 +74,19 @@ const GenericProductForm = ({
   // }, [productUpdate]);
 
   // let headers = [];
-  // for (let i in body) {
-  //   headers.push(Object.keys(body[i]).toString());
+  // for (let i in detalle) {
+  //   headers.push(Object.keys(detalle[i]).toString());
   // }
   // console.log(headers);
 
   // console.log(initialState);
   return (
-    <fieldset>
+    <fieldset disabled={isAnEye ? true : false}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           // console.log(product);
           isAnUpdate ? handleUpdate(product) : handleCreationForm(product);
-
         }}
         className="form"
       >
@@ -92,13 +94,12 @@ const GenericProductForm = ({
           <div className="field">
             <label className="label">PartNumber</label>
             <span className="control">
-
               <input
-                value={product.PartNumber}
+                value={product.partnumber}
                 onChange={(e) => {
-                  setProduct({ ...product, PartNumber: e.target.value });
+                  setProduct({ ...product, partnumber: e.target.value });
                 }}
-                name="PartNumber"
+                name="partnumber"
                 type="text"
                 className="input"
               />
@@ -107,15 +108,15 @@ const GenericProductForm = ({
         </div>
         {/* {console.log(product.tipoProducto)} */}
         {form.map((e, index) => {
-
           return (
             <div key={index} className="field is-horizontal">
               <div className="field">
                 <label className="label">{e.titulo}</label>
                 <span className="control">
-
                   <input
-                    value={isAnUpdate ? product.body[e.titulo] : product[e.titulo]}
+                    value={
+                      isAnUpdate ? product.detalle[e.titulo] : product[e.titulo]
+                    }
                     onChange={(e) => {
                       liftProductForm(e, index);
                     }}
@@ -126,23 +127,33 @@ const GenericProductForm = ({
                 </span>
               </div>
             </div>
-          )
+          );
         })}
 
         {/* /////////////BOTONES///////////// */}
 
-        <div className="field is-grouped">
-          <div className="control">
-            <button type="submit" className="button is-link">
-              Crear
-            </button>
+        {isAnEye ? (
+          ""
+        ) : (
+          <div className="field is-grouped">
+            <div className="control">
+              <button type="submit" className="button is-link">
+                {isAnUpdate ? "Actualizar" : "Crear"}
+              </button>
+            </div>
+            <div className="control">
+              <button
+                onClick={() => {
+                  resetForm();
+                }}
+                type="reset"
+                className="button is-link is-light"
+              >
+                Cancelar
+              </button>
+            </div>
           </div>
-          <div className="control">
-            <button type="reset" className="button is-link is-light">
-              Cancelar
-            </button>
-          </div>
-        </div>
+        )}
       </form>
     </fieldset>
   );

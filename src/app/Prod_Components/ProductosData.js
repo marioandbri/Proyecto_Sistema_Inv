@@ -11,10 +11,10 @@ const ProductosData = ({
   handleEdit,
   handleEye,
   handleRemove,
-  sortingData
+  sortingData,
 }) => {
   // console.log(loading, productType);
-  if (loading || headers.includes('Not Found')) {
+  if (loading) {
     return <LoadingBar />;
   }
   const initialState = {
@@ -31,15 +31,15 @@ const ProductosData = ({
   };
   const cargarData = () => {
     setTableData(data);
-    setItems(data)
+    setItems(data);
   };
 
   useEffect(() => {
     cargarHeaders();
     cargarData();
-    console.log('data changed')
+    console.log("data changed");
 
-    return () => { };
+    return () => {};
   }, [headers, data]);
   useEffect(() => {
     setTableHeader(headers);
@@ -53,28 +53,47 @@ const ProductosData = ({
   const [items, setItems] = useState(data);
   // console.log(items, 'items')
   useEffect(() => {
-    console.log(data, items)
-    console.log('items changed')
-    return () => {
-
-    };
+    console.log(data, items);
+    console.log("items changed");
+    return () => {};
   }, [items]);
 
   return (
     <>
       <div className="box block">
         <div className="table-container">
-          <table className="table is-narrow is-hoverable">
+          <table className="table is-narrow is-hoverable is-fullwidth">
             <thead className="">
               <tr className="">
                 {/* {console.log(data)} */}
-                {tableHeader !== initialState.tableHeader ? (
-                  tableHeader.map((elem, index) => <th className="mr-4" key={index}><span className="is-clickable">
-                    {elem}<SortingButton setItems={setItems} productType={productType} fieldName={elem} sortingData={sortingData} field={!productType.includes('generic') ? tableData.map(e => e.item) : tableData} /></span></th>)
+                {tableHeader !== initialState.tableHeader &&
+                !tableHeader.includes("Not Found") ? (
+                  tableHeader.map((elem, index) => (
+                    <th className="mr-4" key={index}>
+                      <span className="is-clickable">
+                        {elem}
+                        <SortingButton
+                          setItems={setItems}
+                          productType={productType}
+                          fieldName={elem}
+                          sortingData={sortingData}
+                          field={
+                            !productType.includes("generic")
+                              ? tableData.map((e) => e.item)
+                              : tableData
+                          }
+                        />
+                      </span>
+                    </th>
+                  ))
                 ) : (
-                  <th>LOADING</th>
+                  <th>Sin Resultados</th>
                 )}
-                {!productType.includes('generic') ? <th >Descripcion</th> : <th></th>}
+                {!productType.includes("generic") ? (
+                  <th>Descripcion</th>
+                ) : (
+                  <th></th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -85,7 +104,7 @@ const ProductosData = ({
                   handleRemove={handleRemove}
                   handleEye={handleEye}
                   productType={productType}
-                  key={elem.PartNumber ? elem.PartNumber : elem.partNumber}
+                  key={elem.partnumber}
                   item={elem}
                   descripcion={elem.description ? elem.description : ""}
                 />

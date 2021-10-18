@@ -1,6 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
+   const page = useRef({})
+   // useEffect(() => {
+   //    console.log(currentPage, 'mount')
+   //    page.current[currentPage].classList.add('is-current')
+   //    return () => {
+   //       console.log(currentPage, 'unmount')
+   //       // page.current[currentPage].classList.remove('is-current')
+   //    };
+   // }, [currentPage]);
+
+
 
 
    const pageNumbers = [];
@@ -13,19 +24,19 @@ const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
    // const pageList = pageNumbers.splice(pageDivider, 3, '...')
    // console.log(pageList.slice())
    const pageDivider = currentPage >= 5 ? pageNumbers.slice(Math.abs(5 - currentPage), currentPage + 5) : pageNumbers.slice(currentPage - currentPage, 10 - pageNumbers.length)
-   // Math.abs(5 - currentPage), Math.abs(10 - pageNumbers.length)
+
    return (
       <nav className="pagination is-centered is-small is-size-6 has-text-weight-medium" role="navigation" aria-label="pagination">
-         <a onClick={() => paginate(currentPage == 1 ? currentPage : currentPage - 1)} className="pagination-previous">Previous</a>
-         <a onClick={() => paginate(currentPage == pageNumbers.length ? currentPage : currentPage + 1)} className="pagination-next">Next page</a>
+         <a onClick={() => paginate(currentPage == 1 ? currentPage : currentPage - 1)} className="pagination-previous"><span className="icon"><i className="fas fa-caret-left" /></span></a>
+         <a onClick={() => paginate(currentPage == pageNumbers.length ? currentPage : currentPage + 1)} className="pagination-next"><span className="icon"><i className="fas fa-caret-right" /></span></a>
          <ul className="pagination-list">
             <li>
-               <a onClick={(e) => { paginate(1, e) }} className="pagination-link">First Page</a>
+               <a onClick={(e) => { paginate(1, e) }} className="pagination-link">1</a>
             </li>
             <li><span className="pagination-ellipsis">&hellip;</span></li>
             {pageDivider.map((number) => (
                <li key={number}>
-                  <a id={number} onClick={(e) => { paginate(number, e); }} className={`pagination-link ${number == 1 && currentPage == 1 ? 'is-current' : ''}`} aria-label={`Go to page ${number}`}>{number}</a>
+                  <a id={number} onClick={(e) => { paginate(number, e); }} className={`pagination-link ${number == currentPage ? 'is-current' : ''}`} aria-label={`Go to page ${number}`}>{number}</a>
                </li>
             ))
 
@@ -33,7 +44,7 @@ const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
             <li><span className="pagination-ellipsis">&hellip;</span></li>
 
             <li>
-               <a onClick={(e) => { paginate(pageNumbers.length, e) }} className="pagination-link">Last Page:&nbsp;{pageNumbers.length}</a>
+               <a onClick={(e) => { paginate(pageNumbers.length, e) }} className="pagination-link">{pageNumbers.length}</a>
             </li>
          </ul>
       </nav>
