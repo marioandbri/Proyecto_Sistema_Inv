@@ -8,24 +8,24 @@ const SortingButton = ({
   fieldName,
 }) => {
   // console.log(field, "sorting data");
-  let fieldNameMap = {
-    "Tipo Computador": "tipoComputador",
-    "Numero de Parte": "partNumber",
-    Marca: "marca",
-    Modelo: "modelo",
-    "Tipo de Impresora": "tipoImpresora",
-    Pulgadas: "tamañoPantalla",
-    "Tipo Monitor": "tipoMonitor",
-  };
+  // let fieldNameMap = {
+  //   "Tipo Computador": "tipoComputador",
+  //   "Numero de Parte": "partNumber",
+  //   Marca: "marca",
+  //   Modelo: "modelo",
+  //   "Tipo de Impresora": "tipoImpresora",
+  //   Pulgadas: "tamañoPantalla",
+  //   "Tipo Monitor": "tipoMonitor",
+  // };
 
   // const [PartNumber] = field;
 
   const icon = useRef();
-  if (productType.includes("generic")) {
-    var property = fieldName == "PartNumber" ? fieldName : ">" + fieldName;
-  } else {
-    var property = fieldNameMap[fieldName];
-  }
+  // if (productType.includes("generic")) {
+  var property = fieldName == "PartNumber" ? fieldName : ">" + fieldName;
+  // } else {
+  //   var property = fieldNameMap[fieldName];
+  // }
   // console.log(icon.current);
   const handleClick = () => {
     if (icon.current.classList.contains("fa-sort")) {

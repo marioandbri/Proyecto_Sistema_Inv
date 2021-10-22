@@ -13,9 +13,20 @@ export async function getAllProducts(req, res) {
   res.json({
     result: result.map((item) => ({
       item,
-      description: item.descriptionOf(),
+      description: item.DescriptionL,
+      descriptionS: item.DescriptionS,
     })),
     headers: result[0] ? result[0].headersOf() : ["Not Found"],
+  });
+}
+export async function getProductPN(req, res) {
+  const result = await Productos.findOne({ partnumber: req.params.pn });
+  console.log(result);
+  res.json({
+    item: result,
+    description: result?.DescriptionL,
+    descriptionS: result?.DescriptionS,
+    headers: result?.headersOf() || ["Not Found"],
   });
 }
 
@@ -25,7 +36,11 @@ export async function getProductoByQuery(req, res) {
   // console.log(result[0].descriptionOf());
   // JSON.stringify(result) == '[]' ? res.json([]) :
   res.json({
-    result: result.map((item) => ({ item, description: item.descriptionOf() })),
+    result: result.map((item) => ({
+      item,
+      description: item.DescriptionL,
+      descriptionS: item.DescriptionS,
+    })),
     headers: result[0] ? result[0].headersOf() : ["Not Found"],
   });
   // res.json({
@@ -39,15 +54,15 @@ export async function createProducto(req, res) {
   const data_in = req.body;
   const data_ot = new Productos(data_in);
   await data_ot.save().then(
-    () => res.json("data recieved"),
+    () => res.json({ mensaje: "Producto creado exitosamente" }),
     (error) => {
-      res.json(error);
-      //   .status(400)
-      //   .json(
-      //     error.code == 11000
-      //       ? { mensaje: "PartNumber ya existe", reason: error.keyValue }
-      //       : "error no definido"
-      //   );
+      res
+        .status(400)
+        .json(
+          error.code == 11000
+            ? { mensaje: "PartNumber ya existe", reason: error.keyValue }
+            : error
+        );
     }
   );
   console.log(data_in);

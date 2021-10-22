@@ -31,8 +31,13 @@ const GenericProductForm = ({
   let initialState = {
     tipoProducto: options.option,
     partnumber: "",
+    familia: "",
+    marca: "",
+    modelo: "   ",
     generic: true,
     detalle: detalleObj,
+    shortDescription: "",
+    extraDescription: "",
   };
 
   form.forEach((e) => {
@@ -90,12 +95,13 @@ const GenericProductForm = ({
         }}
         className="form"
       >
-        <div className="field is-horizontal">
-          <div className="field">
+        <div className="field is-grouped is-grouped-multiline">
+          <div className="field m-1">
             <label className="label">PartNumber</label>
             <span className="control">
               <input
                 value={product.partnumber}
+                required
                 onChange={(e) => {
                   setProduct({ ...product, partnumber: e.target.value });
                 }}
@@ -105,12 +111,84 @@ const GenericProductForm = ({
               />
             </span>
           </div>
+          {/* </div>
+        <div className="field is-grouped is-grouped-multiline"> */}
+          <div className="field m-1">
+            <label className="label">Familia</label>
+            <span className="control">
+              <input
+                value={product.familia}
+                onChange={(e) => {
+                  setProduct({ ...product, familia: e.target.value });
+                }}
+                name="familia"
+                className="input"
+              />
+            </span>
+          </div>
+          <div className="field m-1">
+            <label className="label">Marca</label>
+            <span className="control">
+              <input
+                value={product.marca}
+                onChange={(e) => {
+                  setProduct({ ...product, marca: e.target.value });
+                }}
+                name="marca"
+                className="input"
+              />
+            </span>
+          </div>
+          <div className="field m-1">
+            <label className="label">Modelo</label>
+            <span className="control">
+              <input
+                value={product.modelo}
+                onChange={(e) => {
+                  setProduct({ ...product, modelo: e.target.value });
+                }}
+                name="modelo"
+                className="input"
+              />
+            </span>
+          </div>
+          {/* </div>
+        <div className="field is-grouped is-grouped-multiline"> */}
+          <div className="field m-1">
+            <label className="label">Descripcion Corta</label>
+            <span className="control">
+              <input
+                value={product.shortDescription}
+                onChange={(e) => {
+                  setProduct({ ...product, shortDescription: e.target.value });
+                }}
+                name="shortDescription"
+                type="text"
+                className="input"
+              />
+            </span>
+          </div>
+          {/* </div>
+        <div className="field is-grouped is-grouped-multiline"> */}
+          <div className="field m-1">
+            <label className="label">Descripcion Larga</label>
+            <span className="control">
+              <textarea
+                value={product.extraDescription}
+                onChange={(e) => {
+                  setProduct({ ...product, extraDescription: e.target.value });
+                }}
+                name="shortDescription"
+                className="textarea"
+              />
+            </span>
+          </div>
         </div>
         {/* {console.log(product.tipoProducto)} */}
-        {form.map((e, index) => {
-          return (
-            <div key={index} className="field is-horizontal">
-              <div className="field">
+        <div className="field is-grouped is-grouped-multiline">
+          {form.map((e, index) => {
+            return (
+              <div key={index} className="field m-1">
                 <label className="label">{e.titulo}</label>
                 <span className="control">
                   <input
@@ -126,16 +204,16 @@ const GenericProductForm = ({
                   />
                 </span>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         {/* /////////////BOTONES///////////// */}
 
         {isAnEye ? (
           ""
         ) : (
-          <div className="field is-grouped">
+          <div className="field m-1 is-grouped">
             <div className="control">
               <button type="submit" className="button is-link">
                 {isAnUpdate ? "Actualizar" : "Crear"}

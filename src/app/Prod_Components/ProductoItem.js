@@ -136,6 +136,9 @@ const ProductoItem = ({
     return (
       <tr>
         <td>{item.partnumber}</td>
+        <td>{item.familia}</td>
+        <td>{item.marca}</td>
+        <td>{item.modelo}</td>
         {Object.getOwnPropertyNames(item.detalle).map((e, index) => (
           <td key={index}>{item.detalle[e]}</td>
         ))}

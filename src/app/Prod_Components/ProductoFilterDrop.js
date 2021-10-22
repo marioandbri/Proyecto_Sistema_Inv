@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
 
-const ProductoFilterDrop = ({ handleDropdownChange, loadOptions, options }) => {
+const ProductoFilterDrop = ({
+  handleDropdownChange,
+  loadOptions,
+  options,
+  productType,
+}) => {
   const [isActive, setIsActive] = useState(false);
   const toggleActive = (e) => {
     setIsActive(!isActive);
   };
-  useEffect(() => {
-    console.log("useEffect ejecutado");
-    if (isActive) {
-      document.getElementById("dropdown").classList.add("is-active");
-    } else {
-      document.getElementById("dropdown").classList.remove("is-active");
-    }
-    return () => {};
-  }, [isActive]);
+  // useEffect(() => {
+  //   console.log("useEffect ejecutado");
+  //   if (isActive) {
+  //     document.getElementById("dropdown").classList.add("is-active");
+  //   } else {
+  //     document.getElementById("dropdown").classList.remove("is-active");
+  //   }
+  //   return () => {};
+  // }, [isActive]);
 
   // const [options, setOptions] = useState([]);
   // const loadOptions = async () => {
@@ -36,7 +41,12 @@ const ProductoFilterDrop = ({ handleDropdownChange, loadOptions, options }) => {
         onClick={(e) => {
           toggleActive(e);
         }}
-        className="block dropdown"
+        onBlur={() => {
+          setTimeout(() => {
+            setIsActive(false);
+          }, 150);
+        }}
+        className={`block dropdown ${isActive ? "is-active" : ""}`}
       >
         <div className="dropdown-trigger">
           <button
@@ -106,7 +116,9 @@ const ProductoFilterDrop = ({ handleDropdownChange, loadOptions, options }) => {
                   handleDropdownChange(e);
                 }}
                 id={elem.option}
-                className="dropdown-item"
+                className={`dropdown-item ${
+                  elem.option == productType ? "is-active" : ""
+                }`}
               >
                 {elem.option}
               </a>

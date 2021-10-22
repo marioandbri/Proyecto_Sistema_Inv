@@ -7,7 +7,6 @@ import ProductsComp from "./ProductsComp";
 const Index = () => {
   return (
     <InventoryProvider>
-
       <div className="container is-fluid box">
         <div className="tile is-ancestor">
           <div className="tile is-vertical is-parent">

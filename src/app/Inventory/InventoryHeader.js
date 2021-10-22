@@ -4,42 +4,57 @@ import React, {
   useState,
   useEffect,
   useRef,
+  useMemo,
 } from "react";
 import Filter from "../Filter";
 import { useFetch } from "../useFetch";
+import { useFetchProductsApi } from "../useFetchProductsApi";
 import { useFilter } from "../useFilter";
 import { useProductTypes } from "../useProductTypes";
+import InventoryClientList from "./InventoryClientList";
 
 import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
+import ProductCard from "./ProductCard";
 
 const InventoryHeader = () => {
-  const { loading: loadingTypes, data: options } = useProductTypes();
-  const { loading: loadingClientes, data: clientesData } = useFetch("/cliente");
-  const [url, setUrl] = useState("");
-  const notification = useRef();
-  const closeNotification = () => {
-    notification.current.classList.add("is-hidden");
-  };
-
-  const [query, setQuery] = useState("");
   const state = useInventory();
   const dispatch = useDispatch();
-  // console.log(state, dispatch);
-  const dataFiltered = useFilter(query, clientesData);
-  const result = dataFiltered.splice(0, 10);
-  const { loading: loadingProducts, data: productData } = useFetch(url);
 
-  const selectProductType = (e) => {
-    console.log(e.target.value);
-    dispatch({ type: type.selectProductType, payload: e.target.value });
+  const notification = useRef();
+
+  const [isPCardShown, setIsPCardShown] = useState(false);
+  const [query, setQuery] = useState("");
+  const [productPN, setProductPN] = useState("");
+  const [nroFactura, setNroFactura] = useState("");
+  const [fechaCompra, setFechaCompra] = useState("");
+
+  const getProductData = async () => {
+    const result = await fetch(`/producto/partnumber/${productPN}`);
+    const data = await result.json();
+    console.log(data);
+    dispatch({ type: type.setProductData, payload: data });
   };
 
-  const selectClient = (e) => {
+  const selectClient = useCallback((e) => {
     console.log(e.rut);
     setQuery(e.razonsocial);
     dispatch({ type: type.selectClient, payload: e.rut });
+  }, []);
+
+  const [imageUrl, setImageUrl] = useState("");
+
+  const getProductImage = async () => {
+    // console.log(loading, data);
+    // const result = await fetch(
+    //   `https://publicapi.solotodo.com/products/?part_number=${productPN}`
+    // );
+    // const data = await result.json();
+    if (!loading) {
+      setImageUrl(data.results[0]?.picture_url);
+    }
   };
+
   return (
     <>
       <div className="box mb-1">
@@ -50,7 +65,7 @@ const InventoryHeader = () => {
               <div className="control">
                 <a
                   className={`button ${
-                    loadingClientes ? "is-loading" : "is-hidden"
+                    state.loading ? "is-loading" : "is-hidden"
                   }`}
                 >
                   <span className="icon">
@@ -78,29 +93,7 @@ const InventoryHeader = () => {
           </div>
         </nav>
       </div>
-      <div
-        // style={{ position: "absolute", zIndex: "10" }}
-        className={`box mb-1 inv-filter-clients ${
-          query == "" ? "is-hidden" : ""
-        }`}
-      >
-        <table className="is-size-7 is-hoverable">
-          <tbody>
-            {result?.map((e) => (
-              <tr key={e.rut}>
-                <td
-                  onClick={(event) => {
-                    selectClient(e);
-                  }}
-                  className="is-clickable"
-                >
-                  {e.razonsocial}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <InventoryClientList query={query} selectClient={selectClient} />
 
       <div className="box">
         <div className="columns">
@@ -125,15 +118,12 @@ const InventoryHeader = () => {
                 <div className="control has-icons-right">
                   <input
                     onChange={(e) => {
-                      dispatch({
-                        type: type.fechaCompra,
-                        payload: e.target.value,
-                      });
+                      setFechaCompra(e.target.value);
                     }}
                     type="date"
                     placeholder="dd-mm-yyyy"
                     className="input is-small"
-                    value={state.fechaCompra}
+                    value={fechaCompra}
                   />
                   <span className="icon is-small is-right">
                     <i className="fas fa-calendar-alt"></i>
@@ -145,14 +135,11 @@ const InventoryHeader = () => {
                 <label className="label">Numero de Factura</label>
                 <input
                   onChange={(e) => {
-                    dispatch({
-                      type: type.numeroFactura,
-                      payload: e.target.value,
-                    });
+                    setNroFactura(e.target.value);
                   }}
                   type="text"
                   className="input is-small"
-                  value={state.numeroFactura}
+                  value={nroFactura}
                 />
               </div>
             </div>
@@ -165,19 +152,19 @@ const InventoryHeader = () => {
               <span className="control">
                 <input
                   onChange={(e) => {
-                    dispatch({ type: type.setPN, payload: e.target.value });
+                    setProductPN(e.target.value.toUpperCase());
                   }}
                   type="list"
                   className="input is-small "
-                  value={state.partNumber}
+                  value={productPN}
                 />
               </span>
               <div className="control">
                 <a
                   onClick={() => {
-                    setUrl(
-                      `/producto/${state.tipoProducto}/partnumber/${state.partNumber}`
-                    );
+                    getProductData();
+                    dispatch({ type: type.setPN, payload: productPN });
+                    getProductImage();
                     notification.current.classList.remove("is-hidden");
                   }}
                   className="button is-info is-small"
@@ -189,7 +176,7 @@ const InventoryHeader = () => {
           </div>
           <div className="column">
             {/* ///////// NOTIFICATION ///////// */}
-            <div
+            {/* <div
               ref={notification}
               // style={{ width: "60%" }}
               className="message is-info is-small mx-3 inventory-notification is-hidden"
@@ -204,9 +191,33 @@ const InventoryHeader = () => {
                 ></button>
               </div>
               <div className="message-body">
-                {!loadingProducts ? productData.toString() : "vacio"}
+                {console.log(Boolean(state.productData))}
+                {state.productData?.description || (
+                  <div
+                    disabled
+                    className="button is-danger is-small is-loading"
+                  ></div>
+                )}
               </div>
-            </div>
+            </div> */}
+
+            {/* ///////////////////////////////////// */}
+            {Boolean(state.productData.item) ? (
+              <ProductCard
+                description={state.productData?.description || "vacio"}
+                marca={state.productData?.item?.marca || "marca"}
+                modelo={state.productData?.item?.modelo}
+                familia={state.productData?.item?.familia || "familia"}
+                partnumber={state.partNumber}
+              />
+            ) : (
+              <ProductCard
+                marca={""}
+                modelo={"Ingrese el numero de parte"}
+                description={"No se encontrado ningun resultado"}
+                familia={""}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -5,27 +5,29 @@ export const type = {
   selectClient: "SELECT_CLIENT",
   fechaCompra: "Cambio de Fecha de Compra",
   numeroFactura: "Cambio de Numero de Factura",
-  selectProductType: "Select product type",
-  setPN: "set Product Number"
+  setPN: "set Product Number",
+  setProductData: "Sets especified product data partnumber's",
 };
 
 export const initialInventory = {
+  clientesData: [],
+  loadingClientes: true,
   url: "",
   rutProveedor: "",
   fechaCompra: "",
   numeroFactura: "",
   rutTenedor: "",
-  tipoProducto: "",
-  partNumber: ""
+  partNumber: "",
+  productData: "",
+  loadingProductData: true,
 };
 
 const InventoryReducer = (state, action) => {
   switch (action.type) {
     case type.find:
-      const [product, index] = action.payload
-      let url = `/producto/${product.tipoEquipo}/partnumber/${product.partNumber}`;
-      let products = [...state.productsData]
-
+      const [product, index] = action.payload;
+      let url = `/producto/partnumber/${product.partNumber}`;
+      let products = [...state.productsData];
 
       return { ...state, productsData: products, url };
     case type.selectClient:
@@ -34,10 +36,11 @@ const InventoryReducer = (state, action) => {
       return { ...state, fechaCompra: action.payload };
     case type.numeroFactura:
       return { ...state, numeroFactura: action.payload };
-    case type.selectProductType:
-      return { ...state, tipoProducto: action.payload };
     case type.setPN:
       return { ...state, partNumber: action.payload };
+    case type.setProductData:
+      // const { loading, data } = action.payload;
+      return { ...state, productData: action.payload };
     default:
       return state;
   }

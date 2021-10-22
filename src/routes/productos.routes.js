@@ -5,6 +5,7 @@ import {
   getAllProducts,
   getProductoById,
   getProductoByQuery,
+  getProductPN,
   updateProducto,
 } from "../controllers/productos.controller";
 const router = Router();
@@ -13,6 +14,8 @@ const router = Router();
 router.post("/producto/", createProducto);
 
 //Read
+//Get by Partnumber
+router.get("/producto/partnumber/:pn", getProductPN);
 //By id
 router.get("/producto/:productType/:id", getProductoById);
 // By Query

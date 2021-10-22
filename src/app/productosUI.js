@@ -3,7 +3,6 @@ import ProductosData from "./Prod_Components/ProductosData";
 import ProductoCreate from "./Prod_Components/ProductoCreate";
 import ProductoForm from "./Prod_Components/ProductoForm";
 import ProductoFilterDrop from "./Prod_Components/ProductoFilterDrop";
-import { json } from "body-parser";
 import Filter from "./Filter";
 import ProductModal from "./Prod_Components/ProductModal";
 // import PropTypes from 'prop-types';
@@ -108,7 +107,7 @@ class ProductosUI extends Component {
   handleDropdownChange = (e) => {
     this.setState({ loading: true, isFormVisible: false });
     this.setState({ productType: e.target.id }, () => {
-      document.getElementById(e.target.id).classList.add("is-active");
+      // document.getElementById(e.target.id).classList.add("is-active");
       this.fetchData(this.state.productType).then(() => {});
     });
     if (this.state.productType !== "") {
@@ -215,6 +214,13 @@ class ProductosUI extends Component {
     })
       .then((res) => res.json)
       .then((data) => {});
+    this.setState({
+      isFormVisible: false,
+      creationObject: {},
+      productOption: "",
+      isAnUpdate: initialState.isAnUpdate,
+    });
+    this.fetchData(this.state.productType);
   };
 
   handleRemove = async (e, id) => {
@@ -348,6 +354,7 @@ class ProductosUI extends Component {
                   handleDropdownChange={this.handleDropdownChange}
                   loadOptions={this.loadOptions}
                   options={this.state.optionsList}
+                  productType={this.state.productType}
                 />
               </div>
               <div className="level-right">

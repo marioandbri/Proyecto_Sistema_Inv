@@ -96,24 +96,6 @@ const ProductsComp = () => {
                   </span>
                 </a>
               </span>
-              {/* ///////// NOTIFICATION ///////// */}
-
-              {/* <div
-                ref={(e) => (notification.current[index] = e)}
-                style={{ width: "60%" }}
-                className="message is-info is-small mx-3 inventory-notification"
-              >
-                <div className="message-header">
-                  <p>Nombre Equipo</p>
-                  <button
-                    onClick={() => {
-                      closeNotification(index);
-                    }}
-                    className="delete is-small"
-                  ></button>
-                </div>
-                <div className="message-body">Descripcion de Equipo</div>
-              </div> */}
             </div>
           </div>
         ))}
