@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const ProductoItem = ({
   productType,
@@ -13,6 +13,7 @@ const ProductoItem = ({
   //   "productType validation",
   //   productType
   // );
+  const [readMore, setReadMore] = useState(false);
   useEffect(() => {
     return () => {};
   }, [item]);
@@ -142,7 +143,19 @@ const ProductoItem = ({
         {Object.getOwnPropertyNames(item.detalle).map((e, index) => (
           <td key={index}>{item.detalle[e]}</td>
         ))}
-        <td>{item.description}</td>
+        <td>
+          {readMore
+            ? item.description
+            : `${item.description.substring(0, 100)}...`}
+          <a
+            className="link"
+            onClick={() => {
+              setReadMore(!readMore);
+            }}
+          >
+            {readMore ? "Ver menos" : "Ver mas"}
+          </a>
+        </td>
         <Botonera />
       </tr>
     );

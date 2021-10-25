@@ -13,8 +13,6 @@ import { type } from "./InventoryReducer";
 const ProductsComp = () => {
   const productObj = {
     numeroSerie: "",
-    tipoEquipo: "",
-    partNumber: "",
   };
 
   // const notification = useRef([]);
@@ -25,25 +23,37 @@ const ProductsComp = () => {
 
   // const { url } = state;
 
-  const [productfield, setProductField] = useState([productObj]);
+  const [productfield, setProductField] = useState([
+    { numeroSerie: "", isEmpty: true },
+  ]);
 
   // const { loading, data } = useFetch(url);
-
-  const searchProd = useRef();
 
   // let products = [];
 
   const handleInput = (e, i) => {
     let newFieldValues = [...productfield];
-    newFieldValues[i][e.target.name] =
-      e.target.name == "partNumber"
-        ? e.target.value.toUpperCase()
-        : e.target.value;
+    newFieldValues[i][e.target.name] = e.target.value.toUpperCase();
     setProductField(newFieldValues);
+    console.log(i);
+    if (productfield[i].isEmpty == true && e.target.value != "") {
+      let newArray = [...productfield];
+      newArray[i].isEmpty = false;
+      setProductField(newArray);
+    }
+    if (productfield[productfield.length - 1].isEmpty == false) {
+      addField();
+    }
+    if (e.target.value.length == 0) {
+      let newArray = [...productfield];
+      newArray[i].isEmpty = false;
+      setProductField(newArray);
+    }
+    console.log(productfield[i]);
   };
 
   const addField = () => {
-    let newFields = [...productfield, productObj];
+    let newFields = [...productfield, { numeroSerie: "", isEmpty: true }];
     setProductField(newFields);
   };
 
@@ -54,6 +64,9 @@ const ProductsComp = () => {
       : console.log("debe haber al menos 1 campo");
     setProductField(newFields);
   };
+  useEffect(() => {
+    return () => {};
+  }, [productfield]);
 
   // const findProd = (i) => {
   //   dispatch({ type: type.find, payload: [productfield[i], i] });
@@ -64,42 +77,46 @@ const ProductsComp = () => {
 
   return (
     <>
-      <div className="tile is-child box">
+      <div
+        style={{
+          maxHeight: "50vh",
+          overflowY: "auto",
+        }}
+        className="tile is-child box "
+      >
         {/* ///////////// PRODUCTS FIELD ///////////// */}
 
         {productfield.map((e, index) => (
-          <div key={index} className="box">
-            <div className="field has-addons block">
-              <span className="control">
-                <input
-                  onChange={(e) => {
-                    handleInput(e, index);
-                  }}
-                  value={e.numeroSerie}
-                  type="text"
-                  placeholder="Numero de Serie"
-                  className="input is-small"
-                  name="numeroSerie"
-                />
-              </span>
+          <div key={index} className="field has-addons block">
+            <span className="control">
+              <input
+                onChange={(e) => {
+                  handleInput(e, index);
+                }}
+                value={e.numeroSerie}
+                type="text"
+                placeholder="Numero de Serie"
+                className="input is-small"
+                name="numeroSerie"
+              />
+            </span>
 
-              <span className="control">
-                <a
-                  onClick={() => {
-                    removeField(index);
-                  }}
-                  ref={searchProd}
-                  className="button is-danger is-small "
-                >
-                  <span className="icon">
-                    <i className="fas fa-trash"></i>
-                  </span>
-                </a>
-              </span>
-            </div>
+            <span className="control">
+              <a
+                onClick={() => {
+                  // inputsRef.current.splice(index, 1);
+                  removeField(index);
+                }}
+                className="button is-danger is-small "
+              >
+                <span className="icon">
+                  <i className="fas fa-trash"></i>
+                </span>
+              </a>
+            </span>
           </div>
         ))}
-        <div className="field is-grouped is-grouped-centered">
+        {/* <div className="field is-grouped is-grouped-centered">
           <a
             className="button is-fullwidth is-success is-outlined"
             onClick={() => {
@@ -111,8 +128,8 @@ const ProductsComp = () => {
             </span>
             <span>Agregar campo</span>
           </a>
-        </div>
-        <div className="buttons">
+        </div> */}
+        <div style={{ position: "sticky", top: "90%" }} className="buttons">
           <a
             className="button is-success "
             onClick={() => {

@@ -9,7 +9,10 @@ const Index = () => {
     <InventoryProvider>
       <div className="container is-fluid box">
         <div className="tile is-ancestor">
-          <div className="tile is-vertical is-parent">
+          <div
+            style={{ minHeight: "92vh" }}
+            className="tile is-vertical is-parent"
+          >
             <div className="tile is-child box">
               <div className="title">
                 Site under Construction...{" "}

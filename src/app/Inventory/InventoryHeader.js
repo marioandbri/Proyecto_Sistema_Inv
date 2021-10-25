@@ -44,16 +44,16 @@ const InventoryHeader = () => {
 
   const [imageUrl, setImageUrl] = useState("");
 
-  const getProductImage = async () => {
-    // console.log(loading, data);
-    // const result = await fetch(
-    //   `https://publicapi.solotodo.com/products/?part_number=${productPN}`
-    // );
-    // const data = await result.json();
-    if (!loading) {
-      setImageUrl(data.results[0]?.picture_url);
-    }
-  };
+  // const getProductImage = async () => {
+  //   // console.log(loading, data);
+  //   // const result = await fetch(
+  //   //   `https://publicapi.solotodo.com/products/?part_number=${productPN}`
+  //   // );
+  //   // const data = await result.json();
+  //   // if (!loading) {
+  //   //   setImageUrl(data.results[0]?.picture_url);
+  //   // }
+  // };
 
   return (
     <>
@@ -164,8 +164,8 @@ const InventoryHeader = () => {
                   onClick={() => {
                     getProductData();
                     dispatch({ type: type.setPN, payload: productPN });
-                    getProductImage();
-                    notification.current.classList.remove("is-hidden");
+                    // getProductImage();
+                    // notification.current.classList.remove("is-hidden");
                   }}
                   className="button is-info is-small"
                 >
