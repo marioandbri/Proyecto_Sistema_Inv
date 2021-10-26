@@ -7,16 +7,18 @@ export const type = {
   numeroFactura: "Cambio de Numero de Factura",
   setPN: "set Product Number",
   setProductData: "Sets especified product data partnumber's",
+  setOperationType: "Sets the especified type of operation to do",
 };
 
 export const initialInventory = {
+  operationType: "",
   clientesData: [],
   loadingClientes: true,
   url: "",
   rutProveedor: "",
   fechaCompra: "",
   numeroFactura: "",
-  rutTenedor: "",
+  rutPoseedor: "",
   partNumber: "",
   productData: "",
   loadingProductData: true,
@@ -41,6 +43,8 @@ const InventoryReducer = (state, action) => {
     case type.setProductData:
       // const { loading, data } = action.payload;
       return { ...state, productData: action.payload };
+    case type.setOperationType:
+      return { ...state, operationType: action.payload };
     default:
       return state;
   }

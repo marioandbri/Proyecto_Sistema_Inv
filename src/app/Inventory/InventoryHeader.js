@@ -75,7 +75,7 @@ const InventoryHeader = () => {
               </div>
             </div>
           </div>
-          <div className="level-right">
+          {/* <div className="level-right">
             <div className="buttons">
               <a
                 onClick={() =>
@@ -90,7 +90,7 @@ const InventoryHeader = () => {
               </a>
               <a className="button">Retiro</a>
             </div>
-          </div>
+          </div> */}
         </nav>
       </div>
       <InventoryClientList query={query} selectClient={selectClient} />
@@ -103,7 +103,11 @@ const InventoryHeader = () => {
               style={{ maxWidth: "fit-content" }}
             >
               <div className="control block">
-                <label className="label">Rut Proveedor</label>
+                <label className="label">
+                  {state.operationType == "Ingreso"
+                    ? "RUT Proveedor"
+                    : "RUT Cliente"}
+                </label>
                 <input
                   readOnly
                   disabled
