@@ -79,10 +79,11 @@ const ProductsComp = () => {
     <>
       <div
         style={{
+          minHeight: "40vh",
           maxHeight: "50vh",
           overflowY: "auto",
         }}
-        className="tile is-child box "
+        className=" box "
       >
         {/* ///////////// PRODUCTS FIELD ///////////// */}
 

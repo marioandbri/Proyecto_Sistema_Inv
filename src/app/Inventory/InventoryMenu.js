@@ -1,8 +1,14 @@
-import React, { useRef, useState } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Link,
+  Route,
+  Switch,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
-import Inventory from "../Inventory";
+import InventoryHeader from "./InventoryHeader";
 
 const InventoryMenu = () => {
   const menuIcon = useRef();
@@ -15,11 +21,14 @@ const InventoryMenu = () => {
   const setOperationType = (e) => {
     dispatch({ type: type.setOperationType, payload: e.target.id });
   };
+
+  let { url } = useRouteMatch();
+
   return (
-    <>
-      <div style={{ display: "inline-block" }} className="menu ">
+    <div className="box is-inline-block m-1 p-2">
+      <div style={{ display: "inline-block" }} className="menu">
         <a
-          className="button is-outlined is-link"
+          className="button is-small is-inverted is-link"
           onClick={() => {
             menuIcon.current.classList.toggle("fa-bars");
             menuIcon.current.classList.toggle("fa-times");
@@ -38,13 +47,17 @@ const InventoryMenu = () => {
             <li
               key={e}
               onClick={(element) => {
-                console.log(element.target);
+                // console.log(element.target);
                 setOperationType(element);
               }}
             >
-              <a className={e == state.operationType ? "is-active" : ""} id={e}>
+              <Link
+                to={`${url}/${e}`}
+                className={e == state.operationType ? "is-active" : ""}
+                id={e}
+              >
                 {e}
-              </a>
+              </Link>
             </li>
           ))}
           {/* <li>
@@ -88,7 +101,7 @@ const InventoryMenu = () => {
           </li> */}
         </ul>
       </div>
-    </>
+    </div>
   );
 };
 

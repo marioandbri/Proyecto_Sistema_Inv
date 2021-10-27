@@ -6,6 +6,7 @@ import React, {
   useRef,
   useMemo,
 } from "react";
+import { useParams } from "react-router-dom";
 import Filter from "../Filter";
 import { useFetch } from "../useFetch";
 import { useFetchProductsApi } from "../useFetchProductsApi";
@@ -18,6 +19,8 @@ import { type } from "./InventoryReducer";
 import ProductCard from "./ProductCard";
 
 const InventoryHeader = () => {
+  let { id } = useParams();
+  console.log(id, "operation url param");
   const state = useInventory();
   const dispatch = useDispatch();
 
