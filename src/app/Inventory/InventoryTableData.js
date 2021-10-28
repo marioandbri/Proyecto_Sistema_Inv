@@ -1,30 +1,11 @@
 import React from "react";
-import { useTable, useSortBy, useFilters } from "react-table";
+import { useTable, useSortBy, useFilters, usePagination } from "react-table";
+import { UseRTPagination } from "../useRTPagination";
 import ColumnFilter from "./ColumnFilter";
+import MOCK_DATA from "./MOCK_DATA.json";
 
 const InventoryTableData = () => {
-  const data = React.useMemo(
-    () => [
-      {
-        col1: "Hello",
-
-        col2: "World",
-      },
-
-      {
-        col1: "react-table",
-
-        col2: "rocks",
-      },
-
-      {
-        col1: "whatever",
-
-        col2: "you want",
-      },
-    ],
-    []
-  );
+  const data = React.useMemo(() => MOCK_DATA, []);
 
   const columns = React.useMemo(
     () => [
@@ -32,14 +13,12 @@ const InventoryTableData = () => {
         Header: "Column 1",
 
         accessor: "col1", // accessor is the "key" in the data
-        Filter: ColumnFilter,
       },
 
       {
         Header: "Column 2",
 
         accessor: "col2",
-        Filter: ColumnFilter,
       },
     ],
     []
@@ -59,10 +38,60 @@ const InventoryTableData = () => {
       <i className="fas fa-filter"></i>
     </span>
   );
-  const tableInstance = useTable({ columns, data }, useFilters, useSortBy);
+  const defaultColumn = React.useMemo(() => {
+    return { Filter: ColumnFilter };
+  }, []);
+  const tableInstance = useTable(
+    { columns, data, defaultColumn },
+    useFilters,
+    useSortBy,
+    usePagination
+  );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    gotoPage,
+    pageCount,
+    setPageSize,
+    state,
+    prepareRow,
+  } = tableInstance;
+
+  const { pageIndex, pageSize } = state;
+  const paginationProps = {
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    pageIndex,
+    gotoPage,
+    pageCount,
+    setPageSize,
+    pageSize,
+  };
+  console.log(state);
+  const PaginationComponent = UseRTPagination(paginationProps);
+  /**
+   * nextPage => next page function ()
+   * previousPage => previous page function ()
+   * canNextPage && canPreviousPage => validation
+   * pageOptions => page object and length
+   * pageIndex => currentPage
+   * gotoPage => go to a specific Page
+   * pageCount => total number of pages?
+   * setPageSize => function to set a desired amount of items per page
+   * pageSize => value for items per page
+   */
+
   return (
     <>
       <table className="table is-fullwidth" {...getTableProps()}>
@@ -90,7 +119,7 @@ const InventoryTableData = () => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -104,6 +133,7 @@ const InventoryTableData = () => {
           })}
         </tbody>
       </table>
+      <div>{PaginationComponent}</div>
     </>
   );
 };
