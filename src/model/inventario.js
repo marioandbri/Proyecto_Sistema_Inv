@@ -4,26 +4,26 @@ import { sequelize } from "../sequelize";
 const Inventario = sequelize.define(
   "inventario",
   {
-    serialnumber: {
+    numeroSerie: {
       type: Sequelize.TEXT,
       primaryKey: true,
     },
-    partnumber: {
+    productPN: {
       type: Sequelize.TEXT,
     },
-    rut_poseedor: {
+    rutPoseedor: {
       type: Sequelize.TEXT,
     },
-    fecha_evento: {
+    fechaEvento: {
       type: Sequelize.TEXT,
     },
-    rut_proveedor: {
+    rutProveedor: {
       type: Sequelize.TEXT,
     },
-    fecha_compra: {
+    fechaCompra: {
       type: Sequelize.DATEONLY,
     },
-    factura: {
+    nroFactura: {
       type: Sequelize.TEXT,
     },
     estado: {

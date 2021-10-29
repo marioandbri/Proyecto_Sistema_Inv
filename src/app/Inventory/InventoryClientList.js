@@ -7,7 +7,7 @@ const InventoryClientList = ({ query, selectClient }) => {
   const dataFiltered = useFilter(query, clientesData);
   const result = dataFiltered.splice(0, 10);
 
-  console.log("componente clientes renderizado");
+  // console.log("componente clientes renderizado");
   return (
     <>
       <div

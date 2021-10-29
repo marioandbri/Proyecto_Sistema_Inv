@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import InventoryHeader from "./InventoryHeader";
 import ProductsComp from "./ProductsComp";
 import InventoryTableData from "./InventoryTableData";
+import { useDispatch } from "./InventoryProvider";
+import { type } from "./InventoryReducer";
 
 const MainInventorySwitch = () => {
   let { id } = useParams();
@@ -16,21 +18,21 @@ const MainInventorySwitch = () => {
     case "Ingreso":
       return (
         <>
-          <InventoryHeader />
+          <InventoryHeader opType={id} />
           <ProductsComp />
         </>
       );
     case "Entrega":
       return (
         <>
-          <InventoryHeader />
+          <InventoryHeader opType={id} />
           <ProductsComp />
         </>
       );
     case "Retiro":
       return (
         <>
-          <InventoryHeader />
+          <InventoryHeader opType={id} />
           <ProductsComp />
         </>
       );

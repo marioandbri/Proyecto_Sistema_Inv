@@ -5,14 +5,14 @@ import LoadingBar from "../LoadingBar";
 const ProductCard = ({ description, marca, modelo, familia, partnumber }) => {
   // console.log(partnumber);
   const { loading, data } = useFetchProductsApi(partnumber);
-  console.log(loading, data, "useFetch api");
-  console.log(Boolean(data));
+  // console.log(loading, data, "useFetch api");
+  // console.log(Boolean(data));
   const imageUrl =
     (data && data.results[0]?.picture_url) ||
     "https://bulma.io/images/placeholders/96x96.png";
   // console.log(imageUrl);
   const productname = `${modelo}` || (data && data.results[0]?.name);
-  console.log(loading, "loading status");
+  // console.log(loading, "loading status");
   return (
     <>
       <div className="card">

@@ -1,4 +1,6 @@
+import React from "react";
 import { useFetch } from "../useFetch";
+import Notification from "../Notification";
 
 export const type = {
   find: "FIND",
@@ -8,13 +10,16 @@ export const type = {
   setPN: "set Product Number",
   setProductData: "Sets especified product data partnumber's",
   setOperationType: "Sets the especified type of operation to do",
+  prepareIngreso: "Sets Arrienda Rut to rutposeedor",
+  setProductsHeader: "Sets the data for the products header",
+  addNotification: "Add a notification component",
 };
 
 export const initialInventory = {
   operationType: "",
-  clientesData: [],
+  // clientesData: [],
   loadingClientes: true,
-  url: "",
+  // url: "",
   rutProveedor: "",
   fechaCompra: "",
   numeroFactura: "",
@@ -22,6 +27,8 @@ export const initialInventory = {
   partNumber: "",
   productData: "",
   loadingProductData: true,
+  productsHeader: "",
+  notifications: [],
 };
 
 const InventoryReducer = (state, action) => {
@@ -44,7 +51,22 @@ const InventoryReducer = (state, action) => {
       // const { loading, data } = action.payload;
       return { ...state, productData: action.payload };
     case type.setOperationType:
-      return { ...state, operationType: action.payload };
+      return {
+        ...state,
+        operationType: action.payload,
+      };
+    case type.prepareIngreso:
+      return { ...state, rutPoseedor: "78507660-5" };
+    case type.setProductsHeader:
+      return { ...state, productsHeader: action.payload };
+    case type.addNotification:
+      let actualNotis = [...state.notifications];
+      let newNotification = (
+        <Notification {...action.payload} index={actualNotis.length} />
+      );
+      actualNotis.push(newNotification);
+      return { ...state, notifications: actualNotis };
+
     default:
       return state;
   }

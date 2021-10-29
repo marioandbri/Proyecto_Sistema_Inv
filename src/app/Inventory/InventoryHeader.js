@@ -18,9 +18,7 @@ import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 import ProductCard from "./ProductCard";
 
-const InventoryHeader = () => {
-  let { id } = useParams();
-  console.log(id, "operation url param");
+const InventoryHeader = ({ opType }) => {
   const state = useInventory();
   const dispatch = useDispatch();
 
@@ -44,19 +42,24 @@ const InventoryHeader = () => {
     setQuery(e.razonsocial);
     dispatch({ type: type.selectClient, payload: e.rut });
   }, []);
+  const id = opType;
 
-  const [imageUrl, setImageUrl] = useState("");
-
-  // const getProductImage = async () => {
-  //   // console.log(loading, data);
-  //   // const result = await fetch(
-  //   //   `https://publicapi.solotodo.com/products/?part_number=${productPN}`
-  //   // );
-  //   // const data = await result.json();
-  //   // if (!loading) {
-  //   //   setImageUrl(data.results[0]?.picture_url);
-  //   // }
-  // };
+  const buildHeader = () => {
+    let rutProveedor = state.rutProveedor;
+    let header = {
+      rutProveedor,
+      productPN,
+      nroFactura,
+      fechaCompra,
+      rutPoseedor: opType == "Ingreso" ? "78570660-5" : "",
+    };
+    if (!rutProveedor || !productPN || !nroFactura || !fechaCompra) {
+      console.log("aun hay campos vacios");
+    } else {
+      console.log(header);
+      dispatch({ type: type.setProductsHeader, payload: header });
+    }
+  };
 
   return (
     <>
@@ -78,22 +81,6 @@ const InventoryHeader = () => {
               </div>
             </div>
           </div>
-          {/* <div className="level-right">
-            <div className="buttons">
-              <a
-                onClick={() =>
-                  selectClient({
-                    rut: "78507660-5",
-                    razonsocial: "Servicios e Inversiones Arrienda Ltda",
-                  })
-                }
-                className="button"
-              >
-                Ingreso
-              </a>
-              <a className="button">Retiro</a>
-            </div>
-          </div> */}
         </nav>
       </div>
       <InventoryClientList query={query} selectClient={selectClient} />
@@ -107,9 +94,7 @@ const InventoryHeader = () => {
             >
               <div className="control block">
                 <label className="label">
-                  {state.operationType == "Ingreso"
-                    ? "RUT Proveedor"
-                    : "RUT Cliente"}
+                  {id == "Ingreso" ? "RUT Proveedor" : "RUT Cliente"}
                 </label>
                 <input
                   readOnly
@@ -126,6 +111,9 @@ const InventoryHeader = () => {
                   <input
                     onChange={(e) => {
                       setFechaCompra(e.target.value);
+                    }}
+                    onBlur={() => {
+                      buildHeader();
                     }}
                     type="date"
                     placeholder="dd-mm-yyyy"
@@ -144,6 +132,9 @@ const InventoryHeader = () => {
                   onChange={(e) => {
                     setNroFactura(e.target.value);
                   }}
+                  onBlur={() => {
+                    buildHeader();
+                  }}
                   type="text"
                   className="input is-small"
                   value={nroFactura}
@@ -160,6 +151,9 @@ const InventoryHeader = () => {
                 <input
                   onChange={(e) => {
                     setProductPN(e.target.value.toUpperCase());
+                  }}
+                  onBlur={() => {
+                    buildHeader();
                   }}
                   type="list"
                   className="input is-small "

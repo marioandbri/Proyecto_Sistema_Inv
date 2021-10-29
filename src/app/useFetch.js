@@ -5,7 +5,7 @@ export const useFetch = (url) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [isMounted, setIsMounted] = useState(true);
-  console.log(!url, url, "url");
+  // console.log(!url, url, "url");
 
   const getData = async () => {
     setLoading(true);
@@ -14,7 +14,7 @@ export const useFetch = (url) => {
     }
     if (cache.current[url]) {
       const cdata = cache.current[url];
-      console.log(cdata, "cache");
+      // console.log(cdata, "cache");
       // if (isMounted) {
       setData(cdata);
       setLoading(false);
@@ -23,7 +23,7 @@ export const useFetch = (url) => {
       const res = await fetch(url);
       const cdata = await res?.json();
       cache.current[url] = cdata;
-      console.log(cdata, "fetched");
+      // console.log(cdata, "fetched");
       // if (isMounted) {
       setData(cdata);
       setLoading(false);
@@ -33,7 +33,7 @@ export const useFetch = (url) => {
     //   ? await res?.json()
     //   : new Error("Solicitud no valida");
   };
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     getData();
