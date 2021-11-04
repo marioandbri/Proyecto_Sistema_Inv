@@ -20,6 +20,23 @@ class App extends Component {
           <Route path="/inventarios">
             <Inventory />
           </Route>
+          <Route exact path="/">
+            <>
+              <div className="box">
+                <section className="hero  is-large">
+                  <div className="hero-body ">
+                    <p className="title">Bienvenido al sistema de Gestión</p>
+                    <p className="subtitle">
+                      Esto es un proyecto en Desarrollo...{" "}
+                      <desarrollo className="span icon">
+                        <i className="fas fa-tools"></i>
+                      </desarrollo>
+                    </p>
+                  </div>
+                </section>
+              </div>
+            </>
+          </Route>
         </Switch>
       </Router>
     );

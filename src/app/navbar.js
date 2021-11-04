@@ -39,7 +39,7 @@ class Navbar extends Component {
                   Inicio
                 </Link>
                 <Link className="navbar-item" to="/clientes">
-                  Gestion de Clientes
+                  Gestion de Empresas
                 </Link>
                 <Link className="navbar-item" to="/productos">
                   Gestion de Productos
