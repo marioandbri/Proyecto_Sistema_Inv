@@ -25,7 +25,7 @@ ProductosSchema.virtual("DescriptionS").get(function () {
   return description;
 });
 ProductosSchema.virtual("DescriptionL").get(function () {
-  let description = `${this.tipoProducto}`;
+  let description = `${this.tipoProducto}: ${this.familia} ${this.marca} ${this.modelo}`;
 
   for (let [key, value] of Object.entries(this.detalle)) {
     description += `, ${key}: ${value}`;

@@ -30,15 +30,16 @@ const InventoryMenu = () => {
         <a
           className="button is-small is-inverted is-link"
           onClick={() => {
-            menuIcon.current.classList.toggle("fa-bars");
-            menuIcon.current.classList.toggle("fa-times");
             setIsMenuVisible(!isMenuVisible);
           }}
         >
           <p className="">
             Menú Inventarios{" "}
             <span className="icon ml-1">
-              <i ref={menuIcon} className="fas fa-bars"></i>
+              <i
+                ref={menuIcon}
+                className={`fas ${isMenuVisible ? "fa-times" : "fa-bars"}`}
+              ></i>
             </span>
           </p>
         </a>
@@ -49,12 +50,15 @@ const InventoryMenu = () => {
               onClick={(element) => {
                 // console.log(element.target);
                 setOperationType(element);
+                setIsMenuVisible(false);
               }}
             >
               <Link
-                to={`${url}/${e}`}
-                className={e == state.operationType ? "is-active" : ""}
-                id={e}
+                to={`${url}/${e.toLowerCase()}`}
+                className={
+                  e.toLowerCase() == state.operationType ? "is-active" : ""
+                }
+                id={e.toLowerCase()}
               >
                 {e}
               </Link>

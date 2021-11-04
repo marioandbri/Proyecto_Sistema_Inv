@@ -8,28 +8,37 @@ import { type } from "./InventoryReducer";
 
 const MainInventorySwitch = () => {
   let { id } = useParams();
+  React.useEffect(() => {
+    return () => {
+      document.title = "Proyecto Sistema Inventario";
+    };
+  }, []);
   switch (id) {
-    case "Consulta":
+    case "consulta":
+      document.title = "Consulta - Proyecto Inventario Arrienda";
       return (
         <>
           <InventoryTableData />
         </>
       );
-    case "Ingreso":
+    case "ingreso":
+      document.title = "Ingreso - Proyecto Inventario Arrienda";
       return (
         <>
           <InventoryHeader opType={id} />
           <ProductsComp />
         </>
       );
-    case "Entrega":
+    case "entrega":
+      document.title = "Entrega - Proyecto Inventario Arrienda";
       return (
         <>
           <InventoryHeader opType={id} />
           <ProductsComp />
         </>
       );
-    case "Retiro":
+    case "retiro":
+      document.title = "Retiro - Proyecto Inventario Arrienda";
       return (
         <>
           <InventoryHeader opType={id} />

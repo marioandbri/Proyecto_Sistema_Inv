@@ -6,12 +6,7 @@ import React, {
   useRef,
   useMemo,
 } from "react";
-import { useParams } from "react-router-dom";
 import Filter from "../Filter";
-import { useFetch } from "../useFetch";
-import { useFetchProductsApi } from "../useFetchProductsApi";
-import { useFilter } from "../useFilter";
-import { useProductTypes } from "../useProductTypes";
 import InventoryClientList from "./InventoryClientList";
 
 import { useDispatch, useInventory } from "./InventoryProvider";
@@ -22,13 +17,11 @@ const InventoryHeader = ({ opType }) => {
   const state = useInventory();
   const dispatch = useDispatch();
 
-  const notification = useRef();
-
-  const [isPCardShown, setIsPCardShown] = useState(false);
   const [query, setQuery] = useState("");
   const [productPN, setProductPN] = useState("");
   const [nroFactura, setNroFactura] = useState("");
   const [fechaCompra, setFechaCompra] = useState("");
+  const id = opType;
 
   const getProductData = async () => {
     const result = await fetch(`/producto/partnumber/${productPN}`);
@@ -42,7 +35,6 @@ const InventoryHeader = ({ opType }) => {
     setQuery(e.razonsocial);
     dispatch({ type: type.selectClient, payload: e.rut });
   }, []);
-  const id = opType;
 
   const buildHeader = () => {
     let rutProveedor = state.rutProveedor;
@@ -51,7 +43,7 @@ const InventoryHeader = ({ opType }) => {
       productPN,
       nroFactura,
       fechaCompra,
-      rutPoseedor: opType == "Ingreso" ? "78570660-5" : "",
+      rutPoseedor: opType == "Ingreso" ? "78507660-5" : "",
     };
     if (!rutProveedor || !productPN || !nroFactura || !fechaCompra) {
       console.log("aun hay campos vacios");
@@ -66,20 +58,23 @@ const InventoryHeader = ({ opType }) => {
       <div className="box mb-1">
         <nav className="level">
           <div className="level-left">
-            <div className="field has-addons">
-              <Filter setQuery={setQuery} />
-              <div className="control">
-                <a
-                  className={`button ${
-                    state.loading ? "is-loading" : "is-hidden"
-                  }`}
-                >
-                  <span className="icon">
+            <fieldset disabled={state.loadingClientes}>
+              <div className="field has-addons">
+                <Filter setQuery={setQuery} />
+                <div className="control">
+                  <a
+                    className={`button ${
+                      state.loadingClientes ? "is-loading" : "is-static"
+                    }`}
+                  >
+                    Busqueda de empresas
+                    {/* <span className="icon">
                     <i className="fas fa-spinner"></i>
-                  </span>
-                </a>
+                  </span> */}
+                  </a>
+                </div>
               </div>
-            </div>
+            </fieldset>
           </div>
         </nav>
       </div>
@@ -88,121 +83,101 @@ const InventoryHeader = ({ opType }) => {
       <div className="box">
         <div className="columns">
           <div className="column">
-            <div
-              className="field is-grouped is-grouped-multiline"
-              style={{ maxWidth: "fit-content" }}
+            <fieldset
+              title={
+                !Boolean(state.rutProveedor)
+                  ? "Escriba en el cuadro de busqueda y seleccione un cliente"
+                  : null
+              }
+              disabled={!Boolean(state.rutProveedor)}
             >
-              <div className="control block">
-                <label className="label">
-                  {id == "Ingreso" ? "RUT Proveedor" : "RUT Cliente"}
-                </label>
-                <input
-                  readOnly
-                  disabled
-                  type="text"
-                  className="input is-small"
-                  value={state.rutProveedor}
-                />
-              </div>
+              <div
+                className="field is-grouped is-grouped-multiline"
+                style={{ maxWidth: "fit-content" }}
+              >
+                <div className="control block">
+                  <label className="label">
+                    {id == "Ingreso" ? "RUT Proveedor" : "RUT Cliente"}
+                  </label>
+                  <input
+                    readOnly
+                    disabled
+                    type="text"
+                    className="input is-small"
+                    value={state.rutProveedor}
+                  />
+                </div>
 
-              <div className="control block ">
-                <label className="label">Fecha de Compra</label>
-                <div className="control has-icons-right">
+                <div className="control block ">
+                  <label className="label">Fecha de Compra</label>
+                  <div className="control has-icons-right">
+                    <input
+                      onChange={(e) => {
+                        setFechaCompra(e.target.value);
+                      }}
+                      onBlur={() => {
+                        buildHeader();
+                      }}
+                      type="date"
+                      placeholder="dd-mm-yyyy"
+                      className="input is-small"
+                      value={fechaCompra}
+                    />
+                    <span className="icon is-small is-right">
+                      <i className="fas fa-calendar-alt"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="control block">
+                  <label className="label">Numero de Factura</label>
                   <input
                     onChange={(e) => {
-                      setFechaCompra(e.target.value);
+                      setNroFactura(e.target.value);
                     }}
                     onBlur={() => {
                       buildHeader();
                     }}
-                    type="date"
-                    placeholder="dd-mm-yyyy"
+                    type="text"
                     className="input is-small"
-                    value={fechaCompra}
+                    value={nroFactura}
                   />
-                  <span className="icon is-small is-right">
-                    <i className="fas fa-calendar-alt"></i>
-                  </span>
                 </div>
               </div>
-
-              <div className="control block">
-                <label className="label">Numero de Factura</label>
-                <input
-                  onChange={(e) => {
-                    setNroFactura(e.target.value);
-                  }}
-                  onBlur={() => {
-                    buildHeader();
-                  }}
-                  type="text"
-                  className="input is-small"
-                  value={nroFactura}
-                />
+              {/* /////////////// */}
+              <label className="label">Numero de Parte</label>
+              <div
+                className="field has-addons"
+                style={{ maxWidth: "fit-content" }}
+              >
+                <span className="control">
+                  <input
+                    onChange={(e) => {
+                      setProductPN(e.target.value.toUpperCase());
+                    }}
+                    onBlur={() => {
+                      buildHeader();
+                    }}
+                    type="list"
+                    className="input is-small "
+                    value={productPN}
+                  />
+                </span>
+                <div className="control">
+                  <a
+                    onClick={() => {
+                      getProductData();
+                      dispatch({ type: type.setPN, payload: productPN });
+                    }}
+                    className="button is-info is-small"
+                  >
+                    Buscar
+                  </a>
+                </div>
               </div>
-            </div>
-            {/* /////////////// */}
-            <label className="label">Numero de Parte</label>
-            <div
-              className="field has-addons"
-              style={{ maxWidth: "fit-content" }}
-            >
-              <span className="control">
-                <input
-                  onChange={(e) => {
-                    setProductPN(e.target.value.toUpperCase());
-                  }}
-                  onBlur={() => {
-                    buildHeader();
-                  }}
-                  type="list"
-                  className="input is-small "
-                  value={productPN}
-                />
-              </span>
-              <div className="control">
-                <a
-                  onClick={() => {
-                    getProductData();
-                    dispatch({ type: type.setPN, payload: productPN });
-                    // getProductImage();
-                    // notification.current.classList.remove("is-hidden");
-                  }}
-                  className="button is-info is-small"
-                >
-                  Buscar
-                </a>
-              </div>
-            </div>
+            </fieldset>
           </div>
           <div className="column">
-            {/* ///////// NOTIFICATION ///////// */}
-            {/* <div
-              ref={notification}
-              // style={{ width: "60%" }}
-              className="message is-info is-small mx-3 inventory-notification is-hidden"
-            >
-              <div className="message-header">
-                <p>Nombre Equipo</p>
-                <button
-                  onClick={() => {
-                    closeNotification();
-                  }}
-                  className="delete is-small"
-                ></button>
-              </div>
-              <div className="message-body">
-                {console.log(Boolean(state.productData))}
-                {state.productData?.description || (
-                  <div
-                    disabled
-                    className="button is-danger is-small is-loading"
-                  ></div>
-                )}
-              </div>
-            </div> */}
-
-            {/* ///////////////////////////////////// */}
             {Boolean(state.productData.item) ? (
               <ProductCard
                 description={state.productData?.description || "vacio"}

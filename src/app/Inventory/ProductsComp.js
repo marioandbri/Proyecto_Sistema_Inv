@@ -5,7 +5,7 @@ import React, {
   useReducer,
   useContext,
 } from "react";
-import { notificationType } from "../Notification";
+import Notification, { notificationTypes } from "../Notification";
 import { useFetch } from "../useFetch";
 import { useProductTypes } from "../useProductTypes";
 import {
@@ -40,7 +40,7 @@ const ProductsComp = () => {
   const handleInput = (e, i) => {
     //Creates a shallow copy of the fields
     let newFieldValues = [...productfield];
-    let inputData = e.target.value.toUpperCase();
+    let inputData = e.target.value.toUpperCase().trim();
     newFieldValues[i].isValid = true;
     // console.log(json.includes(inputData));
     //format the input to upper case and sets to the field[index]
@@ -130,35 +130,61 @@ const ProductsComp = () => {
           });
       });
       console.log(products);
-      let notification = "";
       const result = await fetch("/inventario", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(products),
-      }).then((response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            notification = data;
-            return notificationType.success;
-          });
-        } else {
-          response.json().then((data) => {
-            notification = data;
-            return notificationType.danger;
-          });
-        }
       });
-      dispatch({
-        type: type.addNotification,
-        payload: { content: notification, type: result },
-      }); // notification arguments: content, type .(index) is passed in reducer
-      // const responseData = await result.json();
-      // .then(() => console.log("hubo un error"));
-      console.log(result);
+      console.log(result, "result await fetch");
+      const data = await result.json();
+      if (result.ok) {
+        console.log(data, "1");
+        console.log("2");
+        dispatch({
+          type: type.addNotification,
+          payload: {
+            content: data.message,
+            notificationType: notificationTypes.success,
+          },
+        }); // notification arguments: content, type .(index) is passed in reducer
+      } else {
+        const error = data;
+        let detail = "";
+        let badIndex = "";
+        for (const { message, value } of error.data.errors) {
+          detail += `${value} ${message}.`;
+          badIndex = productfield
+            .map((e) => e.numeroSerie)
+            .indexOf(value.toString());
+        }
+        console.log(detail);
+        console.log(badIndex);
+        let badFields = [...productfield];
+        badFields[badIndex].isValid = false;
+        setProductField(badFields);
+
+        console.error(error.data.errors);
+        dispatch({
+          type: type.addNotification,
+          payload: {
+            detail,
+            content: error.message,
+            notificationType: notificationTypes.danger,
+          },
+        }); // notification arguments: content, type .(index) is passed in reducer
+      }
+
       setLoading(false);
     } else {
+      dispatch({
+        type: type.addNotification,
+        payload: {
+          content: "Faltan datos en la cabecera",
+          notificationType: notificationTypes.warning,
+        },
+      }); //
       console.log("cabecera vacia");
       setLoading(false);
     }
@@ -180,6 +206,16 @@ const ProductsComp = () => {
           <div key={index} className="field has-addons block">
             <span className="control has-icons-right">
               <input
+                onBlur={async (elem) => {
+                  const found = await fetch(
+                    `/inventario/${elem.target.value}`
+                  ).then((res) => res.json());
+                  if (found) {
+                    let duplicatedElem = [...productfield];
+                    duplicatedElem[index].isValid = false;
+                    setProductField(duplicatedElem);
+                  }
+                }}
                 onChange={(e) => {
                   handleInput(e, index);
                 }}
@@ -234,7 +270,15 @@ const ProductsComp = () => {
             <span>Agregar campo</span>
           </a>
         </div> */}
-        <div style={{ position: "sticky", top: "90%" }} className="buttons">
+        <div
+          style={{
+            position: "sticky",
+            top: "90%",
+            width: "fit-content",
+            marginBottom: 0,
+          }}
+          className="buttons"
+        >
           <a
             className={`button is-success ${loading ? "is-loading" : ""}`}
             onClick={() => {
@@ -258,7 +302,9 @@ const ProductsComp = () => {
             <span> Limpiar Campos</span>
           </a>
         </div>
-        {state.notifications.map((e) => e)}
+        {state.notifications.map((e, index) => (
+          <Notification key={index} {...e} notificationIndex={index} />
+        ))}
       </div>
     </>
   );

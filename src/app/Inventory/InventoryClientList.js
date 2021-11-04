@@ -1,13 +1,19 @@
 import React from "react";
 import { useFetch } from "../useFetch";
 import { useFilter } from "../useFilter";
+import { useDispatch } from "./InventoryProvider";
+import { type } from "./InventoryReducer";
 
 const InventoryClientList = ({ query, selectClient }) => {
+  const dispatch = useDispatch();
   const { loading: loadingClientes, data: clientesData } = useFetch("/cliente");
   const dataFiltered = useFilter(query, clientesData);
   const result = dataFiltered.splice(0, 10);
+  React.useEffect(() => {
+    dispatch({ type: type.LOADING_CLIENTES, payload: loadingClientes });
+    return () => {};
+  }, [loadingClientes]);
 
-  // console.log("componente clientes renderizado");
   return (
     <>
       <div

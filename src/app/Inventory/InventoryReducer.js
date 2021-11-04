@@ -1,7 +1,3 @@
-import React from "react";
-import { useFetch } from "../useFetch";
-import Notification from "../Notification";
-
 export const type = {
   find: "FIND",
   selectClient: "SELECT_CLIENT",
@@ -13,6 +9,8 @@ export const type = {
   prepareIngreso: "Sets Arrienda Rut to rutposeedor",
   setProductsHeader: "Sets the data for the products header",
   addNotification: "Add a notification component",
+  removeNotification: "Remove notification for the index parameter",
+  LOADING_CLIENTES: "loading",
 };
 
 export const initialInventory = {
@@ -61,12 +59,20 @@ const InventoryReducer = (state, action) => {
       return { ...state, productsHeader: action.payload };
     case type.addNotification:
       let actualNotis = [...state.notifications];
-      let newNotification = (
-        <Notification {...action.payload} index={actualNotis.length} />
-      );
+      let newNotification = {
+        detail: action.payload?.detail,
+        content: action.payload.content,
+        notificationType: action.payload.notificationType,
+      };
       actualNotis.push(newNotification);
       return { ...state, notifications: actualNotis };
-
+    case type.removeNotification:
+      let notificationIndex = action.payload;
+      let arrayRemove = [...state.notifications];
+      arrayRemove.splice(notificationIndex, 1);
+      return { ...state, notifications: arrayRemove };
+    case type.LOADING_CLIENTES:
+      return { ...state, loadingClientes: action.payload };
     default:
       return state;
   }

@@ -1,24 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTable, useSortBy, useFilters, usePagination } from "react-table";
+import { useFetch } from "../useFetch";
 import { UseRTPagination } from "../useRTPagination";
 import ColumnFilter from "./ColumnFilter";
-import MOCK_DATA from "./MOCK_DATA.json";
+import LoadingBar from "../LoadingBar";
 
 const InventoryTableData = () => {
-  const data = React.useMemo(() => MOCK_DATA, []);
+  const { loading, data: inventoryData } = useFetch("inventario");
+  console.log(inventoryData);
+  const data = React.useMemo(() => inventoryData, [loading]);
+  console.log(data);
+  const [readMore, setReadMore] = useState(false);
+  const toggleReadMore = () => {
+    setReadMore(!readMore);
+  };
 
   const columns = React.useMemo(
     () => [
       {
-        Header: "Column 1",
+        Header: "Numero de Serie",
 
-        accessor: "col1", // accessor is the "key" in the data
+        accessor: "numeroSerie", // accessor is the "key" in the data
       },
 
       {
-        Header: "Column 2",
+        Header: "Numero de Parte",
 
-        accessor: "col2",
+        accessor: "productPN",
+      },
+      {
+        Header: "Rut Poseedor",
+
+        accessor: "rutPoseedor",
+      },
+      {
+        Header: "Fecha de Compra",
+
+        accessor: "fechaCompra",
+      },
+      {
+        Header: "Proveedor",
+
+        accessor: "rutProveedor",
+      },
+      {
+        Header: "Factura Nro",
+
+        accessor: "nroFactura",
       },
     ],
     []
@@ -92,50 +120,78 @@ const InventoryTableData = () => {
    * pageSize => value for items per page
    */
 
-  return (
-    <>
-      <table className="table is-fullwidth" {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>
-                  {column.render("Header")}
-                  <span
-                    onClick={() => {
-                      column.toggleSortBy();
-                    }}
-                  >
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? sortUpIcon
-                        : sortDownIcon
-                      : sortIcon}
-                  </span>
-                  <div>{column.canFilter ? column.render("Filter") : null}</div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
+  if (!loading) {
+    return (
+      <>
+        <table className="table is-fullwidth" {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                    <span
+                      onClick={() => {
+                        column.toggleSortBy();
+                      }}
+                    >
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? sortUpIcon
+                          : sortDownIcon
+                        : sortIcon}
+                    </span>
+                    <div>
+                      {column.canFilter ? column.render("Filter") : null}
+                    </div>
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <div>{PaginationComponent}</div>
-    </>
-  );
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    if (cell.column.id == "productPN") {
+                      console.log(cell.value.substring(0, 100));
+                      return (
+                        <td {...cell.getCellProps()}>
+                          {readMore
+                            ? cell.render("Cell")
+                            : cell.value.substring(0, 100)}
+                          <a
+                            onClick={() => {
+                              toggleReadMore();
+                            }}
+                          >
+                            {!readMore ? "...Ver Mas" : ". Ver Menos"}
+                          </a>
+                        </td>
+                      );
+                    } else {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    }
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div>{PaginationComponent}</div>
+      </>
+    );
+  } else {
+    return (
+      <div className="box">
+        <LoadingBar />
+      </div>
+    );
+  }
 };
 
 export default InventoryTableData;
