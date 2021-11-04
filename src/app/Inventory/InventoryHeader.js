@@ -43,7 +43,7 @@ const InventoryHeader = ({ opType }) => {
       productPN,
       nroFactura,
       fechaCompra,
-      rutPoseedor: opType == "Ingreso" ? "78507660-5" : "",
+      rutPoseedor: opType == "ingreso" ? "78507660-5" : "",
     };
     if (!rutProveedor || !productPN || !nroFactura || !fechaCompra) {
       console.log("aun hay campos vacios");

@@ -28,6 +28,11 @@ const ProductoForm = ({
   //     options = ""
   //   };
   // }, []);
+  useEffect(() => {
+    return () => {
+      productUpdate = "";
+    };
+  }, []);
 
   const ProductOption = [{}];
   if (!loading) {

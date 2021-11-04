@@ -28,9 +28,9 @@ class App extends Component {
                     <p className="title">Bienvenido al sistema de Gestión</p>
                     <p className="subtitle">
                       Esto es un proyecto en Desarrollo...{" "}
-                      <desarrollo className="span icon">
+                      <span className="icon">
                         <i className="fas fa-tools"></i>
-                      </desarrollo>
+                      </span>
                     </p>
                   </div>
                 </section>

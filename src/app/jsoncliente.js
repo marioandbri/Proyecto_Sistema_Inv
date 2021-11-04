@@ -327,7 +327,7 @@ class JsonCliente extends Component {
     });
   };
   cancelarAccion = () => {
-    // this.fetchClientes();
+    this.fetchClientes();
     this.setState({
       input: "",
       input2: "",

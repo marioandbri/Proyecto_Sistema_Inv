@@ -64,45 +64,6 @@ const InventoryMenu = () => {
               </Link>
             </li>
           ))}
-          {/* <li>
-            <Link>
-              <span
-                ref={(e) => (menuItems.current["ingreso"] = e)}
-                onClick={(e) => {
-                  setOperationType(e);
-                }}
-                name="ingreso"
-              >
-                Ingreso
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link>
-              <span
-                ref={(e) => (menuItems.current["entrega"] = e)}
-                onClick={(e) => {
-                  setOperationType(e);
-                }}
-                name="entrega"
-              >
-                Entrega
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link>
-              <span
-                ref={(e) => (menuItems.current["retiro"] = e)}
-                onClick={(e) => {
-                  setOperationType(e);
-                }}
-                name="retiro"
-              >
-                Retiro
-              </span>
-            </Link>
-          </li> */}
         </ul>
       </div>
     </div>
