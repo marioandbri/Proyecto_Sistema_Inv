@@ -24,7 +24,11 @@ export async function getInventarioByQuery(req, res) {
     const busquedaProd = productos.filter((producto) => {
       return producto.partnumber == inventario.productPN;
     });
-    inventario.productPN = `${inventario.productPN} - ${busquedaProd[0]?.DescriptionL}`;
+    // inventario.productPN = `${inventario.productPN} - ${busquedaProd[0]?.DescriptionL}`;
+
+    Object.assign(inventario.dataValues, {
+      descripcion: busquedaProd[0]?.DescriptionL,
+    });
   });
   inventario.forEach((inventario) => {
     const busquedaProv = clientes.filter((cliente) => {
@@ -32,7 +36,11 @@ export async function getInventarioByQuery(req, res) {
     });
 
     // console.log(busquedaProv);
-    inventario.rutProveedor = `${inventario.rutProveedor} - ${busquedaProv[0]?.razonsocial}`;
+    // inventario.rutProveedor = `${inventario.rutProveedor} - ${busquedaProv[0]?.razonsocial}`;
+
+    Object.assign(inventario.dataValues, {
+      proveedor: busquedaProv[0]?.razonsocial,
+    });
   });
   inventario.forEach((inventario) => {
     const busquedaPose = clientes.filter((cliente) => {
@@ -40,8 +48,13 @@ export async function getInventarioByQuery(req, res) {
     });
 
     // console.log(busquedaPose);
-    inventario.rutPoseedor = `${inventario.rutPoseedor} - ${busquedaPose[0]?.razonsocial}`;
+    // inventario.rutPoseedor = `${inventario.rutPoseedor} - ${busquedaPose[0]?.razonsocial}`;
+
+    Object.assign(inventario.dataValues, {
+      poseedor: busquedaPose[0]?.razonsocial,
+    });
   });
+  console.log();
   res.json(inventario);
 }
 export async function getInventarioBySerialNumber(req, res) {

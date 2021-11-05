@@ -16,15 +16,41 @@ import ProductCard from "./ProductCard";
 const InventoryHeader = ({ opType }) => {
   const state = useInventory();
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: type.setOperationType, payload: opType });
+    return () => {};
+  }, [opType]);
+  const initalState = {
+    query: "",
+    productPN: "",
+    nroFactura: "",
+    fechaCompra: "",
+  };
+  const [innerState, setInnerState] = useState(initalState);
 
-  const [query, setQuery] = useState("");
-  const [productPN, setProductPN] = useState("");
-  const [nroFactura, setNroFactura] = useState("");
-  const [fechaCompra, setFechaCompra] = useState("");
+  const setQuery = (value) => {
+    let state = { ...innerState };
+    state.query = value;
+    setInnerState(state);
+  };
+
+  // const [query, setQuery] = useState("");
+  // const [productPN, setProductPN] = useState("");
+  // const [nroFactura, setNroFactura] = useState("");
+  // const [fechaCompra, setFechaCompra] = useState("");
+  const handleInputs = (elem) => {
+    let state = { ...innerState };
+    state[elem.target.name] =
+      elem.target.name == "productPN"
+        ? elem.target.value.toUpperCase()
+        : elem.target.value;
+    setInnerState(state);
+  };
+
   const id = opType;
 
   const getProductData = async () => {
-    const result = await fetch(`/producto/partnumber/${productPN}`);
+    const result = await fetch(`/producto/partnumber/${innerState.productPN}`);
     const data = await result.json();
     console.log(data);
     dispatch({ type: type.setProductData, payload: data });
@@ -38,14 +64,25 @@ const InventoryHeader = ({ opType }) => {
 
   const buildHeader = () => {
     let rutProveedor = state.rutProveedor;
+    // let header = {
+    //   rutProveedor,
+    //   productPN,
+    //   nroFactura,
+    //   fechaCompra,
+    //   rutPoseedor: opType == "ingreso" ? "78507660-5" : "",
+    // };
     let header = {
       rutProveedor,
-      productPN,
-      nroFactura,
-      fechaCompra,
+      ...innerState,
       rutPoseedor: opType == "ingreso" ? "78507660-5" : "",
     };
-    if (!rutProveedor || !productPN || !nroFactura || !fechaCompra) {
+    console.log(header);
+    if (
+      !header.rutProveedor ||
+      !header.productPN ||
+      !header.nroFactura ||
+      !header.fechaCompra
+    ) {
       console.log("aun hay campos vacios");
     } else {
       console.log(header);
@@ -78,7 +115,10 @@ const InventoryHeader = ({ opType }) => {
           </div>
         </nav>
       </div>
-      <InventoryClientList query={query} selectClient={selectClient} />
+      <InventoryClientList
+        query={innerState.query}
+        selectClient={selectClient}
+      />
 
       <div className="box">
         <div className="columns">
@@ -113,7 +153,7 @@ const InventoryHeader = ({ opType }) => {
                   <div className="control has-icons-right">
                     <input
                       onChange={(e) => {
-                        setFechaCompra(e.target.value);
+                        handleInputs(e);
                       }}
                       onBlur={() => {
                         buildHeader();
@@ -121,7 +161,8 @@ const InventoryHeader = ({ opType }) => {
                       type="date"
                       placeholder="dd-mm-yyyy"
                       className="input is-small"
-                      value={fechaCompra}
+                      name="fechaCompra"
+                      value={innerState.fechaCompra}
                     />
                     <span className="icon is-small is-right">
                       <i className="fas fa-calendar-alt"></i>
@@ -133,14 +174,15 @@ const InventoryHeader = ({ opType }) => {
                   <label className="label">Numero de Factura</label>
                   <input
                     onChange={(e) => {
-                      setNroFactura(e.target.value);
+                      handleInputs(e);
                     }}
                     onBlur={() => {
                       buildHeader();
                     }}
                     type="text"
                     className="input is-small"
-                    value={nroFactura}
+                    name="nroFactura"
+                    value={innerState.nroFactura}
                   />
                 </div>
               </div>
@@ -153,21 +195,25 @@ const InventoryHeader = ({ opType }) => {
                 <span className="control">
                   <input
                     onChange={(e) => {
-                      setProductPN(e.target.value.toUpperCase());
+                      handleInputs(e);
                     }}
                     onBlur={() => {
                       buildHeader();
                     }}
                     type="list"
                     className="input is-small "
-                    value={productPN}
+                    name="productPN"
+                    value={innerState.productPN}
                   />
                 </span>
                 <div className="control">
                   <a
                     onClick={() => {
                       getProductData();
-                      dispatch({ type: type.setPN, payload: productPN });
+                      dispatch({
+                        type: type.setPN,
+                        payload: innerState.productPN,
+                      });
                     }}
                     className="button is-info is-small"
                   >

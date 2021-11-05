@@ -10,13 +10,6 @@ import Productos from "./productos";
 //   return description;
 // };
 
-const somePromise = () =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("whatever");
-    }, 500);
-  });
-
 const Inventario = sequelize.define(
   "inventario",
   {
@@ -26,30 +19,7 @@ const Inventario = sequelize.define(
     },
     productPN: {
       type: Sequelize.TEXT,
-      // get() {
-      //   return (async () => {
-      //     console.log("begin calling");
-      //     const getDes = async () => {
-      //       let description = "";
-      //       const rawValue = this.getDataValue("productPN");
-      //       console.log("async fn");
-      //       const descr = Productos.findOne({
-      //         partnumber: rawValue,
-      //       })
-      //         .exec()
-      //         .then((data) => {
-      //           return data?.DescriptionL;
-      //         });
-      //       const result = await descr;
-      //       description = `${rawValue} - ${result}`;
-      //       return description;
-      //     };
-      //     const fulldescr = getDes();
-      //     console.log(await fulldescr);
-      //     console.log("finish calling");
-      //     return await fulldescr;
-      //   })();
-      // },
+      allowNull: false,
     },
     rutPoseedor: {
       type: Sequelize.TEXT,

@@ -50,10 +50,14 @@ tr:hover .button {
   }
 }
 .notification {
+  opacity: 0.7;
   position: absolute;
   bottom: 2%;
   padding: 0.5rem;
-  animation: notificacion 0.5s;
+  animation: notificacion 0.5s cubic-bezier(0.52, 1.56, 0.64, 0.79);
+}
+.notification:hover {
+  opacity: 1;
 }
 .notification > .delete {
   position: relative;
@@ -63,10 +67,10 @@ tr:hover .button {
 }
 @keyframes notificacion {
   from {
-    bottom: -10%;
+    right: -30%;
   }
   to {
-    bottom: 2%;
+    right: 3%;
   }
 }
 

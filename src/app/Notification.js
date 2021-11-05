@@ -17,12 +17,19 @@ const Notification = ({
   const dispatch = useDispatch();
   let notificationId = `notification-${notificationIndex}`;
   const position = (notificationIndex + 1) * 5;
+  const closeNotification = (i) => {
+    dispatch({
+      type: type.removeNotification,
+      payload: i,
+    });
+  };
+
   return (
     <div
       style={{
         margin: "1px",
         position: "fixed",
-        right: "5%",
+        right: "3%",
         bottom: `${position}%`,
       }}
       id={notificationId}
@@ -31,10 +38,7 @@ const Notification = ({
       {content} {detail}
       <button
         onClick={() => {
-          dispatch({
-            type: type.removeNotification,
-            payload: notificationIndex,
-          });
+          closeNotification(notificationIndex);
         }}
         className="delete"
       ></button>

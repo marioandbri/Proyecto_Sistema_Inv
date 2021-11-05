@@ -29,9 +29,19 @@ const InventoryTableData = () => {
         accessor: "productPN",
       },
       {
+        Header: "Descripción",
+
+        accessor: "descripcion",
+      },
+      {
         Header: "Rut Poseedor",
 
         accessor: "rutPoseedor",
+      },
+      {
+        Header: "Poseedor",
+
+        accessor: "poseedor",
       },
       {
         Header: "Fecha de Compra",
@@ -39,9 +49,14 @@ const InventoryTableData = () => {
         accessor: "fechaCompra",
       },
       {
-        Header: "Proveedor",
+        Header: "RUT Proveedor",
 
         accessor: "rutProveedor",
+      },
+      {
+        Header: "Proveedor",
+
+        accessor: "proveedor",
       },
       {
         Header: "Factura Nro",
@@ -149,13 +164,13 @@ const InventoryTableData = () => {
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()}>
+          <tbody className="is-size-7" {...getTableBodyProps()}>
             {page.map((row) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
-                    if (cell.column.id == "productPN") {
+                    if (cell.column.id == "descripcion") {
                       console.log(cell.value.substring(0, 100));
                       return (
                         <td {...cell.getCellProps()}>

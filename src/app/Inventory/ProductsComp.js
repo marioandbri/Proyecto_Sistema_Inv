@@ -5,6 +5,7 @@ import React, {
   useReducer,
   useContext,
 } from "react";
+import { Link } from "react-router-dom";
 import Notification, { notificationTypes } from "../Notification";
 import { useFetch } from "../useFetch";
 import { useProductTypes } from "../useProductTypes";
@@ -20,29 +21,19 @@ const ProductsComp = () => {
     numeroSerie: "",
   };
 
-  // const notification = useRef([]);
   const state = useInventory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  // const { loading: loadingTypes, data: options } = useProductTypes();
-
-  // const { url } = state;
-
   const [productfield, setProductField] = useState([
     { numeroSerie: "", isEmpty: true, isValid: false },
   ]);
-
-  // const { loading, data } = useFetch(url);
-
-  // let products = [];
 
   const handleInput = (e, i) => {
     //Creates a shallow copy of the fields
     let newFieldValues = [...productfield];
     let inputData = e.target.value.toUpperCase().trim();
     newFieldValues[i].isValid = true;
-    // console.log(json.includes(inputData));
     //format the input to upper case and sets to the field[index]
     newFieldValues[i][e.target.name] = inputData;
     // if (!newFieldValues.includes(inputData)) {
@@ -145,7 +136,7 @@ const ProductsComp = () => {
         dispatch({
           type: type.addNotification,
           payload: {
-            content: data.message,
+            content: `✅ ${data.message}`,
             notificationType: notificationTypes.success,
           },
         }); // notification arguments: content, type .(index) is passed in reducer
@@ -170,7 +161,7 @@ const ProductsComp = () => {
           type: type.addNotification,
           payload: {
             detail,
-            content: error.message,
+            content: `⛔ ${error.message}`,
             notificationType: notificationTypes.danger,
           },
         }); // notification arguments: content, type .(index) is passed in reducer
@@ -181,7 +172,7 @@ const ProductsComp = () => {
       dispatch({
         type: type.addNotification,
         payload: {
-          content: "Faltan datos en la cabecera",
+          content: "⚠ Faltan datos en la cabecera",
           notificationType: notificationTypes.warning,
         },
       }); //
@@ -205,6 +196,7 @@ const ProductsComp = () => {
         {productfield.map((e, index) => (
           <div key={index} className="field has-addons block">
             <span className="control has-icons-right">
+              <span>{index + 1}</span>
               <input
                 onBlur={async (elem) => {
                   const found = await fetch(
@@ -290,12 +282,7 @@ const ProductsComp = () => {
             </span>
             <span>Ingresar Equipos</span>
           </a>
-          <a
-            className="button is-info"
-            onClick={() => {
-              ////////////////todo
-            }}
-          >
+          <a className="button is-info" onClick={() => {}}>
             <span className="icon is-small">
               <i className="fas fa-undo"></i>
             </span>
