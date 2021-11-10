@@ -1,7 +1,7 @@
 import React from "react";
 
 export const UseRTPagination = (props) => {
-  console.log(props);
+  // console.log(props);
   const {
     nextPage,
     previousPage,

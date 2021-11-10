@@ -22,7 +22,7 @@ const Index = () => {
         {/* style={{ minHeight: "92vh" }}
             className="tile is-vertical is-parent"
           > */}
-        <div className=" box">
+        <div className="has-background-info-light box">
           <InventoryMenu />
           <Switch>
             <Route exact path={path}>

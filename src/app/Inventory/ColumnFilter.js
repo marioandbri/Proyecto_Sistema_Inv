@@ -5,6 +5,7 @@ const ColumnFilter = ({ column }) => {
   return (
     <span>
       <input
+        style={{ position: "relative" }}
         type="text"
         className="input is-small"
         value={filterValue || ""}

@@ -20,9 +20,9 @@ router.get("/inventario/:sn", getInventarioBySerialNumber);
 router.get("/inventario", getInventarioByQuery);
 
 //Update
-router.put("/inventario/:SerialNumber", updateInventario);
+router.put("/inventario/:sn", updateInventario);
 
 //Delete
-router.delete("/inventario/:SerialNumber", deleteInventario);
+router.delete("/inventario/:sn", deleteInventario);
 
 module.exports = router;

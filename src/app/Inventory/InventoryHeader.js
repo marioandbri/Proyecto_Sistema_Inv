@@ -12,6 +12,7 @@ import InventoryClientList from "./InventoryClientList";
 import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 import ProductCard from "./ProductCard";
+import { notificationTypes } from "../Notification";
 
 const InventoryHeader = ({ opType }) => {
   const state = useInventory();
@@ -52,8 +53,17 @@ const InventoryHeader = ({ opType }) => {
   const getProductData = async () => {
     const result = await fetch(`/producto/partnumber/${innerState.productPN}`);
     const data = await result.json();
-    console.log(data);
-    dispatch({ type: type.setProductData, payload: data });
+    if (!data.item) {
+      dispatch({
+        type: type.addNotification,
+        payload: {
+          content: "🤔 Lo siento, No se encontró ningún producto coincidente",
+          notificationType: notificationTypes.warning,
+        },
+      }); //
+    } else {
+      dispatch({ type: type.setProductData, payload: data });
+    }
   };
 
   const selectClient = useCallback((e) => {
@@ -89,6 +99,16 @@ const InventoryHeader = ({ opType }) => {
       dispatch({ type: type.setProductsHeader, payload: header });
     }
   };
+  const resetState = () => {
+    dispatch({ type: type.selectClient, payload: "" });
+    setInnerState(initalState);
+  };
+  useEffect(() => {
+    if (state.rutProveedor == "") {
+      setInnerState(initalState);
+    }
+    return () => {};
+  }, [state.rutProveedor]);
 
   return (
     <>
@@ -97,7 +117,7 @@ const InventoryHeader = ({ opType }) => {
           <div className="level-left">
             <fieldset disabled={state.loadingClientes}>
               <div className="field has-addons">
-                <Filter setQuery={setQuery} />
+                <Filter query={innerState.query} setQuery={setQuery} />
                 <div className="control">
                   <a
                     className={`button ${
@@ -120,7 +140,7 @@ const InventoryHeader = ({ opType }) => {
         selectClient={selectClient}
       />
 
-      <div className="box">
+      <div className="box mb-1">
         <div className="columns">
           <div className="column">
             <fieldset
@@ -137,7 +157,7 @@ const InventoryHeader = ({ opType }) => {
               >
                 <div className="control block">
                   <label className="label">
-                    {id == "Ingreso" ? "RUT Proveedor" : "RUT Cliente"}
+                    {id == "ingreso" ? "RUT Proveedor" : "RUT Cliente"}
                   </label>
                   <input
                     readOnly
@@ -221,6 +241,17 @@ const InventoryHeader = ({ opType }) => {
                   </a>
                 </div>
               </div>
+              <a
+                className="button is-info is-small"
+                onClick={() => {
+                  resetState();
+                }}
+              >
+                <span className="icon is-small">
+                  <i className="fas fa-undo"></i>
+                </span>
+                <span> Limpiar Campos</span>
+              </a>
             </fieldset>
           </div>
           <div className="column">

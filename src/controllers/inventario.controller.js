@@ -4,13 +4,23 @@ import Cliente from "../model/cliente";
 
 export async function createInventario(req, res) {
   const body = req.body;
+  console.log(body);
+  if (body.length < 1) {
+    res.status(400).json({
+      message:
+        "👀 No se ha ingresado ningún producto, revise los campos antes de enviarlos",
+    });
+    return;
+  }
   await Inventario.bulkCreate(body, { validate: true })
     .then((data) =>
       res.json({ message: "Producto Ingresado correctamente", data })
     )
-    .catch((e) =>
-      res.status(400).json({ message: "Ha ocurrido un error", data: e })
-    );
+    .catch((e) => {
+      return res
+        .status(400)
+        .json({ message: "Ha ocurrido un error:", error: e.errors });
+    });
 }
 export async function getInventarioByQuery(req, res) {
   const getInventario = Inventario.findAll({}).then((data) => data);
@@ -63,5 +73,30 @@ export async function getInventarioBySerialNumber(req, res) {
   // console.log(result instanceof Inventario);
   res.json(result instanceof Inventario);
 }
-export async function updateInventario(req, res) {}
-export async function deleteInventario(req, res) {}
+export async function updateInventario(req, res) {
+  const updateItem = req.body;
+  const numeroSerie = req.params.sn;
+  const result = Inventario.update(updateItem, {
+    where: { numeroSerie: numeroSerie },
+  })
+    .then((data) =>
+      res.json({ message: "actualziado correctamente", data: data })
+    )
+    .catch((e) => console.log(e));
+}
+export async function deleteInventario(req, res) {
+  const serialNumber = req.params.sn;
+  const result = await Inventario.destroy({
+    where: {
+      numeroSerie: serialNumber,
+    },
+  })
+    .then(() =>
+      res.json({
+        message: `Numero de serie: ${serialNumber} borrado correctamente`,
+      })
+    )
+    .catch((e) =>
+      res.status(400).json({ message: "Ha ocurrido un error", data: e })
+    );
+}

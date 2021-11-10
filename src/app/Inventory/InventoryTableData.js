@@ -1,19 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useTable, useSortBy, useFilters, usePagination } from "react-table";
 import { useFetch } from "../useFetch";
 import { UseRTPagination } from "../useRTPagination";
 import ColumnFilter from "./ColumnFilter";
 import LoadingBar from "../LoadingBar";
+import TableDataButtons from "./TableDataButtons";
+import EditableCell from "./EditableCell";
+import { useDispatch, useInventory } from "./InventoryProvider";
+import { type } from "./InventoryReducer";
+import TableEditingButtons from "./TableEditingButtons";
 
 const InventoryTableData = () => {
-  const { loading, data: inventoryData } = useFetch("inventario");
-  console.log(inventoryData);
-  const data = React.useMemo(() => inventoryData, [loading]);
-  console.log(data);
-  const [readMore, setReadMore] = useState(false);
-  const toggleReadMore = () => {
-    setReadMore(!readMore);
+  const dispatch = useDispatch();
+  const globalState = useInventory();
+  // const { loading, data: inventoryData } = useFetch("inventario");
+  const [loading, setLoading] = useState(true);
+  const [inventoryData, setInventoryData] = useState([]);
+  const [skipPageReset, setSkipPageReset] = React.useState(false);
+  useEffect(() => {
+    fetchData();
+    return () => {};
+  }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const result = await fetch("/inventario");
+    const resData = await result.json();
+    setLoading(false);
+    setInventoryData(resData);
   };
+
+  const updateData = (rowIndex, columnId, value) => {
+    setSkipPageReset(true);
+    setInventoryData((old) =>
+      old.map((row, index) => {
+        if (index == rowIndex) {
+          return { ...old[rowIndex], [columnId]: value };
+        }
+        return row;
+      })
+    );
+    // console.log(value);
+  };
+  // console.log(inventoryData);
+  const data = React.useMemo(() => inventoryData, [inventoryData]);
+  // const data = inventoryData;
+  // console.log(data);
 
   const columns = React.useMemo(
     () => [
@@ -67,25 +99,25 @@ const InventoryTableData = () => {
     []
   );
   const sortUpIcon = (
-    <span className="icon has-text-info ml-1">
+    <span className="icon has-text-info is-size-6 ml-1">
       <i className="fas fa-sort-amount-up"></i>
     </span>
   );
   const sortDownIcon = (
-    <span className="icon has-text-info ml-1">
+    <span className="icon has-text-info is-size-6 ml-1">
       <i className="fas fa-sort-amount-down"></i>
     </span>
   );
   const sortIcon = (
-    <span className="icon ml-1">
+    <span className="icon is-size-6  ml-1">
       <i className="fas fa-filter"></i>
     </span>
   );
   const defaultColumn = React.useMemo(() => {
-    return { Filter: ColumnFilter };
+    return { Cell: EditableCell, Filter: ColumnFilter };
   }, []);
   const tableInstance = useTable(
-    { columns, data, defaultColumn },
+    { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateData },
     useFilters,
     useSortBy,
     usePagination
@@ -121,7 +153,7 @@ const InventoryTableData = () => {
     setPageSize,
     pageSize,
   };
-  console.log(state);
+  // console.log(state);
   const PaginationComponent = UseRTPagination(paginationProps);
   /**
    * nextPage => next page function ()
@@ -134,6 +166,19 @@ const InventoryTableData = () => {
    * setPageSize => function to set a desired amount of items per page
    * pageSize => value for items per page
    */
+  let rows = useRef([]);
+  const oldData = useRef([]);
+  const editRow = (index) => {
+    oldData.current = [...inventoryData];
+    dispatch({ type: type.EDIT_ROW, payload: index });
+  };
+  const cancelEditRow = (index) => {
+    setInventoryData(oldData.current);
+    dispatch({ type: type.EDIT_ROW, payload: index });
+  };
+  const finalEditRow = (index) => {
+    dispatch({ type: type.EDIT_ROW, payload: index });
+  };
 
   if (!loading) {
     return (
@@ -143,7 +188,11 @@ const InventoryTableData = () => {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
+                  <th
+                    className="is-size-7"
+                    {...column.getHeaderProps()}
+                    // {...column.getSortByToggleProps()}
+                  >
                     {column.render("Header")}
                     <span
                       onClick={() => {
@@ -165,33 +214,33 @@ const InventoryTableData = () => {
             ))}
           </thead>
           <tbody className="is-size-7" {...getTableBodyProps()}>
-            {page.map((row) => {
+            {page.map((row, index) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
-                    if (cell.column.id == "descripcion") {
-                      console.log(cell.value.substring(0, 100));
-                      return (
-                        <td {...cell.getCellProps()}>
-                          {readMore
-                            ? cell.render("Cell")
-                            : cell.value.substring(0, 100)}
-                          <a
-                            onClick={() => {
-                              toggleReadMore();
-                            }}
-                          >
-                            {!readMore ? "...Ver Mas" : ". Ver Menos"}
-                          </a>
-                        </td>
-                      );
-                    } else {
-                      return (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                      );
-                    }
+                    rows.current[index] = false;
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
                   })}
+                  {!globalState.editingRows.includes(row.index) ? (
+                    <TableDataButtons
+                      editRow={editRow}
+                      index={index}
+                      row={row}
+                      reloadData={fetchData}
+                    />
+                  ) : (
+                    <TableEditingButtons
+                      row={row}
+                      index={index}
+                      reloadData={fetchData}
+                      updateData={updateData}
+                      cancelEditRow={cancelEditRow}
+                      finalEditRow={finalEditRow}
+                    />
+                  )}
                 </tr>
               );
             })}

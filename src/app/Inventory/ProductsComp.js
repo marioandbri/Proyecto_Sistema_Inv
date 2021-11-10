@@ -17,17 +17,11 @@ import {
 import { type } from "./InventoryReducer";
 
 const ProductsComp = () => {
-  const productObj = {
-    numeroSerie: "",
-  };
-
   const state = useInventory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
-  const [productfield, setProductField] = useState([
-    { numeroSerie: "", isEmpty: true, isValid: false },
-  ]);
+  const initialInputs = { numeroSerie: "", isEmpty: true, isValid: false };
+  const [productfield, setProductField] = useState([initialInputs]);
 
   const handleInput = (e, i) => {
     //Creates a shallow copy of the fields
@@ -40,7 +34,6 @@ const ProductsComp = () => {
     //   newFieldValues[i].isValid == true;
     // } else {
     //   newFieldValues[i].isValid == false;
-    //   console.log(`campo ${i} repedito`);
     // }
     //Update the state
     setProductField(newFieldValues);
@@ -77,7 +70,13 @@ const ProductsComp = () => {
     let newFields = [...productfield];
     !(newFields.length <= 1)
       ? newFields.splice(i, 1)
-      : console.log("debe haber al menos 1 campo");
+      : dispatch({
+          type: type.addNotification,
+          payload: {
+            content: "⚠ Debe haber al menos un campo",
+            notificationType: notificationTypes.warning,
+          },
+        }); //;
     setProductField(newFields);
   };
   const invalidateField = () => {
@@ -89,9 +88,7 @@ const ProductsComp = () => {
       }
       return acc;
     }, {});
-    console.log(busqueda, "busqueda");
 
-    console.log(invalidIndex);
     return invalidIndex;
     // const duplicados = productfield.filter((producto) => {
     //   return busqueda[producto.numeroSerie];
@@ -107,96 +104,121 @@ const ProductsComp = () => {
     return () => {};
   }, [productfield]);
 
-  const serialNumbers = useRef([]);
+  // const serialNumbers = useRef([]);
 
   const createInBulk = async () => {
     setLoading(true);
     let products = [];
-    if (state.productsHeader) {
-      productfield.forEach((e) => {
-        if (e.isValid)
-          products.push({
-            ...state.productsHeader,
-            numeroSerie: e.numeroSerie,
-          });
-      });
-      console.log(products);
-      const result = await fetch("/inventario", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(products),
-      });
-      console.log(result, "result await fetch");
-      const data = await result.json();
-      if (result.ok) {
-        console.log(data, "1");
-        console.log("2");
-        dispatch({
-          type: type.addNotification,
-          payload: {
-            content: `✅ ${data.message}`,
-            notificationType: notificationTypes.success,
-          },
-        }); // notification arguments: content, type .(index) is passed in reducer
-      } else {
-        const error = data;
-        let detail = "";
-        let badIndex = "";
-        for (const { message, value } of error.data.errors) {
-          detail += `${value} ${message}.`;
-          badIndex = productfield
-            .map((e) => e.numeroSerie)
-            .indexOf(value.toString());
-        }
-        console.log(detail);
-        console.log(badIndex);
-        let badFields = [...productfield];
-        badFields[badIndex].isValid = false;
-        setProductField(badFields);
+    let validProducts = productfield.filter((e) => e.isValid == true).length;
 
-        console.error(error.data.errors);
-        dispatch({
-          type: type.addNotification,
-          payload: {
-            detail,
-            content: `⛔ ${error.message}`,
-            notificationType: notificationTypes.danger,
-          },
-        }); // notification arguments: content, type .(index) is passed in reducer
-      }
-
-      setLoading(false);
-    } else {
+    const confirmSend = confirm(
+      `¿Está seguro que desea ingresar ${validProducts} registros?`
+    );
+    if (!confirmSend) {
       dispatch({
         type: type.addNotification,
         payload: {
-          content: "⚠ Faltan datos en la cabecera",
-          notificationType: notificationTypes.warning,
+          content: `🛑 Se cancelo la operación`,
+          notificationType: notificationTypes.info,
         },
-      }); //
-      console.log("cabecera vacia");
+      });
       setLoading(false);
+    } else {
+      if (state.productsHeader) {
+        productfield.forEach((e) => {
+          if (e.isValid) {
+            products.push({
+              ...state.productsHeader,
+              numeroSerie: e.numeroSerie,
+            });
+          }
+        });
+        if (productfield.filter((e) => e.isValid == false).length > 1) {
+          products = [];
+        }
+        console.log(products);
+        const result = await fetch("/inventario", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(products),
+        });
+        console.log(result, "result await fetch");
+        const data = await result.json();
+        if (result.ok) {
+          dispatch({
+            type: type.addNotification,
+            payload: {
+              content: `✅ ${data.message}`,
+              notificationType: notificationTypes.success,
+            },
+          }); // notification arguments: content, type .(index) is passed in reducer
+          dispatch({ type: type.selectClient, payload: "" });
+          resetInputs();
+        } else {
+          const errors = data.error || "";
+          let detail = "";
+          let badIndex = "";
+          if (Boolean(errors)) {
+            for (const { message, value } of errors) {
+              detail += `${value} ${message}.`;
+              badIndex = productfield
+                .map((e) => e.numeroSerie)
+                .indexOf(value.toString());
+            }
+            let badFields = [...productfield];
+            badFields[badIndex].isValid = false;
+            setProductField(badFields);
+
+            // console.error(error.data.errors);
+          }
+          console.log(errors);
+          dispatch({
+            type: type.addNotification,
+            payload: {
+              detail,
+              content: `⛔ ${data.message}`,
+              notificationType: notificationTypes.danger,
+            },
+          }); // notification arguments: content, type .(index) is passed in reducer
+        }
+
+        setLoading(false);
+      } else {
+        dispatch({
+          type: type.addNotification,
+          payload: {
+            content: "⚠ Faltan datos en la cabecera",
+            notificationType: notificationTypes.warning,
+          },
+        }); //
+        console.log("cabecera vacia");
+        setLoading(false);
+      }
     }
   };
 
+  const resetInputs = () => {
+    setProductField([initialInputs]);
+  };
   return (
     <>
       <div
         style={{
           minHeight: "40vh",
-          maxHeight: "50vh",
+          maxHeight: "43vh",
           overflowY: "auto",
         }}
         className=" box "
       >
+        <h2 className="title is-4 is-underlined mb-3">Números de Serie</h2>
         {/* ///////////// PRODUCTS FIELD ///////////// */}
 
         {productfield.map((e, index) => (
           <div key={index} className="field has-addons block">
+            <span className="button is-small is-static">{index + 1}</span>
             <span className="control has-icons-right">
-              <span>{index + 1}</span>
               <input
                 onBlur={async (elem) => {
                   const found = await fetch(
@@ -215,17 +237,21 @@ const ProductsComp = () => {
                 type="text"
                 placeholder="Numero de Serie"
                 className={`input is-small ${
-                  !e.isValid && !e.isEmpty ? "is-danger" : ""
+                  !e.isValid && index != productfield.length - 1
+                    ? "is-danger"
+                    : ""
                 }`}
                 title={
-                  !e.isValid && !e.isEmpty ? "Numero de Serie Duplicado" : ""
+                  !e.isValid && index != productfield.length - 1
+                    ? "Numero de Serie Duplicado o Campo Vacío"
+                    : ""
                 }
                 name="numeroSerie"
-                ref={(e) => {
-                  serialNumbers.current[index] = e;
-                }}
+                // ref={(e) => {
+                //   serialNumbers.current[index] = e;
+                // }}
               />
-              {!e.isValid && !e.isEmpty ? (
+              {!e.isValid && index != productfield.length - 1 ? (
                 <span className="icon is-right ml-1">
                   <i className="fas fa-exclamation-triangle"></i>
                 </span>
@@ -282,16 +308,18 @@ const ProductsComp = () => {
             </span>
             <span>Ingresar Equipos</span>
           </a>
-          <a className="button is-info" onClick={() => {}}>
+          <a
+            className="button is-info"
+            onClick={() => {
+              resetInputs();
+            }}
+          >
             <span className="icon is-small">
               <i className="fas fa-undo"></i>
             </span>
             <span> Limpiar Campos</span>
           </a>
         </div>
-        {state.notifications.map((e, index) => (
-          <Notification key={index} {...e} notificationIndex={index} />
-        ))}
       </div>
     </>
   );

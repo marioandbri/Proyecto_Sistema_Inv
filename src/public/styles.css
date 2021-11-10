@@ -137,3 +137,7 @@ span.icon.is-clickable {
 .rotate0 {
   animation: rotate180-0 0.3s ease-in alternate;
 }
+
+.has-background-info {
+  background-color: #69b1e151;
+}

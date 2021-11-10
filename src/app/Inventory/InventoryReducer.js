@@ -11,6 +11,8 @@ export const type = {
   addNotification: "Add a notification component",
   removeNotification: "Remove notification for the index parameter",
   LOADING_CLIENTES: "loading",
+  EDIT_ROW: "edit a row",
+  SET_ROWS: "sets the rows",
 };
 
 export const initialInventory = {
@@ -27,6 +29,7 @@ export const initialInventory = {
   loadingProductData: true,
   productsHeader: "",
   notifications: [],
+  editingRows: [],
 };
 
 const InventoryReducer = (state, action) => {
@@ -73,6 +76,14 @@ const InventoryReducer = (state, action) => {
       return { ...state, notifications: arrayRemove };
     case type.LOADING_CLIENTES:
       return { ...state, loadingClientes: action.payload };
+    case type.EDIT_ROW:
+      let editingArray = [...state.editingRows];
+      if (editingArray.includes(action.payload)) {
+        editingArray.splice(editingArray.indexOf(action.payload), 1);
+      } else {
+        editingArray.push(action.payload);
+      }
+      return { ...state, editingRows: editingArray };
     default:
       return state;
   }

@@ -48,5 +48,5 @@ const Inventario = sequelize.define(
 );
 
 // Cliente.sync({ force: true }).then(console.log('modelo Cliente actualizado'));
-Inventario.sync({ force: true });
+Inventario.sync({ alter: true });
 export default Inventario;
