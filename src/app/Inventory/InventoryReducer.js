@@ -1,6 +1,9 @@
 export const type = {
   find: "FIND",
   selectClient: "SELECT_CLIENT",
+  selectPossesor: "Selecciona la informacion del nuevo poseedor",
+  reInitializeData:
+    "Restablece los campos relacionados con ingreso, entrega y retiro",
   fechaCompra: "Cambio de Fecha de Compra",
   numeroFactura: "Cambio de Numero de Factura",
   setPN: "set Product Number",
@@ -42,6 +45,8 @@ const InventoryReducer = (state, action) => {
       return { ...state, productsData: products, url };
     case type.selectClient:
       return { ...state, rutProveedor: action.payload };
+    case type.selectPossesor:
+      return { ...state, rutPoseedor: action.payload };
     case type.fechaCompra:
       return { ...state, fechaCompra: action.payload };
     case type.numeroFactura:
@@ -60,6 +65,14 @@ const InventoryReducer = (state, action) => {
       return { ...state, rutPoseedor: "78507660-5" };
     case type.setProductsHeader:
       return { ...state, productsHeader: action.payload };
+    case type.reInitializeData:
+      return {
+        ...state,
+        productsHeader: initialInventory.productsHeader,
+        rutProveedor: initialInventory.rutProveedor,
+        rutPoseedor: initialInventory.rutPoseedor,
+        partNumber: initialInventory.partNumber,
+      };
     case type.addNotification:
       let actualNotis = [...state.notifications];
       let newNotification = {

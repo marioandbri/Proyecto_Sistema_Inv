@@ -19,7 +19,12 @@ const InventoryHeader = ({ opType }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: type.setOperationType, payload: opType });
-    return () => {};
+    return () => {
+      setInnerState(initalState);
+      dispatch({
+        type: type.reInitializeData,
+      });
+    };
   }, [opType]);
   const initalState = {
     query: "",
@@ -72,15 +77,14 @@ const InventoryHeader = ({ opType }) => {
     dispatch({ type: type.selectClient, payload: e.rut });
   }, []);
 
+  const selectPossesor = useCallback((e) => {
+    console.log(e.rut);
+    setQuery(e.razonsocial);
+    dispatch({ type: type.selectPossesor, payload: e.rut });
+  }, []);
+
   const buildHeader = () => {
     let rutProveedor = state.rutProveedor;
-    // let header = {
-    //   rutProveedor,
-    //   productPN,
-    //   nroFactura,
-    //   fechaCompra,
-    //   rutPoseedor: opType == "ingreso" ? "78507660-5" : "",
-    // };
     let header = {
       rutProveedor,
       ...innerState,
@@ -104,11 +108,13 @@ const InventoryHeader = ({ opType }) => {
     setInnerState(initalState);
   };
   useEffect(() => {
-    if (state.rutProveedor == "") {
+    if (opType == "ingreso" && state.rutProveedor == "") {
+      setInnerState(initalState);
+    } else if (opType != "ingreso") {
       setInnerState(initalState);
     }
     return () => {};
-  }, [state.rutProveedor]);
+  }, [state.rutProveedor, opType]);
 
   return (
     <>
@@ -135,10 +141,17 @@ const InventoryHeader = ({ opType }) => {
           </div>
         </nav>
       </div>
-      <InventoryClientList
-        query={innerState.query}
-        selectClient={selectClient}
-      />
+      {opType == "ingreso" ? (
+        <InventoryClientList
+          query={innerState.query}
+          selectClient={selectClient}
+        />
+      ) : (
+        <InventoryClientList
+          query={innerState.query}
+          selectClient={selectPossesor}
+        />
+      )}
 
       <div className="box mb-1">
         <div className="columns">

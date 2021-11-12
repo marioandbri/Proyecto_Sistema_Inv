@@ -10,6 +10,7 @@ const TableEditingButtons = ({
   updateData,
   finalEditRow,
   cancelEditRow,
+  restoreData,
 }) => {
   const dispatch = useDispatch();
   const { productPN, rutPoseedor, fechaCompra, rutProveedor, nroFactura } =
@@ -62,8 +63,9 @@ const TableEditingButtons = ({
           title="Cancelar"
           className="button m-1 is-outlined is-small is-danger"
           onClick={() => {
+            restoreData(row.index);
             cancelEditRow(row.index);
-            reloadData();
+            // reloadData();
             dispatch({
               type: type.addNotification,
               payload: {

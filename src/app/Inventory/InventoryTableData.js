@@ -31,7 +31,7 @@ const InventoryTableData = () => {
   };
 
   const updateData = (rowIndex, columnId, value) => {
-    setSkipPageReset(true);
+    // setSkipPageReset(true);
     setInventoryData((old) =>
       old.map((row, index) => {
         if (index == rowIndex) {
@@ -117,7 +117,14 @@ const InventoryTableData = () => {
     return { Cell: EditableCell, Filter: ColumnFilter };
   }, []);
   const tableInstance = useTable(
-    { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateData },
+    {
+      columns,
+      data,
+      defaultColumn,
+      autoResetPage: !skipPageReset,
+      updateData,
+      restoreData,
+    },
     useFilters,
     useSortBy,
     usePagination
@@ -168,13 +175,22 @@ const InventoryTableData = () => {
    */
   let rows = useRef([]);
   const oldData = useRef([]);
+
   const editRow = (index) => {
-    oldData.current = [...inventoryData];
+    oldData.current[index] = { ...inventoryData[index] };
+    setSkipPageReset(true);
     dispatch({ type: type.EDIT_ROW, payload: index });
   };
   const cancelEditRow = (index) => {
-    setInventoryData(oldData.current);
     dispatch({ type: type.EDIT_ROW, payload: index });
+    // setSkipPageReset(false);
+  };
+
+  const restoreData = (index) => {
+    let oldItem = oldData.current[index];
+    let array = [...inventoryData];
+    array[index] = oldItem;
+    setInventoryData(array);
   };
   const finalEditRow = (index) => {
     dispatch({ type: type.EDIT_ROW, payload: index });
@@ -239,6 +255,7 @@ const InventoryTableData = () => {
                       updateData={updateData}
                       cancelEditRow={cancelEditRow}
                       finalEditRow={finalEditRow}
+                      restoreData={restoreData}
                     />
                   )}
                 </tr>

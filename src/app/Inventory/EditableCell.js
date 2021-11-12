@@ -3,7 +3,7 @@ import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 
 const EditableCell = ({
-  value: initalValue,
+  value,
   row: { index },
   column: { id },
   updateData,
@@ -11,10 +11,10 @@ const EditableCell = ({
   const state = useInventory();
 
   const [readMore, setReadMore] = React.useState(false);
-  const [value, setValue] = React.useState(initalValue);
+  // const [value, setValue] = React.useState(initialValue);
 
   const onChange = (e) => {
-    setValue(e.target.value);
+    // setValue(e.target.value);
     updateData(index, id, e.target.value);
   };
   if (id == "proveedor" || id == "poseedor" || id == "numeroSerie") {
