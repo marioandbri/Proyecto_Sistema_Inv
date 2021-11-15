@@ -232,7 +232,7 @@ class JsonCliente extends Component {
   deleteCliente(rut, razonsocial) {
     if (
       confirm(
-        `Esta seguro de que desea elimintar el cliente ${razonsocial} con el rut: ${rut}`
+        `Esta seguro de que desea eliminar el cliente ${razonsocial} con el rut: ${rut}`
       )
     ) {
       const result = fetch(`/cliente/${rut}`, {
@@ -303,17 +303,17 @@ class JsonCliente extends Component {
   }
   updateInputValue = (e) => {
     this.setState({
-      input: e.target.value,
+      input: e.target.value.trim(),
     });
   };
   updateInputValue2 = (e) => {
     this.setState({
-      input2: e.target.value,
+      input2: e.target.value.trim(),
     });
   };
   updateInputValue3 = (e) => {
     this.setState({
-      input3: e.target.value,
+      input3: e.target.value.trim(),
     });
   };
   updateInputValue4 = (e) => {
@@ -323,7 +323,7 @@ class JsonCliente extends Component {
   };
   updateInputValue5 = (e) => {
     this.setState({
-      input5: e.target.value,
+      input5: e.target.value.trim(),
     });
   };
   cancelarAccion = () => {
@@ -343,7 +343,14 @@ class JsonCliente extends Component {
   inputValidation = () => {
     const displayError = (message) => {
       return (
-        <div className="notification is-danger">
+        <div
+          style={{
+            margin: "1px",
+            position: "fixed",
+            right: "3%",
+          }}
+          className="notification is-danger"
+        >
           {message}
           <button
             className="delete"
@@ -355,10 +362,10 @@ class JsonCliente extends Component {
       );
     };
     if (
-      this.state.input.trim() === "" ||
-      this.state.input2.trim() === "" ||
-      this.state.input3.trim() === "" ||
-      this.state.input4.trim() === ""
+      this.state.input === "" ||
+      this.state.input2 === "" ||
+      this.state.input3 === "" ||
+      this.state.input4 === ""
     ) {
       return displayError(
         "Ningun campo puede estar vacio, por favor verifique los campos"

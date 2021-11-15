@@ -60,4 +60,7 @@ ProductosSchema.methods.headersOf = function () {
 //    }
 //    return headers
 // })
+ProductosSchema.set("toJSON", { virtuals: true });
+ProductosSchema.set("toObject", { virtuals: true });
+
 export default model("Productos", ProductosSchema);

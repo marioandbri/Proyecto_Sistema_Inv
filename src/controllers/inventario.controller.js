@@ -22,51 +22,57 @@ export async function createInventario(req, res) {
         .json({ message: "Ha ocurrido un error:", error: e.errors });
     });
 }
+
 export async function getInventarioByQuery(req, res) {
+  //Creating Promises
   const getInventario = Inventario.findAll({}).then((data) => data);
   const getProductos = Productos.find({})
     .exec()
     .then((data) => data);
   const getClientes = Cliente.findAll({}).then((data) => data);
+  //////////////////////////////////
+  //Executing Promises in Parallel
   const results = await Promise.all([getInventario, getProductos, getClientes]);
+  //////////////////////////////////
+  //Desctructuring promises results
   let [inventario, productos, clientes] = results;
+  //////////////////////////////////
+  //Creating map structure for clients data
+  const mapClientes = new Map();
+  clientes.forEach((e) => {
+    mapClientes.set(e.dataValues.rut, e.dataValues.razonsocial);
+  });
+  console.log(mapClientes);
+  //////////////////////////////////
+  //Adding relational info for clients RUT -> clients razonsocial
   inventario.forEach((inventario) => {
-    const busquedaProd = productos.filter((producto) => {
-      return producto.partnumber == inventario.productPN;
-    });
-    // inventario.productPN = `${inventario.productPN} - ${busquedaProd[0]?.DescriptionL}`;
-
     Object.assign(inventario.dataValues, {
-      descripcion: busquedaProd[0]?.DescriptionL,
+      proveedor: mapClientes.get(inventario.rutProveedor),
     });
   });
   inventario.forEach((inventario) => {
-    const busquedaProv = clientes.filter((cliente) => {
-      return cliente.rut == inventario.rutProveedor;
-    });
-
-    // console.log(busquedaProv);
-    // inventario.rutProveedor = `${inventario.rutProveedor} - ${busquedaProv[0]?.razonsocial}`;
-
     Object.assign(inventario.dataValues, {
-      proveedor: busquedaProv[0]?.razonsocial,
+      poseedor: mapClientes.get(inventario.rutPoseedor),
     });
   });
+  ///////////////////////////////////
+  //Creating map structure for products data
+  const mapProducts = new Map();
+  productos.forEach((e) => {
+    mapProducts.set(e.toObject().partnumber, e.toObject().DescriptionL);
+  });
+  //////////////////////////////////
+  //Adding relational info for product partnumber -> product Description
   inventario.forEach((inventario) => {
-    const busquedaPose = clientes.filter((cliente) => {
-      return cliente.rut == inventario.rutPoseedor;
-    });
-
-    // console.log(busquedaPose);
-    // inventario.rutPoseedor = `${inventario.rutPoseedor} - ${busquedaPose[0]?.razonsocial}`;
-
     Object.assign(inventario.dataValues, {
-      poseedor: busquedaPose[0]?.razonsocial,
+      descripcion: mapProducts.get(inventario.productPN),
     });
   });
-  console.log();
+  //////////////////////////////////
+  //Sending the results response
   res.json(inventario);
 }
+
 export async function getInventarioBySerialNumber(req, res) {
   const serialnumber = req.params.sn;
   const result = await Inventario.findByPk(serialnumber);
