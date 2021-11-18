@@ -72,6 +72,8 @@ const InventoryReducer = (state, action) => {
         rutProveedor: initialInventory.rutProveedor,
         rutPoseedor: initialInventory.rutPoseedor,
         partNumber: initialInventory.partNumber,
+        fechaCompra: initialInventory.fechaCompra,
+        fechaEvento: initialInventory.fechaEvento,
       };
     case type.addNotification:
       let actualNotis = [...state.notifications];

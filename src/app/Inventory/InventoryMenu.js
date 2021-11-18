@@ -48,7 +48,6 @@ const InventoryMenu = () => {
             <li
               key={e}
               onClick={(element) => {
-                // console.log(element.target);
                 setOperationType(element);
                 setIsMenuVisible(false);
               }}

@@ -31,6 +31,8 @@ const InventoryHeader = ({ opType }) => {
     productPN: "",
     nroFactura: "",
     fechaCompra: "",
+    fechaEvento: "",
+    estado: "",
   };
   const [innerState, setInnerState] = useState(initalState);
 
@@ -84,18 +86,32 @@ const InventoryHeader = ({ opType }) => {
   }, []);
 
   const buildHeader = () => {
-    let rutProveedor = state.rutProveedor;
-    let header = {
-      rutProveedor,
-      ...innerState,
-      rutPoseedor: opType == "ingreso" ? "78507660-5" : "",
-    };
-    console.log(header);
+    const { productPN, nroFactura, fechaCompra, fechaEvento, estado } =
+      innerState;
+    let header;
+    if (opType == "ingreso") {
+      let rutProveedor = state.rutProveedor;
+      header = {
+        rutProveedor,
+        productPN,
+        nroFactura,
+        fechaCompra,
+        rutPoseedor: "78507660-5",
+      };
+      console.log(header);
+    } else {
+      header = {
+        fechaEvento,
+        rutPoseedor: opType == "retiro" ? "78507660-5" : state.rutPoseedor,
+      };
+    }
     if (
-      !header.rutProveedor ||
-      !header.productPN ||
-      !header.nroFactura ||
-      !header.fechaCompra
+      (opType == "ingreso" &&
+        (!header.rutProveedor ||
+          !header.productPN ||
+          !header.nroFactura ||
+          !header.fechaCompra)) ||
+      (opType != "ingreso" && (!header.fechaEvento || !header.rutPoseedor))
     ) {
       console.log("aun hay campos vacios");
     } else {
@@ -158,11 +174,11 @@ const InventoryHeader = ({ opType }) => {
           <div className="column">
             <fieldset
               title={
-                !Boolean(state.rutProveedor)
+                !Boolean(state.rutProveedor || state.rutPoseedor)
                   ? "Escriba en el cuadro de busqueda y seleccione un cliente"
                   : null
               }
-              disabled={!Boolean(state.rutProveedor)}
+              disabled={!Boolean(state.rutProveedor || state.rutPoseedor)}
             >
               <div
                 className="field is-grouped is-grouped-multiline"
@@ -177,12 +193,20 @@ const InventoryHeader = ({ opType }) => {
                     disabled
                     type="text"
                     className="input is-small"
-                    value={state.rutProveedor}
+                    value={
+                      state.operationType == "ingreso"
+                        ? state.rutProveedor
+                        : state.rutPoseedor
+                    }
                   />
                 </div>
 
                 <div className="control block ">
-                  <label className="label">Fecha de Compra</label>
+                  <label className="label">
+                    {state.operationType == "ingreso"
+                      ? "Fecha de Compra"
+                      : "Fecha de Evento"}
+                  </label>
                   <div className="control has-icons-right">
                     <input
                       onChange={(e) => {
@@ -194,8 +218,16 @@ const InventoryHeader = ({ opType }) => {
                       type="date"
                       placeholder="dd-mm-yyyy"
                       className="input is-small"
-                      name="fechaCompra"
-                      value={innerState.fechaCompra}
+                      name={
+                        state.operationType == "ingreso"
+                          ? "fechaCompra"
+                          : "fechaEvento"
+                      }
+                      value={
+                        state.operationType == "ingreso"
+                          ? innerState.fechaCompra
+                          : innerState.fechaEvento
+                      }
                     />
                     <span className="icon is-small is-right">
                       <i className="fas fa-calendar-alt"></i>
@@ -203,21 +235,23 @@ const InventoryHeader = ({ opType }) => {
                   </div>
                 </div>
 
-                <div className="control block">
-                  <label className="label">Numero de Factura</label>
-                  <input
-                    onChange={(e) => {
-                      handleInputs(e);
-                    }}
-                    onBlur={() => {
-                      buildHeader();
-                    }}
-                    type="text"
-                    className="input is-small"
-                    name="nroFactura"
-                    value={innerState.nroFactura}
-                  />
-                </div>
+                {state.operationType == "ingreso" && (
+                  <div className="control block">
+                    <label className="label">Numero de Factura</label>
+                    <input
+                      onChange={(e) => {
+                        handleInputs(e);
+                      }}
+                      onBlur={() => {
+                        buildHeader();
+                      }}
+                      type="text"
+                      className="input is-small"
+                      name="nroFactura"
+                      value={innerState.nroFactura}
+                    />
+                  </div>
+                )}
               </div>
               {/* /////////////// */}
               <label className="label">Numero de Parte</label>
@@ -237,6 +271,9 @@ const InventoryHeader = ({ opType }) => {
                     className="input is-small "
                     name="productPN"
                     value={innerState.productPN}
+                    placeholder={
+                      opType == "ingreso" ? "Requerido" : "Solo para consulta"
+                    }
                   />
                 </span>
                 <div className="control">

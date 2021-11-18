@@ -8,12 +8,16 @@ import {
   getInventarioByQuery,
   updateInventario,
   deleteInventario,
+  updateInventarioMovimientos,
 } from "../controllers/inventario.controller";
 
 //Create
 router.post("/inventario", createInventario);
 
 //Read
+//Update Movements
+router.put("/inventario/entrega", updateInventarioMovimientos);
+router.put("/inventario/retiro", updateInventarioMovimientos);
 //By rut
 router.get("/inventario/:sn", getInventarioBySerialNumber);
 // By Query

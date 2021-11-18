@@ -20,8 +20,14 @@ const ProductsComp = () => {
   const state = useInventory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const initialInputs = { numeroSerie: "", isEmpty: true, isValid: false };
+  const initialInputs = {
+    numeroSerie: "",
+    isEmpty: true,
+    isValid: false,
+    itemStatus: [],
+  };
   const [productfield, setProductField] = useState([initialInputs]);
+  const [itemStatus, setItemStatus] = useState([]);
 
   const handleInput = (e, i) => {
     //Creates a shallow copy of the fields
@@ -101,14 +107,20 @@ const ProductsComp = () => {
   };
 
   useEffect(() => {
-    return () => {};
-  }, [productfield]);
+    return () => {
+      resetInputs();
+    };
+  }, [state.operationType]);
+  // useEffect(() => {
+  //   return () => {};
+  // }, [productfield]);
 
   // const serialNumbers = useRef([]);
 
   const createInBulk = async () => {
     setLoading(true);
     let products = [];
+    let requestResult;
     let validProducts = productfield.filter((e) => e.isValid == true).length;
 
     const confirmSend = confirm(
@@ -137,24 +149,46 @@ const ProductsComp = () => {
           products = [];
         }
         console.log(products);
-        const result = await fetch("/inventario", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(products),
-        });
-        console.log(result, "result await fetch");
-        const data = await result.json();
-        if (result.ok) {
+        if (state.operationType == "ingreso") {
+          const result = await fetch("/inventario", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(products),
+          });
+          requestResult = result;
+          // console.log(result, "result await fetch");
+          // const data = await result.json();
+        } else {
+          // console.log(products);
+          const result = await fetch(`/inventario/${state.operationType}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(products),
+          });
+          requestResult = result;
+
+          // console.log(result, "result await fetch");
+          // const data = await result.json();
+        }
+        const data = await requestResult.json();
+        if (requestResult.ok) {
           dispatch({
             type: type.addNotification,
             payload: {
-              content: `✅ ${data.message}`,
+              content: `✅ ${data.message}${
+                state.operationType != "ingreso" ? ": " + data.data : ""
+              }`,
               notificationType: notificationTypes.success,
             },
           }); // notification arguments: content, type .(index) is passed in reducer
-          dispatch({ type: type.selectClient, payload: "" });
+          state.operationType == "ingreso"
+            ? dispatch({ type: type.selectClient, payload: "" })
+            : dispatch({ type: type.selectPossesor, payload: "" });
+          dispatch({ type: type.setProductsHeader, payload: "" });
           resetInputs();
         } else {
           const errors = data.error || "";
@@ -214,68 +248,162 @@ const ProductsComp = () => {
       >
         <h2 className="title is-4 is-underlined mb-3">Números de Serie</h2>
         {/* ///////////// PRODUCTS FIELD ///////////// */}
-
-        {productfield.map((e, index) => (
-          <div key={index} className="field has-addons block">
-            <span className="button is-small is-static">{index + 1}</span>
-            <span className="control has-icons-right">
-              <input
-                onBlur={async (elem) => {
-                  const found = await fetch(
-                    `/inventario/${elem.target.value}`
-                  ).then((res) => res.json());
-                  if (found) {
-                    let duplicatedElem = [...productfield];
-                    duplicatedElem[index].isValid = false;
-                    setProductField(duplicatedElem);
+        <fieldset
+          disabled={!state.rutPoseedor && state.operationType != "ingreso"}
+        >
+          {productfield.map((e, index) => (
+            <div key={index} className="field has-addons block">
+              <span className="button is-small is-static">{index + 1}</span>
+              <span className="control has-icons-right">
+                <input
+                  onBlur={async (elem) => {
+                    let found;
+                    if (state.operationType == "ingreso") {
+                      found = await fetch(
+                        `/inventario/${elem.currentTarget.value}`
+                      ).then((res) => res.json());
+                      if (found) {
+                        let duplicatedElem = [...productfield];
+                        duplicatedElem[index].isValid = false;
+                        setProductField(duplicatedElem);
+                      }
+                    } else {
+                      found = await fetch(
+                        `/inventario/${elem.currentTarget.value}`
+                      ).then((res) => res.json());
+                      let itemStatus = [...productfield];
+                      if (found) {
+                        itemStatus[index].itemStatus = [
+                          found?.rutPoseedor,
+                          found?.productPN,
+                        ];
+                      } else {
+                        itemStatus[index].itemStatus = [null];
+                        itemStatus[index].isValid = false;
+                      }
+                      if (
+                        state.operationType == "retiro" &&
+                        found?.rutPoseedor != state.rutPoseedor
+                      ) {
+                        itemStatus[index].isValid = false;
+                      } else if (
+                        state.operationType == "entrega" &&
+                        found?.rutPoseedor != "78507660-5"
+                      ) {
+                        itemStatus[index].isValid = false;
+                      } else {
+                        itemStatus[index].isValid = true;
+                      }
+                      setProductField(itemStatus);
+                      // console.log(found);
+                    }
+                  }}
+                  onChange={(e) => {
+                    handleInput(e, index);
+                  }}
+                  value={e.numeroSerie}
+                  type="text"
+                  placeholder="Numero de Serie"
+                  className={`input is-small ${
+                    !e.isValid && index != productfield.length - 1
+                      ? "is-danger"
+                      : ""
+                  }`}
+                  title={
+                    !e.isValid && index != productfield.length - 1
+                      ? "Numero de Serie Duplicado o Campo Vacío"
+                      : ""
                   }
-                }}
-                onChange={(e) => {
-                  handleInput(e, index);
-                }}
-                value={e.numeroSerie}
-                type="text"
-                placeholder="Numero de Serie"
-                className={`input is-small ${
-                  !e.isValid && index != productfield.length - 1
-                    ? "is-danger"
-                    : ""
-                }`}
-                title={
-                  !e.isValid && index != productfield.length - 1
-                    ? "Numero de Serie Duplicado o Campo Vacío"
-                    : ""
-                }
-                name="numeroSerie"
-                // ref={(e) => {
-                //   serialNumbers.current[index] = e;
-                // }}
-              />
-              {!e.isValid && index != productfield.length - 1 ? (
-                <span className="icon is-right ml-1">
-                  <i className="fas fa-exclamation-triangle"></i>
-                </span>
-              ) : (
-                ""
-              )}
-            </span>
+                  name="numeroSerie"
+                  // ref={(e) => {
+                  //   serialNumbers.current[index] = e;
+                  // }}
+                />
+                {!e.isValid && index != productfield.length - 1 ? (
+                  <span className="icon is-right ml-1">
+                    <i className="fas fa-exclamation-triangle"></i>
+                  </span>
+                ) : (
+                  ""
+                )}
+              </span>
 
-            <span className="control">
-              <a
-                onClick={() => {
-                  // inputsRef.current.splice(index, 1);
-                  removeField(index);
-                }}
-                className="button is-danger is-small "
-              >
-                <span className="icon">
-                  <i className="fas fa-trash"></i>
-                </span>
-              </a>
-            </span>
-          </div>
-        ))}
-        {/* <div className="field is-grouped is-grouped-centered">
+              <span className="control">
+                <a
+                  onClick={() => {
+                    // inputsRef.current.splice(index, 1);
+                    removeField(index);
+                  }}
+                  className="button is-danger is-small "
+                >
+                  <span className="icon">
+                    <i className="fas fa-trash"></i>
+                  </span>
+                </a>
+              </span>
+              {state.operationType != "ingreso" &&
+                index != productfield.length - 1 && (
+                  <span className=" m-1 tags are-normal">
+                    {e.itemStatus &&
+                      e.itemStatus.map((e, i) => {
+                        if (state.operationType == "retiro" && i == 0 && e) {
+                          return (
+                            <span
+                              key={i}
+                              className={
+                                e != state.rutPoseedor
+                                  ? "tag is-warning"
+                                  : "tag is-link"
+                              }
+                            >
+                              {e != state.rutPoseedor
+                                ? "🛑 " +
+                                  e +
+                                  " - No coincide con cliente indicado"
+                                : e}
+                            </span>
+                          );
+                        } else if (
+                          state.operationType == "entrega" &&
+                          i == 0 &&
+                          e
+                        ) {
+                          return (
+                            <span
+                              key={i}
+                              className={
+                                e != "78507660-5"
+                                  ? "tag is-warning"
+                                  : "tag is-link"
+                              }
+                            >
+                              {e != "78507660-5"
+                                ? "🛑 " +
+                                  e +
+                                  " - El equipo no se encuentra en Arrienda"
+                                : e}
+                            </span>
+                          );
+                        }
+                        if (e) {
+                          return (
+                            <span key={i} className="tag is-link">
+                              {e}
+                            </span>
+                          );
+                        } else {
+                          return (
+                            <span key={i} className="tag is-danger">
+                              Sin coincidencias 😕
+                            </span>
+                          );
+                        }
+                      })}
+                  </span>
+                )}
+            </div>
+          ))}
+          {/* <div className="field is-grouped is-grouped-centered">
           <a
             className="button is-fullwidth is-success is-outlined"
             onClick={() => {
@@ -288,6 +416,8 @@ const ProductsComp = () => {
             <span>Agregar campo</span>
           </a>
         </div> */}
+        </fieldset>
+
         <div
           style={{
             position: "sticky",

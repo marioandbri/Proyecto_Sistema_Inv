@@ -16,10 +16,7 @@ class Navbar extends Component {
           <div className="container">
             <div className="navbar-brand">
               <Link to="/" className="navbar-item">
-                <img
-                  src="http://localhost:4000/arrienda.webp"
-                  className="is-spaced"
-                ></img>
+                <img src="./arrienda.webp" className="is-spaced"></img>
               </Link>
               <a
                 role="button"
