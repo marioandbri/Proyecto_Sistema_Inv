@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import React, { Component } from "react";
 import Navbar from "./navbar";
 import JsonCliente from "./jsoncliente";
-import ProductosUI from "./productosUI";
+import ProductosUI from "./ProductosUI";
 import Inventory from "./Inventory";
 
 class App extends Component {

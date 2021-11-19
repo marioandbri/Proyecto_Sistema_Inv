@@ -2,8 +2,9 @@ import React from "react";
 import { notificationTypes } from "../Notification";
 import { useDispatch } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
+import PropTypes from "prop-types";
 
-const TableDataButtons = ({ row, reloadData, editRow, index }) => {
+const TableDataButtons = ({ row, reloadData, editRow }) => {
   const dispatch = useDispatch();
   const handleRemove = async (sn) => {
     const result = await fetch(`/inventario/${sn}`, {
@@ -64,6 +65,11 @@ const TableDataButtons = ({ row, reloadData, editRow, index }) => {
       </div>
     </td>
   );
+};
+TableDataButtons.propTypes = {
+  row: PropTypes.object,
+  reloadData: PropTypes.func,
+  editRow: PropTypes.func,
 };
 
 export default TableDataButtons;

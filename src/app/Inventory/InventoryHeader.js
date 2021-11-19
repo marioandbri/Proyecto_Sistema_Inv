@@ -1,11 +1,5 @@
-import React, {
-  useCallback,
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-} from "react";
+import React, { useCallback, useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import Filter from "../Filter";
 import InventoryClientList from "./InventoryClientList";
 
@@ -86,8 +80,7 @@ const InventoryHeader = ({ opType }) => {
   }, []);
 
   const buildHeader = () => {
-    const { productPN, nroFactura, fechaCompra, fechaEvento, estado } =
-      innerState;
+    const { productPN, nroFactura, fechaCompra, fechaEvento } = innerState;
     let header;
     if (opType == "ingreso") {
       let rutProveedor = state.rutProveedor;
@@ -174,11 +167,11 @@ const InventoryHeader = ({ opType }) => {
           <div className="column">
             <fieldset
               title={
-                !Boolean(state.rutProveedor || state.rutPoseedor)
+                !(state.rutProveedor || state.rutPoseedor)
                   ? "Escriba en el cuadro de busqueda y seleccione un cliente"
                   : null
               }
-              disabled={!Boolean(state.rutProveedor || state.rutPoseedor)}
+              disabled={!(state.rutProveedor || state.rutPoseedor)}
             >
               <div
                 className="field is-grouped is-grouped-multiline"
@@ -305,7 +298,7 @@ const InventoryHeader = ({ opType }) => {
             </fieldset>
           </div>
           <div className="column">
-            {Boolean(state.productData.item) ? (
+            {state.productData.item ? (
               <ProductCard
                 description={state.productData?.description || "vacio"}
                 marca={state.productData?.item?.marca || "marca"}
@@ -326,6 +319,13 @@ const InventoryHeader = ({ opType }) => {
       </div>
     </>
   );
+};
+
+InventoryHeader.propTypes = {
+  opType: PropTypes.string.isRequired,
+};
+InventoryHeader.defaultProps = {
+  opType: "",
 };
 
 export default InventoryHeader;

@@ -1,11 +1,13 @@
+/* eslint-disable react/prop-types */
+
 import React, { useState } from "react";
 
 const MonitorForm = ({
   handleCreationForm,
-  isAnUpdate,
-  productUpdate,
-  handleUpdate,
-  isAnEye
+  // isAnUpdate,
+  // productUpdate,
+  // handleUpdate,
+  // isAnEye,
 }) => {
   const initialState = {
     tipoMonitor: "",
@@ -37,7 +39,7 @@ const MonitorForm = ({
     // const tags = e.target.value.split(",")
     setProduct({
       ...product,
-      tags: e.target.value.match(/[\w\-\.]+/g),
+      tags: e.target.value.match(/[\w\-.]+/g),
     });
   };
   const liftProductType = (e) => {

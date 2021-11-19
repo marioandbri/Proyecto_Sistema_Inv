@@ -1,6 +1,6 @@
 import React from "react";
-import { useFetchProductsApi, fetchApiReducer } from "../useFetchProductsApi";
-import LoadingBar from "../LoadingBar";
+import { useFetchProductsApi } from "../useFetchProductsApi";
+import PropTypes from "prop-types";
 
 const ProductCard = ({ description, marca, modelo, familia, partnumber }) => {
   // console.log(partnumber);
@@ -55,6 +55,14 @@ const ProductCard = ({ description, marca, modelo, familia, partnumber }) => {
       </div>
     </>
   );
+};
+
+ProductCard.propTypes = {
+  description: PropTypes.string,
+  marca: PropTypes.string,
+  modelo: PropTypes.string,
+  familia: PropTypes.string,
+  partnumber: PropTypes.string,
 };
 
 export default ProductCard;

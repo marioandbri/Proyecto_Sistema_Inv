@@ -2,12 +2,10 @@ import React from "react";
 import { notificationTypes } from "../Notification";
 import { useDispatch } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
+import PropTypes from "prop-types";
 
 const TableEditingButtons = ({
   row,
-  reloadData,
-  index,
-  updateData,
   finalEditRow,
   cancelEditRow,
   restoreData,
@@ -83,5 +81,10 @@ const TableEditingButtons = ({
     </td>
   );
 };
-
+TableEditingButtons.propTypes = {
+  row: PropTypes.object,
+  finalEditRow: PropTypes.func,
+  cancelEditRow: PropTypes.func,
+  restoreData: PropTypes.func,
+};
 export default TableEditingButtons;

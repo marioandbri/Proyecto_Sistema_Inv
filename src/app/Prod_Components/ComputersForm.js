@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import React, { useState, useEffect } from "react";
 import Almacenamiento from "./Almacenamiento";
 import MemRam from "./MemRam";
@@ -45,15 +47,20 @@ const ComputersForm = ({
   };
 
   const [arrayRam, setArrayRam] = useState(
-    isAnUpdate ? productUpdate.socketsMemoria : [{
-      capacidadGB: "",
-      isInstalled: true,
-      memPartnumber: "",
-    }, {
-      capacidadGB: "",
-      isInstalled: "",
-      memPartnumber: "",
-    }]
+    isAnUpdate
+      ? productUpdate.socketsMemoria
+      : [
+          {
+            capacidadGB: "",
+            isInstalled: true,
+            memPartnumber: "",
+          },
+          {
+            capacidadGB: "",
+            isInstalled: "",
+            memPartnumber: "",
+          },
+        ]
   );
 
   const liftProduct = (e) => {
@@ -126,14 +133,14 @@ const ComputersForm = ({
       almacenamiento: arrayAlm,
       socketsMemoria: arrayRam,
     });
-    return () => { };
+    return () => {};
   }, [arrayAlm, arrayRam]);
 
   const liftTags = (e) => {
     // const tags = e.target.value.split(",")
     setProduct({
       ...product,
-      tags: e.target.value.match(/[\w\-\.]+/g),
+      tags: e.target.value.match(/[\w\-.]+/g),
     });
   };
 
@@ -227,7 +234,7 @@ const ComputersForm = ({
           </div>
 
           {product.tipoComputador == "Notebook" ||
-            product.tipoComputador == "AIO" ? (
+          product.tipoComputador == "AIO" ? (
             <TamañoPantalla
               tamañoPantalla={product.tamañoPantalla}
               liftProduct={liftProduct}
@@ -421,7 +428,11 @@ const ComputersForm = ({
             </button>
           </div>
           <div className="control">
-            <button disabled={false} type="reset" className="button is-link is-light">
+            <button
+              disabled={false}
+              type="reset"
+              className="button is-link is-light"
+            >
               Cancelar
             </button>
           </div>

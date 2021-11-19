@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import JsonCliente from "./jsoncliente";
-import ProductosUI from "./productosUI";
-import Inventory from "./Inventory";
+import { Link } from "react-router-dom";
 
 class Navbar extends Component {
   render() {

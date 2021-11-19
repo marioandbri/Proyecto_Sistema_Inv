@@ -1,5 +1,4 @@
 export const type = {
-  find: "FIND",
   selectClient: "SELECT_CLIENT",
   selectPossesor: "Selecciona la informacion del nuevo poseedor",
   reInitializeData:
@@ -37,12 +36,6 @@ export const initialInventory = {
 
 const InventoryReducer = (state, action) => {
   switch (action.type) {
-    case type.find:
-      const [product, index] = action.payload;
-      let url = `/producto/partnumber/${product.partNumber}`;
-      let products = [...state.productsData];
-
-      return { ...state, productsData: products, url };
     case type.selectClient:
       return { ...state, rutProveedor: action.payload };
     case type.selectPossesor:
@@ -75,7 +68,7 @@ const InventoryReducer = (state, action) => {
         fechaCompra: initialInventory.fechaCompra,
         fechaEvento: initialInventory.fechaEvento,
       };
-    case type.addNotification:
+    case type.addNotification: {
       let actualNotis = [...state.notifications];
       let newNotification = {
         detail: action.payload?.detail,
@@ -84,14 +77,17 @@ const InventoryReducer = (state, action) => {
       };
       actualNotis.push(newNotification);
       return { ...state, notifications: actualNotis };
-    case type.removeNotification:
+    }
+    case type.removeNotification: {
       let notificationIndex = action.payload;
       let arrayRemove = [...state.notifications];
       arrayRemove.splice(notificationIndex, 1);
       return { ...state, notifications: arrayRemove };
-    case type.LOADING_CLIENTES:
+    }
+    case type.LOADING_CLIENTES: {
       return { ...state, loadingClientes: action.payload };
-    case type.EDIT_ROW:
+    }
+    case type.EDIT_ROW: {
       let editingArray = [...state.editingRows];
       if (editingArray.includes(action.payload)) {
         editingArray.splice(editingArray.indexOf(action.payload), 1);
@@ -99,6 +95,7 @@ const InventoryReducer = (state, action) => {
         editingArray.push(action.payload);
       }
       return { ...state, editingRows: editingArray };
+    }
     default:
       return state;
   }

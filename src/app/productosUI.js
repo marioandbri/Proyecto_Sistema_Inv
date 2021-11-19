@@ -6,7 +6,6 @@ import ProductoFilterDrop from "./Prod_Components/ProductoFilterDrop";
 import Filter from "./Filter";
 import ProductModal from "./Prod_Components/ProductModal";
 // import PropTypes from 'prop-types';
-const JSONDATA = require("./Prod_Components/jsonexample.json");
 const initialState = {
   isFormVisible: false,
   testInput: "",
@@ -35,27 +34,16 @@ class ProductosUI extends Component {
     this.state = initialState;
   }
 
-  // componentDidUpdate(pp, prevState) {
-  //    if (this.state.productType !== prevState.productType) {
-
-  //       this.fetchData(this.state.productType).then(
-  //          () => { console.log(this.state.dataFetched) }
-  //       )
-
-  //    }
-
-  // }
-
   fetchData = async (productType) => {
     // this.setState({ loading: true })
 
-    const results = await fetch(`/producto/${productType}`)
+    await fetch(`/producto/${productType}`)
       .then((res) => res.json())
       .then((data) => {
         const { result, headers } = data;
         console.log(Boolean(result), "result");
         let newItems = [];
-        if (Boolean(result)) {
+        if (result) {
           for (const { item: n, description: d } of result) {
             console.log(n, "n");
             console.log(d, "d");
@@ -80,12 +68,6 @@ class ProductosUI extends Component {
     // console.log(result, 'result fetch options')
     this.setState({ optionsList: result, loading: false });
   };
-  // useEffect(() => {
-  //    loadOptions()
-  //    return () => {
-
-  //    };
-  // }, []);
 
   handleInput = (e) => {
     this.setState({ testInput: e.target.value });
@@ -126,7 +108,7 @@ class ProductosUI extends Component {
     });
   };
   createGenericProduct = async () => {
-    const result = await fetch(`/producto/`, {
+    await fetch(`/producto/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -150,7 +132,7 @@ class ProductosUI extends Component {
     );
   };
   createProduct = async () => {
-    const result = await fetch(`/producto/${this.state.productOption}`, {
+    await fetch(`/producto/${this.state.productOption}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -205,15 +187,13 @@ class ProductosUI extends Component {
     });
   };
   updateProduct = async (id) => {
-    const result = await fetch(`/producto/${this.state.productType}/${id}`, {
+    await fetch(`/producto/${this.state.productType}/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state.creationObject),
-    })
-      .then((res) => res.json)
-      .then((data) => {});
+    }).then((res) => res.json);
     this.setState({
       isFormVisible: false,
       creationObject: {},
@@ -224,7 +204,7 @@ class ProductosUI extends Component {
   };
 
   handleRemove = async (e, id) => {
-    const results = await fetch(`/producto/${this.state.productType}/${id}`, {
+    await fetch(`/producto/${this.state.productType}/${id}`, {
       method: "DELETE",
     })
       .then((result) => result.json())
@@ -354,7 +334,6 @@ class ProductosUI extends Component {
                   handleDropdownChange={this.handleDropdownChange}
                   loadOptions={this.loadOptions}
                   options={this.state.optionsList}
-                  productType={this.state.productType}
                 />
               </div>
               <div className="level-right">

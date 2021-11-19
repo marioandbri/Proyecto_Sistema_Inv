@@ -3,6 +3,7 @@ import { useFetch } from "../useFetch";
 import { useFilter } from "../useFilter";
 import { useDispatch } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
+import PropTypes from "prop-types";
 
 const InventoryClientList = ({ query, selectClient }) => {
   const dispatch = useDispatch();
@@ -41,6 +42,11 @@ const InventoryClientList = ({ query, selectClient }) => {
       </div>
     </>
   );
+};
+
+InventoryClientList.propTypes = {
+  query: PropTypes.string,
+  selectClient: PropTypes.func,
 };
 
 export default React.memo(InventoryClientList);

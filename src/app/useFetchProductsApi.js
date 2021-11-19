@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useReducer } from "react";
+import { useEffect, useRef, useReducer } from "react";
 
 const initialState = {
   PN: "",
@@ -63,7 +63,7 @@ export const useFetchProductsApi = (PN) => {
         const res = await fetch(url);
         let cdata = await res?.json();
         console.log(Boolean(cdata.results), "result partnumber api search");
-        if (Boolean(cdata.results)) {
+        if (cdata.results) {
           const res2 = await fetch(url2);
           cdata = await res2.json();
         }

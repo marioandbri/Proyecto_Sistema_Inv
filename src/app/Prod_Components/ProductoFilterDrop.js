@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 const ProductoFilterDrop = ({
   handleDropdownChange,
@@ -7,26 +8,10 @@ const ProductoFilterDrop = ({
   productType,
 }) => {
   const [isActive, setIsActive] = useState(false);
-  const toggleActive = (e) => {
+  const toggleActive = () => {
     setIsActive(!isActive);
   };
-  // useEffect(() => {
-  //   console.log("useEffect ejecutado");
-  //   if (isActive) {
-  //     document.getElementById("dropdown").classList.add("is-active");
-  //   } else {
-  //     document.getElementById("dropdown").classList.remove("is-active");
-  //   }
-  //   return () => {};
-  // }, [isActive]);
 
-  // const [options, setOptions] = useState([]);
-  // const loadOptions = async () => {
-  //   let result = await fetch('/producto/option').then(res => res.json())
-  //   console.log(result)
-  //   setOptions(result)
-
-  // }
   useEffect(() => {
     loadOptions();
     return () => {
@@ -128,6 +113,13 @@ const ProductoFilterDrop = ({
       </div>
     </>
   );
+};
+
+ProductoFilterDrop.propTypes = {
+  handleDropdownChange: PropTypes.func,
+  loadOptions: PropTypes.func,
+  options: PropTypes.array,
+  productType: PropTypes.string,
 };
 
 export default ProductoFilterDrop;

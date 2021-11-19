@@ -1,12 +1,9 @@
-import React, { Component, Fragment, useState, useEffect } from "react";
+import React, { Component } from "react";
 import Cliente from "./Cliente";
 import FormCliente from "./formcliente";
 import PlusCliente from "./PlusCliente";
 import Pagination from "./Pagination";
-// import { query } from 'express';
-// const results = require('../result.json');
 
-// const results = response.json();
 class JsonCliente extends Component {
   constructor(props) {
     super(props);
@@ -20,8 +17,8 @@ class JsonCliente extends Component {
     this.paginate = this.paginate.bind(this);
     this.state = {
       data: [
-        <tr>
-          <td>'No ha cargado nada aun'</td>
+        <tr key={new Date()}>
+          <td>No ha cargado nada aun</td>
         </tr>,
       ],
       actualData: [],
@@ -110,9 +107,6 @@ class JsonCliente extends Component {
     });
     return results.json;
   };
-  // pruebaProps(){
-  //    console.log(this.state.select)
-  // }
 
   handleChange = (e) => {
     this.setState({ select: e.target.value });
@@ -183,7 +177,6 @@ class JsonCliente extends Component {
       };
       // console.log('input validation true')
       console.log(inputs);
-      this.props.pruebaProps;
       this.postClientes(inputs).then((data) => {
         console.log(data);
         this.fetchClientes();
@@ -239,7 +232,7 @@ class JsonCliente extends Component {
         method: "DELETE",
       })
         .then((result) => result.json())
-        .then((data) => this.fetchClientes());
+        .then(() => this.fetchClientes());
       console.log(result);
     }
   }
@@ -273,7 +266,7 @@ class JsonCliente extends Component {
     });
   }
   async handleEdit(rut) {
-    const results = await fetch(`/cliente/${rut}`)
+    await fetch(`/cliente/${rut}`)
       .then((res) => res.json())
       .then((data) => {
         this.setState({
@@ -386,7 +379,7 @@ class JsonCliente extends Component {
   };
   changeClientesPerPage = (e) => {
     this.setState({
-      clientesPerPage: e.target.value,
+      clientesPerPage: parseInt(e.target.value),
     });
   };
 
@@ -431,26 +424,9 @@ class JsonCliente extends Component {
   render() {
     return (
       <>
-        {/* <div className="container is-fluid"> */}
         <div className="box">
           <div className="title is-small">Empresas</div>
-          {/* <div className="field has-addons">
-         <p className="control">
-            <span className="select">
-            <select value={this.state.select} onChange={this.handleChange}>
-               <option defaultValue value="rut">RUT</option>
-               <option value="razonsocial">Razon Social</option>
-               <option value="ubicacion">Casa Matriz</option>
-            </select>
-            </span>
-         </p>
-         <p className="control">
-            <input type="text" className="input" placeholder="Busqueda..." value={this.state.query} onChange={this.handleChangeInput} />
-         </p>
-         <p className="control">
-            <button className="button is-info" onClick={this.createQuery}>Buscar</button>
-         </p>
-      </div> */}
+
           <div className="box is-flex is-justify-content-center">
             <div className="table-container">
               <table className="table is-narrow clientes-table">
@@ -593,7 +569,6 @@ class JsonCliente extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {console.log(this.state.data, 'pre client component @JsonCliente')} */}
                   <Cliente
                     clientes={this.state.actualData}
                     loading={this.state.loading}
@@ -616,11 +591,11 @@ class JsonCliente extends Component {
               value={this.state.clientesPerPage}
               onChange={this.changeClientesPerPage}
             >
-              <option value="10">10</option>
-              <option defaultValue value="20">
+              <option value={10}>10</option>
+              <option defaultValue value={20}>
                 20
               </option>
-              <option value="50">50</option>
+              <option value={50}>50</option>
             </select>
           </div>
           <Pagination

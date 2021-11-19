@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import LoadingBar from "../LoadingBar";
 import Cliente from "./ClienteComp";
 import { useFetch } from "../useFetch";

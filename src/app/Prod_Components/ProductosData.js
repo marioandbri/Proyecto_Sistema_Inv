@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductoItem from "./ProductoItem";
 import LoadingBar from "../LoadingBar";
 import SortingButton from "../SortingButton";
+import Ptp from "prop-types";
 
 const ProductosData = ({
   loading,
@@ -98,7 +99,7 @@ const ProductosData = ({
             </thead>
             <tbody>
               {/* {items.map(e => console.log(e, 'items map'))} */}
-              {items.map((elem, index) => (
+              {items.map((elem) => (
                 <ProductoItem
                   handleEdit={handleEdit}
                   handleRemove={handleRemove}
@@ -116,5 +117,14 @@ const ProductosData = ({
     </>
   );
 };
-
+ProductosData.propTypes = {
+  loading: Ptp.bool,
+  data: Ptp.array,
+  headers: Ptp.array,
+  productType: Ptp.string,
+  handleEdit: Ptp.func,
+  handleEye: Ptp.func,
+  handleRemove: Ptp.func,
+  sortingData: Ptp.func,
+};
 export default ProductosData;

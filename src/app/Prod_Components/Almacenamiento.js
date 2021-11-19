@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 
 const Almacenamiento = ({
@@ -13,7 +14,7 @@ const Almacenamiento = ({
           <label className="label">
             Almacenamiento{" "}
             <a
-              onClick={(e) => {
+              onClick={() => {
                 agregarAlm();
               }}
               className="button is-small is-success"
@@ -23,7 +24,7 @@ const Almacenamiento = ({
               </span>
             </a>
             <a
-              onClick={(e) => {
+              onClick={() => {
                 restarAlm();
               }}
               className="button is-small is-danger"

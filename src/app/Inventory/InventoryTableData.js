@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useTable, useSortBy, useFilters, usePagination } from "react-table";
-import { useFetch } from "../useFetch";
 import { UseRTPagination } from "../useRTPagination";
 import ColumnFilter from "./ColumnFilter";
 import LoadingBar from "../LoadingBar";
@@ -201,10 +200,11 @@ const InventoryTableData = () => {
       <>
         <table className="table is-fullwidth" {...getTableProps()}>
           <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
+            {headerGroups.map((headerGroup, i) => (
+              <tr key={i} {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column, ii) => (
                   <th
+                    key={ii}
                     className="is-size-7"
                     {...column.getHeaderProps()}
                     // {...column.getSortByToggleProps()}
@@ -233,11 +233,13 @@ const InventoryTableData = () => {
             {page.map((row, index) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr key={index} {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     rows.current[index] = false;
                     return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <td key={index} {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </td>
                     );
                   })}
                   {!globalState.editingRows.includes(row.index) ? (

@@ -1,18 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Link,
-  Route,
-  Switch,
-  useParams,
-  useRouteMatch,
-} from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
-import InventoryHeader from "./InventoryHeader";
 
 const InventoryMenu = () => {
   const menuIcon = useRef();
-  const menuItems = useRef([]);
   const state = useInventory();
   const dispatch = useDispatch();
   const operations = ["Consulta", "Ingreso", "Entrega", "Retiro"];

@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
-const Filter = ({ query, setQuery, handleFilter }) => {
+const Filter = ({ query, setQuery }) => {
   //   useEffect(() => {
   //     handleFilter();
   //     return () => {};
@@ -14,13 +15,12 @@ const Filter = ({ query, setQuery, handleFilter }) => {
       <span className="control has-icons-right">
         <input
           value={query}
-
           type="text"
           className="input"
           placeholder="Buscar..."
           onChange={(e) => {
             // handleQuery(e);
-            setQuery(e.target.value)
+            setQuery(e.target.value);
           }}
         />
         <span className="icon is-right">
@@ -29,6 +29,11 @@ const Filter = ({ query, setQuery, handleFilter }) => {
       </span>
     </>
   );
+};
+
+Filter.propTypes = {
+  query: PropTypes.string,
+  setQuery: PropTypes.func,
 };
 
 export default Filter;

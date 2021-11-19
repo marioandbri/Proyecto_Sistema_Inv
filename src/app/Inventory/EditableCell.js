@@ -1,6 +1,6 @@
 import React from "react";
-import { useDispatch, useInventory } from "./InventoryProvider";
-import { type } from "./InventoryReducer";
+import { useInventory } from "./InventoryProvider";
+import PropTypes from "prop-types";
 
 const EditableCell = ({
   value,
@@ -39,6 +39,13 @@ const EditableCell = ({
   } else {
     return <span>{value}</span>;
   }
+};
+
+EditableCell.propTypes = {
+  value: PropTypes.string,
+  row: PropTypes.object,
+  column: PropTypes.object,
+  updateData: PropTypes.func,
 };
 
 export default EditableCell;

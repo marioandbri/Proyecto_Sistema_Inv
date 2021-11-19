@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 
 export const UseRTPagination = (props) => {
@@ -10,14 +11,14 @@ export const UseRTPagination = (props) => {
     pageOptions,
     pageIndex,
     gotoPage,
-    pageCount,
-    setPageSize,
-    pageSize,
+    //pageCount,
+    //setPageSize,
+    //pageSize,
   } = props;
   let currentPage = pageIndex + 1;
   let pageNumbers = pageOptions.map((n) => n + 1);
   const pageDivider =
-    currentPage >= 5
+    currentPage > 5
       ? pageNumbers.slice(Math.abs(5 - currentPage), currentPage + 5)
       : pageNumbers.slice(currentPage - currentPage, 10 - pageNumbers.length);
 
@@ -29,10 +30,7 @@ export const UseRTPagination = (props) => {
         aria-label="pagination"
       >
         <a
-          onClick={() =>
-            // gotoPage(currentPage == 1 ? currentPage : currentPage - 1)
-            previousPage()
-          }
+          onClick={() => previousPage()}
           className="pagination-previous"
           disabled={!canPreviousPage}
         >
@@ -54,7 +52,7 @@ export const UseRTPagination = (props) => {
         <ul className="pagination-list">
           <li>
             <a
-              onClick={(e) => {
+              onClick={() => {
                 gotoPage(0);
               }}
               className="pagination-link is-small"
@@ -73,7 +71,7 @@ export const UseRTPagination = (props) => {
             <li key={number}>
               <a
                 id={number}
-                onClick={(e) => {
+                onClick={() => {
                   gotoPage(number - 1);
                 }}
                 className={`pagination-link ${
@@ -91,7 +89,7 @@ export const UseRTPagination = (props) => {
 
           <li>
             <a
-              onClick={(e) => {
+              onClick={() => {
                 gotoPage(pageOptions.length - 1);
               }}
               className="pagination-link is-small"

@@ -1,19 +1,6 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useReducer,
-  useContext,
-} from "react";
-import { Link } from "react-router-dom";
-import Notification, { notificationTypes } from "../Notification";
-import { useFetch } from "../useFetch";
-import { useProductTypes } from "../useProductTypes";
-import {
-  InventoryContext,
-  useDispatch,
-  useInventory,
-} from "./InventoryProvider";
+import React, { useState, useEffect } from "react";
+import { notificationTypes } from "../Notification";
+import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 
 const ProductsComp = () => {
@@ -27,7 +14,6 @@ const ProductsComp = () => {
     itemStatus: [],
   };
   const [productfield, setProductField] = useState([initialInputs]);
-  const [itemStatus, setItemStatus] = useState([]);
 
   const handleInput = (e, i) => {
     //Creates a shallow copy of the fields
@@ -87,7 +73,7 @@ const ProductsComp = () => {
   };
   const invalidateField = () => {
     let invalidIndex = [];
-    const busqueda = productfield.reduce((acc, producto, index) => {
+    productfield.reduce((acc, producto, index) => {
       acc[producto.numeroSerie] = ++acc[producto.numeroSerie] || 0;
       if (acc[producto.numeroSerie] > 0) {
         invalidIndex.push(index);
@@ -194,7 +180,7 @@ const ProductsComp = () => {
           const errors = data.error || "";
           let detail = "";
           let badIndex = "";
-          if (Boolean(errors)) {
+          if (errors) {
             for (const { message, value } of errors) {
               detail += `${value} ${message}.`;
               badIndex = productfield

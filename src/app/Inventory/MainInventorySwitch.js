@@ -4,8 +4,7 @@ import InventoryHeader from "./InventoryHeader";
 import ProductsComp from "./ProductsComp";
 import InventoryTableData from "./InventoryTableData";
 import Notification from "../Notification";
-import { useDispatch, useInventory } from "./InventoryProvider";
-import { type } from "./InventoryReducer";
+import { useInventory } from "./InventoryProvider";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 const MainInventorySwitch = () => {

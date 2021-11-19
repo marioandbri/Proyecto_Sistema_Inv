@@ -4,7 +4,7 @@ export const useFetch = (url) => {
   const cache = useRef({});
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [isMounted, setIsMounted] = useState(true);
+  // const [isMounted, setIsMounted] = useState(true);
   // console.log(!url, url, "url");
 
   const getData = async () => {
@@ -37,7 +37,8 @@ export const useFetch = (url) => {
 
   useEffect(() => {
     getData();
-    return setIsMounted(false);
+    return;
+    // setIsMounted(false);
   }, [url]);
   // console.log(data)
   return { loading, data };

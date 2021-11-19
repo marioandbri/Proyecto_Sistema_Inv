@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import LoadingBar from "../LoadingBar";
 import CreateProductForm from "./CreateProductForm";
-
+import Ptp from "prop-types";
 const ProductoForm = ({
   productOption,
   handleSelection,
@@ -34,7 +34,7 @@ const ProductoForm = ({
     };
   }, []);
 
-  const ProductOption = [{}];
+  // const ProductOption = [{}];
   if (!loading) {
     // console.log(options, 'productoForm')
     // console.log(loadOptions)
@@ -87,6 +87,20 @@ const ProductoForm = ({
     );
   }
   return <LoadingBar />;
+};
+
+ProductoForm.propTypes = {
+  productOption: Ptp.string,
+  handleCreationForm: Ptp.func.isRequired,
+  isAnUpdate: Ptp.bool,
+  isAnEye: Ptp.bool,
+  productUpdate: Ptp.object,
+  handleUpdate: Ptp.func.isRequired,
+  options: Ptp.array,
+  resetForm: Ptp.func,
+  handleSelection: Ptp.func.isRequired,
+  loadOptions: Ptp.func.isRequired,
+  loading: Ptp.bool,
 };
 
 export default ProductoForm;

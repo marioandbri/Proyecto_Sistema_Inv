@@ -1,10 +1,12 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 
-
-const Consumibles = ({ liftProductConsum, arrayConsum, agregarConsum, restarConsum }) => {
-
-
-
+const Consumibles = ({
+  liftProductConsum,
+  arrayConsum,
+  agregarConsum,
+  restarConsum,
+}) => {
   return (
     <>
       <div className="field is-grouped is-grouped-multiline">
@@ -12,9 +14,8 @@ const Consumibles = ({ liftProductConsum, arrayConsum, agregarConsum, restarCons
           <label className="label">
             Consumibles{" "}
             <a
-              onClick={(e) => {
-                agregarConsum()
-
+              onClick={() => {
+                agregarConsum();
               }}
               className="button is-small is-success"
             >
@@ -23,9 +24,8 @@ const Consumibles = ({ liftProductConsum, arrayConsum, agregarConsum, restarCons
               </span>
             </a>
             <a
-              onClick={(e) => {
-                restarConsum()
-
+              onClick={() => {
+                restarConsum();
               }}
               className="button is-small is-danger"
             >
@@ -69,14 +69,11 @@ const Consumibles = ({ liftProductConsum, arrayConsum, agregarConsum, restarCons
                 </div>
               </div>
             </div>
-
           ))}
 
           {/* ////////////FIN CAMPOS//////////// */}
-
         </div>
       </div>
-
     </>
   );
 };

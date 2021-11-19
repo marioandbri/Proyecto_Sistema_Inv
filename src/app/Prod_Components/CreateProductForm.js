@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import LoadingBar from "../LoadingBar";
-import ComputersForm from "./ComputersForm";
 import GenericProductForm from "./GenericProductForm";
-import MonitorForm from "./MonitorForm";
-import PrinterForm from "./PrinterForm";
 import ProductTypeForm from "./ProductTypeForm";
-import ProyectorForm from "./ProyectorForm";
+import Ptp from "prop-types";
+
+// import ComputersForm from "./ComputersForm";
+// import MonitorForm from "./MonitorForm";
+// import PrinterForm from "./PrinterForm";
+// import ProyectorForm from "./ProyectorForm";
 
 const CreateProductForm = ({
   productOption,
@@ -108,6 +110,17 @@ const CreateProductForm = ({
   }
 
   return <LoadingBar />;
+};
+
+CreateProductForm.propTypes = {
+  productOption: Ptp.string,
+  handleCreationForm: Ptp.func,
+  isAnUpdate: Ptp.bool,
+  isAnEye: Ptp.bool,
+  productUpdate: Ptp.object,
+  handleUpdate: Ptp.func,
+  options: Ptp.array,
+  resetForm: Ptp.func,
 };
 
 export default CreateProductForm;

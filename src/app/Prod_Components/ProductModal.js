@@ -1,5 +1,6 @@
 import React from "react";
 import ProductoForm from "./ProductoForm";
+import Ptp from "prop-types";
 
 const ProductModal = ({
   productOption,
@@ -42,6 +43,19 @@ const ProductModal = ({
       </div>
     </>
   );
+};
+ProductModal.propTypes = {
+  productOption: Ptp.string,
+  handleCreationForm: Ptp.func.isRequired,
+  isAnUpdate: Ptp.bool,
+  isAnEye: Ptp.bool,
+  productUpdate: Ptp.object,
+  handleUpdate: Ptp.func.isRequired,
+  options: Ptp.array,
+  handleSelection: Ptp.func.isRequired,
+  loadOptions: Ptp.func.isRequired,
+  loading: Ptp.bool,
+  closeModal: Ptp.func.isRequired,
 };
 
 export default ProductModal;

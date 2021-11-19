@@ -1,48 +1,19 @@
 import React, { useRef } from "react";
+import PropTypes from "prop-types";
 
-const SortingButton = ({
-  setItems,
-  productType,
-  sortingData,
-  field,
-  fieldName,
-}) => {
-  // console.log(field, "sorting data");
-  // let fieldNameMap = {
-  //   "Tipo Computador": "tipoComputador",
-  //   "Numero de Parte": "partNumber",
-  //   Marca: "marca",
-  //   Modelo: "modelo",
-  //   "Tipo de Impresora": "tipoImpresora",
-  //   Pulgadas: "tamañoPantalla",
-  //   "Tipo Monitor": "tipoMonitor",
-  // };
-
-  // const [PartNumber] = field;
-
+const SortingButton = ({ sortingData, fieldName }) => {
   const icon = useRef();
-  // if (productType.includes("generic")) {
   var property = fieldName == "PartNumber" ? fieldName : ">" + fieldName;
-  // } else {
-  //   var property = fieldNameMap[fieldName];
-  // }
-  // console.log(icon.current);
   const handleClick = () => {
     if (icon.current.classList.contains("fa-sort")) {
       icon.current.classList.remove("fa-sort");
       icon.current.classList.add("fa-sort-up");
       sortingData(property);
-      // let newItems = field.sort(dynamicSort(property));
-      // console.log(field);
-      // setItems(newItems);
       return;
     }
     if (icon.current.classList.contains("fa-sort-up")) {
       icon.current.classList.remove("fa-sort-up");
       icon.current.classList.add("fa-sort-down");
-      // let newItems = field.sort(dynamicSort("-" + property));
-      // console.log(field);
-      // setItems(newItems);
       sortingData("-" + property);
       return;
     } else {
@@ -67,6 +38,11 @@ const SortingButton = ({
       </span>
     </>
   );
+};
+
+SortingButton.propTypes = {
+  fieldName: PropTypes.string,
+  sortingData: PropTypes.func,
 };
 
 export default SortingButton;

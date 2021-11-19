@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { useDispatch, useInventory } from "./Inventory/InventoryProvider";
+import React from "react";
+import { useDispatch } from "./Inventory/InventoryProvider";
 import { type } from "./Inventory/InventoryReducer";
+import PropTypes from "prop-types";
 export const notificationTypes = {
   success: "is-success",
   info: "is-info",
@@ -44,6 +45,12 @@ const Notification = ({
       ></button>
     </div>
   );
+};
+Notification.propTypes = {
+  detail: PropTypes.string,
+  content: PropTypes.string,
+  notificationType: PropTypes.string,
+  notificationIndex: PropTypes.number,
 };
 
 export default Notification;

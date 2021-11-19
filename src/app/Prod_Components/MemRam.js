@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 
 const MemRam = ({
@@ -15,7 +16,7 @@ const MemRam = ({
           <label className="label">
             Memoria RAM{" "}
             <a
-              onClick={(e) => {
+              onClick={() => {
                 agregarRam();
               }}
               className="button is-small is-success"
@@ -25,7 +26,7 @@ const MemRam = ({
               </span>
             </a>
             <a
-              onClick={(e) => {
+              onClick={() => {
                 restarRam();
               }}
               className="button is-small is-danger"

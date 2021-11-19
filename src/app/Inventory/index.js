@@ -1,27 +1,14 @@
-import React, { useRef } from "react";
-import { Route, Switch, useParams, useRouteMatch } from "react-router-dom";
-import ClientSelectorComponent from "./ClientSelectorComponent";
-import InventoryHeader from "./InventoryHeader";
+import React from "react";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
 import InventoryMenu from "./InventoryMenu";
-import InventoryProvider, {
-  InventoryContext,
-  useDispatch,
-  useInventory,
-} from "./InventoryProvider";
-import { type } from "./InventoryReducer";
+import InventoryProvider from "./InventoryProvider";
 import MainInventorySwitch from "./MainInventorySwitch";
-import ProductsComp from "./ProductsComp";
 
 const Index = () => {
-  let { path, url } = useRouteMatch();
+  let { path } = useRouteMatch();
   return (
     <InventoryProvider>
       <div className="container is-fluid box">
-        {/* <div className="tile is-ancestor"> */}
-        {/* <div */}
-        {/* style={{ minHeight: "92vh" }}
-            className="tile is-vertical is-parent"
-          > */}
         <div className="has-background-info-light box">
           <InventoryMenu />
           <Switch>
@@ -29,22 +16,11 @@ const Index = () => {
               <h1>Seleccione alguna opcion para comenzar</h1>
             </Route>
 
-            <Route
-              exact
-              path={`${path}/:id`}
-              children={
-                <>
-                  <MainInventorySwitch />
-                </>
-              }
-            />
+            <Route exact path={`${path}/:id`}>
+              <MainInventorySwitch />
+            </Route>
           </Switch>
-
-          {/* <InventoryHeader /> */}
         </div>
-        {/* </div> */}
-        {/* <ClientSelectorComponent /> */}
-        {/* </div> */}
       </div>
     </InventoryProvider>
   );

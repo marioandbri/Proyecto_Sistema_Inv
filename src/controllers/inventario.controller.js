@@ -83,7 +83,7 @@ export async function getInventarioBySerialNumber(req, res) {
 export async function updateInventario(req, res) {
   const updateItem = req.body;
   const numeroSerie = req.params.sn;
-  const result = Inventario.update(updateItem, {
+  Inventario.update(updateItem, {
     where: { numeroSerie: numeroSerie },
   })
     .then((data) =>
@@ -93,7 +93,7 @@ export async function updateInventario(req, res) {
 }
 export async function deleteInventario(req, res) {
   const serialNumber = req.params.sn;
-  const result = await Inventario.destroy({
+  await Inventario.destroy({
     where: {
       numeroSerie: serialNumber,
     },

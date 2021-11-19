@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import Ptp from "prop-types";
 
 const ProductoItem = ({
   productType,
-  descripcion,
+  // descripcion,
   item,
   handleEdit,
   handleEye,
@@ -18,7 +19,7 @@ const ProductoItem = ({
     return () => {};
   }, [item]);
 
-  const Botonera = () => {
+  const Botonera = ({ partnumber }) => {
     return (
       <td align="center">
         <div className="buttons are-small">
@@ -48,7 +49,18 @@ const ProductoItem = ({
             title="Eliminar"
             className="button m-1 is-outlined is-small is-danger"
             onClick={(e) => {
-              handleRemove(e, item._id);
+              let areUSure = confirm(
+                `Esta seguro que desea eliminar el producto: ${partnumber}`
+              );
+              if (areUSure) {
+                handleRemove(e, item._id);
+              } else {
+                return (
+                  <div className="notification is-info">
+                    Se cancelo la operacion
+                  </div>
+                );
+              }
             }}
           >
             <span className="icon">
@@ -58,6 +70,9 @@ const ProductoItem = ({
         </div>
       </td>
     );
+  };
+  Botonera.propTypes = {
+    partnumber: Ptp.string,
   };
 
   // //   console.log(descripcion);
@@ -156,7 +171,7 @@ const ProductoItem = ({
             {readMore ? "Ver menos" : "Ver mas"}
           </a>
         </td>
-        <Botonera />
+        <Botonera partnumber={item.partnumber} />
       </tr>
     );
   }
@@ -168,6 +183,13 @@ const ProductoItem = ({
       </tr>
     </>
   );
+};
+ProductoItem.propTypes = {
+  productType: Ptp.string,
+  item: Ptp.object,
+  handleEdit: Ptp.func,
+  handleEye: Ptp.func,
+  handleRemove: Ptp.func,
 };
 
 export default ProductoItem;

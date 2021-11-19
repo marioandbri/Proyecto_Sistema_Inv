@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Ptp from "prop-types";
 
 const GenericProductForm = ({
   options,
@@ -55,7 +56,7 @@ const GenericProductForm = ({
   // const [productdetalle, setProductdetalle] = useState(isAnUpdate ? productUpdate.detalle : detalleObj);
   // console.log(productdetalle, 'product detalle')
 
-  const liftProductForm = (e, i) => {
+  const liftProductForm = (e) => {
     let newdetalle = product.detalle;
     newdetalle[e.target.name] = e.target.value;
     setProduct({ ...product, detalle: newdetalle });
@@ -235,6 +236,16 @@ const GenericProductForm = ({
       </form>
     </fieldset>
   );
+};
+
+GenericProductForm.propTypes = {
+  handleCreationForm: Ptp.func,
+  isAnUpdate: Ptp.bool,
+  isAnEye: Ptp.bool,
+  productUpdate: Ptp.object,
+  handleUpdate: Ptp.func,
+  options: Ptp.object,
+  resetForm: Ptp.func,
 };
 
 export default GenericProductForm;

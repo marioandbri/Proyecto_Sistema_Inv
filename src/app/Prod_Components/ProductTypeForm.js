@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
+import Ptp from "prop-types";
 
-const ProductTypeForm = ({ handleCreationForm,
-  isAnUpdate,
-  productUpdate,
-  handleUpdate, CreationForm }) => {
+const ProductTypeForm = ({
+  handleCreationForm,
+  // isAnUpdate,
+  // productUpdate,
+  // handleUpdate,
+  // CreationForm
+}) => {
   const initialState = {
     option: "",
   };
@@ -17,7 +21,9 @@ const ProductTypeForm = ({ handleCreationForm,
   };
   const restarForm = (i) => {
     let newForm = [...form];
-    !(newForm.length <= 1) ? newForm.splice(i, 1) : console.log("debe haber al menos 1 campo")
+    !(newForm.length <= 1)
+      ? newForm.splice(i, 1)
+      : console.log("debe haber al menos 1 campo");
     setForm(newForm);
   };
   const liftForm = (e, i) => {
@@ -30,15 +36,18 @@ const ProductTypeForm = ({ handleCreationForm,
       ...productType,
       form: form,
     });
-    return () => { };
+    return () => {};
   }, [form]);
 
   return (
     <div>
-      <form onSubmit={(e) => {
-        e.preventDefault()
-        handleCreationForm(productType)
-      }} className="form">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleCreationForm(productType);
+        }}
+        className="form"
+      >
         <div className="field is-horizontal">
           <div className="field">
             <label htmlFor="" className="label">
@@ -129,7 +138,6 @@ const ProductTypeForm = ({ handleCreationForm,
           </a>
         </div>
 
-
         {/* /////////////BOTONES///////////// */}
 
         <div className="field is-grouped">
@@ -148,5 +156,7 @@ const ProductTypeForm = ({ handleCreationForm,
     </div>
   );
 };
-
+ProductTypeForm.propTypes = {
+  handleCreationForm: Ptp.func,
+};
 export default ProductTypeForm;

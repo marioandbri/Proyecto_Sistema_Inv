@@ -1,8 +1,13 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import LoadingBar from "../LoadingBar";
 import Consumibles from "./Consumibles";
 
-const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpdate, isAnEye }) => {
+const PrinterForm = ({
+  handleCreationForm,
+  isAnUpdate,
+  productUpdate,
+  handleUpdate,
+}) => {
   const initialState = {
     partNumber: "",
     marca: "",
@@ -10,55 +15,47 @@ const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpda
     tipoImpresora: "",
     modoImpresion: "",
     conexiones: [""],
-    detImpresora: {}
+    detImpresora: {},
   };
 
-  const [product, setProduct] = useState(isAnUpdate ? productUpdate : initialState);
+  const [product, setProduct] = useState(
+    isAnUpdate ? productUpdate : initialState
+  );
 
   // const [consumiblesCount, setConsumiblesCount] = useState(1);
 
-  const consumibles = [];
-  const objConsum = { tipoConsumible: "", numeroParte: "" }
-  const productConsum = []
-
+  const objConsum = { tipoConsumible: "", numeroParte: "" };
 
   const [arrayConsum, setArrayConsum] = useState(
-    isAnUpdate ? productUpdate.consumibles : [objConsum]);
-
-
-
-
+    isAnUpdate ? productUpdate.consumibles : [objConsum]
+  );
 
   const agregarConsum = () => {
-    setArrayConsum([...arrayConsum, objConsum])
-
-  }
+    setArrayConsum([...arrayConsum, objConsum]);
+  };
   const restarConsum = () => {
-    let newArrayConsum = [...arrayConsum]
-    newArrayConsum.length <= 1 ? console.log('solo queda un elemento en el array') : newArrayConsum.pop()
-    setArrayConsum(newArrayConsum)
-
-  }
-
-  const liftProductConsum = (e, index) => {
-    console.log(index, e.target.name, e.target.value)
-    let newArrayConsum = [...arrayConsum]
-    console.log(newArrayConsum)
-    newArrayConsum[index][e.target.name] = e.target.value
-    setArrayConsum(newArrayConsum)
+    let newArrayConsum = [...arrayConsum];
+    newArrayConsum.length <= 1
+      ? console.log("solo queda un elemento en el array")
+      : newArrayConsum.pop();
+    setArrayConsum(newArrayConsum);
   };
 
-
+  const liftProductConsum = (e, index) => {
+    console.log(index, e.target.name, e.target.value);
+    let newArrayConsum = [...arrayConsum];
+    console.log(newArrayConsum);
+    newArrayConsum[index][e.target.name] = e.target.value;
+    setArrayConsum(newArrayConsum);
+  };
 
   useEffect(() => {
     setProduct({
       ...product,
       consumibles: arrayConsum,
     });
-    return () => { };
+    return () => {};
   }, [arrayConsum]);
-
-
 
   const liftProduct = (e) => {
     setProduct({
@@ -104,15 +101,12 @@ const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpda
   // }
   // useEffect(() => {
 
-
   //   setConsumiblesComponent(consumibles)
 
   //   return () => {
 
   //   };
   // }, [consumiblesCount]);
-
-
 
   return (
     <>
@@ -233,7 +227,6 @@ const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpda
           </div>
         </div>
         <div className="field is-horizontal">
-
           {/* ////////////////// CONEXIONES //////////////// */}
           <div className="field m-1">
             <label className="label">Conexiones</label>
@@ -241,7 +234,6 @@ const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpda
               <span className="select is-multiple">
                 {console.log(product.conexiones)}
                 <select
-                  multiple
                   multiple={true}
                   value={product.conexiones}
                   required
@@ -327,11 +319,14 @@ const PrinterForm = ({ handleCreationForm, isAnUpdate, productUpdate, handleUpda
           </div>
         </div>
 
-
         {/* /////////////// CONSUMIBLES //////////// */}
 
-        <Consumibles agregarConsum={agregarConsum} restarConsum={restarConsum} liftProductConsum={liftProductConsum} arrayConsum={arrayConsum} />
-
+        <Consumibles
+          agregarConsum={agregarConsum}
+          restarConsum={restarConsum}
+          liftProductConsum={liftProductConsum}
+          arrayConsum={arrayConsum}
+        />
 
         {/* ////////////// BOTONES //////////// */}
         <div className="field is-grouped">
