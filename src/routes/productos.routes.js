@@ -3,6 +3,7 @@ import {
   createProducto,
   deleteProducto,
   getAllProducts,
+  getFamilyList,
   getProductoById,
   getProductoByQuery,
   getProductPN,
@@ -16,6 +17,8 @@ router.post("/producto/", createProducto);
 //Read
 //Get by Partnumber
 router.get("/producto/partnumber/:pn", getProductPN);
+//Get list of Family Types
+router.get("/producto/:productType/familyList", getFamilyList);
 //By id
 router.get("/producto/:productType/:id", getProductoById);
 // By Query

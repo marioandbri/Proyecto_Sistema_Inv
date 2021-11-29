@@ -5,10 +5,18 @@ const ProductosSchema = new Schema({
     type: String,
     required: true,
   },
-  partnumber: { type: String, unique: true, required: true },
-  marca: { type: String },
-  modelo: { type: String },
-  familia: { type: String },
+  partnumber: {
+    type: String,
+    set: (v) => v.toUpperCase(),
+    unique: true,
+    required: true,
+  },
+  marca: { type: String, set: (v) => v.toUpperCase() },
+  modelo: { type: String, set: (v) => v.toUpperCase() },
+  familia: {
+    type: String,
+    set: (v) => v.toUpperCase(),
+  },
   detalle: { _id: false, type: {} },
   shortDescription: { type: String },
   extraDescription: { type: String },
@@ -17,7 +25,7 @@ const ProductosSchema = new Schema({
 ProductosSchema.virtual("DescriptionS").get(function () {
   let description = `${this.tipoProducto}`;
 
-  for (let [key, value] of Object.entries(this.detalle)) {
+  for (let [key, value] of Object.entries(this?.detalle)) {
     description += `, ${key}: ${value}`;
   }
   description += this.shortDescription ? `, ${this.shortDescription}` : ".";

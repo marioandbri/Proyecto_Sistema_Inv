@@ -2,7 +2,7 @@ import Productos from "../model/productos";
 
 export async function getProductoById(req, res) {
   const id = req.params.id;
-  const productType = req.params.productType;
+  // const productType = req.params.productType;
   const result = await Productos.findById(id);
   console.log(result);
   res.json(result);
@@ -31,7 +31,7 @@ export async function getProductPN(req, res) {
 }
 
 export async function getProductoByQuery(req, res) {
-  const query = req.query;
+  // const query = req.query;
   const result = await Productos.find({ tipoProducto: req.params.productType });
   // console.log(result[0].descriptionOf());
   // JSON.stringify(result) == '[]' ? res.json([]) :
@@ -48,6 +48,13 @@ export async function getProductoByQuery(req, res) {
   //    headers: result[0] ? result[0].headersOf() : ['Not Found'],
   //    description: Boolean(result) ? result.map(e => e.descriptionOf()) : ['Not Found']
   // })
+}
+export async function getFamilyList(req, res) {
+  // res.json({ message: "ruta lista familia funcionando" });
+  const resultList = await Productos.find({
+    tipoProducto: req.params.productType,
+  });
+  res.json(resultList.map((e) => e.familia));
 }
 
 export async function createProducto(req, res) {

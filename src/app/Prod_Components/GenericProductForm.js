@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Ptp from "prop-types";
+import { useFetch } from "../useFetch";
 
 const GenericProductForm = ({
   options,
@@ -34,7 +35,7 @@ const GenericProductForm = ({
     partnumber: "",
     familia: "",
     marca: "",
-    modelo: "   ",
+    modelo: "",
     generic: true,
     detalle: detalleObj,
     shortDescription: "",
@@ -86,6 +87,9 @@ const GenericProductForm = ({
   // console.log(headers);
 
   // console.log(initialState);
+  const { data: tipoFamilia, loading } = useFetch(
+    `/producto/${product.tipoProducto}/familyList`
+  );
   return (
     <fieldset disabled={isAnEye ? true : false}>
       <form
@@ -118,13 +122,19 @@ const GenericProductForm = ({
             <label className="label">Familia</label>
             <span className="control">
               <input
+                list="tipoFamilia"
                 value={product.familia}
                 onChange={(e) => {
                   setProduct({ ...product, familia: e.target.value });
                 }}
                 name="familia"
-                className="input"
+                className={`input ${loading ? "is-loading" : ""}`}
               />
+              <datalist id="tipoFamilia">
+                {tipoFamilia.map((e) => (
+                  <option key={e} value={e} />
+                ))}
+              </datalist>
             </span>
           </div>
           <div className="field m-1">
