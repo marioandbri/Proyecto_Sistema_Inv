@@ -3,6 +3,7 @@ const app = express();
 import morgan from "morgan";
 import path from "path";
 import "regenerator-runtime/runtime";
+const compression = require("compression");
 // const bodyParser = require('body-parser')
 
 // Settings
@@ -12,6 +13,7 @@ app.set("port", process.env.PORT || 4000);
 app.use(morgan("dev"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use(compression());
 
 //Globals
 

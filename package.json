@@ -23,6 +23,7 @@
     "@babel/polyfill": "^7.12.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -43,7 +44,8 @@
     "react-router-dom": "^5.3.0",
     "react-table": "^7.7.0",
     "rimraf": "^3.0.2",
-    "sequelize": "^6.8.0"
+    "sequelize": "^6.8.0",
+    "terser-webpack-plugin": "^5.2.5"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
