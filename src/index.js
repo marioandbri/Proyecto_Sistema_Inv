@@ -1,7 +1,9 @@
 require("dotenv").config();
-require("./database");
 require("@babel/register")({});
 const app = require("./server").default;
+require("./database");
+require("./session");
+
 const { sequelize } = require("./sequelize.js");
 
 //Server is listening

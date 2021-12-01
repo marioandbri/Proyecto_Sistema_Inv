@@ -4,6 +4,7 @@ import Navbar from "./navbar";
 import JsonCliente from "./jsoncliente";
 import ProductosUI from "./ProductosUI";
 import Inventory from "./Inventory";
+import LoginComponent from './LoginComponent';
 
 class App extends Component {
   render() {
@@ -11,6 +12,9 @@ class App extends Component {
       <Router>
         <Navbar />
         <Switch>
+          <Route path="/login">
+            <LoginComponent />
+          </Route>
           <Route path="/clientes">
             <JsonCliente />
           </Route>

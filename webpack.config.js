@@ -20,6 +20,11 @@ module.exports = {
         use: ["babel-loader"],
       },
       {
+        test: /\.m?jsx$/,
+        exclude: /node_modules/,
+        use: ["babel-loader"],
+      },
+      {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },
@@ -30,6 +35,7 @@ module.exports = {
     fallback: {
       util: require.resolve("util/"),
     },
+    extensions: ['.jsx', '...']
   },
   optimization: {
     minimizer: [new TerserPlugin({})],

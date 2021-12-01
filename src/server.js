@@ -4,6 +4,7 @@ import morgan from "morgan";
 import path from "path";
 import "regenerator-runtime/runtime";
 const compression = require("compression");
+import { sessionMiddleware } from "./session";
 // const bodyParser = require('body-parser')
 
 // Settings
@@ -14,6 +15,7 @@ app.use(morgan("dev"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
+app.use(sessionMiddleware);
 
 //Globals
 

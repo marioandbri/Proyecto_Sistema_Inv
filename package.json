@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "webpack": "webpack --mode development",
+    "webpack": "webpack --mode development --watch",
+    "build": "webpack --mode production",
     "ddbb": "mongod"
   },
   "repository": {
@@ -23,12 +24,15 @@
     "@babel/polyfill": "^7.12.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "bulma-extensions": "^6.2.7",
     "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "formik": "^2.2.9",
     "method-override": "^3.0.0",
     "mongoose": "^5.13.12",
     "morgan": "^1.10.0",
@@ -45,7 +49,8 @@
     "react-table": "^7.7.0",
     "rimraf": "^3.0.2",
     "sequelize": "^6.8.0",
-    "terser-webpack-plugin": "^5.2.5"
+    "terser-webpack-plugin": "^5.2.5",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
