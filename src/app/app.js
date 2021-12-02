@@ -5,6 +5,7 @@ import JsonCliente from "./jsoncliente";
 import ProductosUI from "./ProductosUI";
 import Inventory from "./Inventory";
 import LoginComponent from './LoginComponent';
+import SignupComponent from './SignupComponent';
 
 class App extends Component {
   render() {
@@ -14,6 +15,9 @@ class App extends Component {
         <Switch>
           <Route path="/login">
             <LoginComponent />
+          </Route>
+          <Route path="/registro">
+            <SignupComponent />
           </Route>
           <Route path="/clientes">
             <JsonCliente />

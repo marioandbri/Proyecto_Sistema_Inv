@@ -45,29 +45,12 @@ ProductosSchema.virtual("DescriptionL").get(function () {
 
 ProductosSchema.methods.headersOf = function () {
   let headers = ["PartNumber", "Familia", "Marca", "Modelo"];
-
-  // for (let i in this.detalle) {
-  //    headers.push(Object.keys(this.detalle[i]).toString())
   // }
   Object.keys(this.detalle).map((e) => headers.push(e));
 
   return headers;
 };
-// ProductosSchema.methods.descriptionOf = function () {
-//   let description = `${this.tipoProducto}`;
-//   Object.values(this.detalle).map(
-//     (e) => (description = description.concat(", ", e))
-//   );
 
-//   return description;
-// };
-// GenericoSchema.virtual('headersOf').get(() => {
-//    let headers = []
-//    for (let i in this.detalle) {
-//       headers.push(Object.keys(this.detalle[i]).toString())
-//    }
-//    return headers
-// })
 ProductosSchema.set("toJSON", { virtuals: true });
 ProductosSchema.set("toObject", { virtuals: true });
 

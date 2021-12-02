@@ -53,8 +53,16 @@ const Navbar = () => {
 
             </div>
             <div className="navbar-end ">
-              <Link className="navbar-item" to="/login">
-                <span className="button is-info is-light">Ingresar</span>
+              <Link className="" to="/login">
+                <div className="navbar-item ">
+                  <span className="button is-link">
+                    Ingresar</span>
+                </div>
+              </Link>
+              <Link className="" to="/registro">
+                <div className="navbar-item">
+                  <span className="button is-outline">Registrarse</span>
+                </div>
               </Link>
             </div>
           </div>
