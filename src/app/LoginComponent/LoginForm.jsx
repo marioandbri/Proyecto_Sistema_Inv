@@ -5,11 +5,26 @@ import "./bulma-switch.min.css";
 const LoginForm = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const emularAsyncLoading = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+  const initialValues = { username: "", password: "" };
+  const [credentials, setCredentials] = useState(initialValues);
+  const signinUser = async (data) => {
+    const result = await fetch("/uac/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok) return res;
+      })
+      .then((res) => res.json())
+      .catch((e) => {
+        console.error(e);
+
+        return { status: "fail", error: e };
+      });
+    return await result;
   };
   return (
     <>
@@ -17,9 +32,12 @@ const LoginForm = () => {
         <h1 className="title">Ingreso</h1>
 
         <form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            emularAsyncLoading();
+            setIsLoading(true);
+            const result = await signinUser(credentials);
+            console.log(result);
+            setIsLoading(false);
           }}
           className="form"
         >
@@ -29,7 +47,15 @@ const LoginForm = () => {
             </label>
             <div className="field">
               <p className="control has-icons-left">
-                <input type="text" className="input" id="username" />
+                <input
+                  type="text"
+                  className="input"
+                  id="username"
+                  onChange={(e) =>
+                    setCredentials({ ...credentials, username: e.target.value })
+                  }
+                  value={credentials.username}
+                />
                 <span className="icon is-left">👤</span>
               </p>
             </div>
@@ -39,7 +65,15 @@ const LoginForm = () => {
             </label>
             <div className="field">
               <p className="control has-icons-left">
-                <input type="password" className="input" id="password" />
+                <input
+                  type="password"
+                  className="input"
+                  id="password"
+                  onChange={(e) =>
+                    setCredentials({ ...credentials, password: e.target.value })
+                  }
+                  value={credentials.password}
+                />
                 <span className="icon is-left">🔑</span>
               </p>
             </div>

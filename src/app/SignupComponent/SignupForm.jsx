@@ -4,15 +4,34 @@ import * as Yup from "yup";
 // import PropTypes from "prop-types";
 
 const SignupForm = () => {
+  const signupUser = async (data) => {
+    const result = await fetch("/uac/registro", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok) return res;
+      })
+      .then((res) => res.json())
+      .catch((e) => {
+        console.error(e);
+
+        return { status: "fail", error: e };
+      });
+    return await result;
+  };
   const [isLoading, setIsLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
-      fullName: "",
+      username: "",
       email: "",
       password: "",
     },
     validationSchema: Yup.object({
-      fullName: Yup.string()
+      username: Yup.string()
         .min(5, "No puede ser un nombre tan corto")
         .max(36, "Debe ser menos de 36 carácteres")
         .required("Obligatorio"),
@@ -23,15 +42,14 @@ const SignupForm = () => {
         .min(6, "Ingrese al menos 6 carácteres")
         .required("Obligatorio"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setIsLoading(true);
-      setTimeout(() => {
-        console.log(values);
-        setIsLoading(false);
-      }, 3000);
+      const result = await signupUser(values);
+      console.log(result);
+      setIsLoading(false);
     },
   });
-  const { fullName, email, password } = formik.values;
+  const { username, email, password } = formik.values;
 
   return (
     <>
@@ -40,18 +58,18 @@ const SignupForm = () => {
         <form onSubmit={formik.handleSubmit} className="form">
           <fieldset disabled={isLoading}>
             <label className="label" htmlFor="username">
-              Nombre Completo
+              Nombre de usuario
             </label>
-            {formik.errors.fullName && (
-              <p className="has-text-danger">{formik.errors.fullName}</p>
+            {formik.errors.username && (
+              <p className="has-text-danger">{formik.errors.username}</p>
             )}
             <div className="field">
               <p className="control has-icons-left">
                 <input
                   type="text"
-                  className={`input ${formik.errors.fullName && "is-danger"}`}
-                  id="fullName"
-                  value={fullName}
+                  className={`input ${formik.errors.username && "is-danger"}`}
+                  id="username"
+                  value={username}
                   required
                   onChange={formik.handleChange}
                 />

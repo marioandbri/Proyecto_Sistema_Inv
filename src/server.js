@@ -5,6 +5,9 @@ import path from "path";
 import "regenerator-runtime/runtime";
 const compression = require("compression");
 import { sessionMiddleware } from "./session";
+import passport from 'passport'
+import AunthPassport from './config/passport'
+import cookieParser from 'cookie-parser'
 // const bodyParser = require('body-parser')
 
 // Settings
@@ -16,7 +19,10 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 app.use(sessionMiddleware);
-
+app.use(cookieParser(process.env.SESSION_SECRET))
+app.use(passport.initialize())
+app.use(passport.session())
+AunthPassport(passport)
 //Globals
 
 app.use(require("./routes/ot.routes.js"));
@@ -28,6 +34,7 @@ app.use(require("./routes/computador.routes.js"));
 app.use(require("./routes/monitor.routes.js"));
 app.use(require("./routes/productos.routes.js"));
 app.use(require("./routes/inventario.routes.js"));
+app.use(require("./routes/uac.routes.js"))
 
 //Static Files
 app.use(express.static(path.join(__dirname, "public")));
