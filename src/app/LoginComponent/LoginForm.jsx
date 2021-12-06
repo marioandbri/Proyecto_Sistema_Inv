@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import "./bulma-switch.min.css";
+import { useAppDispatch } from "../AppProvider";
+import { type } from "../AppReducer.js";
 // import PropTypes from "prop-types";
 
 const LoginForm = () => {
+  const dispatch = useAppDispatch();
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const initialValues = { username: "", password: "" };
@@ -16,13 +19,26 @@ const LoginForm = () => {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        if (res.ok) return res;
+        if (res.ok) return res.json();
+        else throw "Credenciales Incorrectas";
       })
-      .then((res) => res.json())
       .catch((e) => {
         console.error(e);
 
-        return { status: "fail", error: e };
+        return;
+      });
+    return await result;
+  };
+
+  const fetchData = async () => {
+    const result = await fetch("/uac/user")
+      .then((res) => {
+        if (res.ok) return res.json();
+        else throw "Ha ocurrido un error";
+      })
+      .catch((e) => {
+        console.error(e);
+        return null;
       });
     return await result;
   };
@@ -35,8 +51,16 @@ const LoginForm = () => {
           onSubmit={async (e) => {
             e.preventDefault();
             setIsLoading(true);
-            const result = await signinUser(credentials);
+            let result = await signinUser(credentials);
+            if (result) {
+              const { username, email } = await fetchData();
+              result = { username, email };
+            } else {
+              result = null;
+            }
+            dispatch({ type: type.SET_USER, payload: result });
             console.log(result);
+
             setIsLoading(false);
           }}
           className="form"

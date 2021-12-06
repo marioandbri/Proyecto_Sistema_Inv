@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAppState } from "./AppProvider";
+import PropTypes from 'prop-types'
 
 const Navbar = () => {
+  const { userData } = useAppState()
   const { pathname } = useLocation();
   console.log(pathname);
   useEffect(() => {
@@ -41,29 +44,11 @@ const Navbar = () => {
               <Link className="navbar-item nv-links" to="/">
                 Inicio
               </Link>
-              <Link className="navbar-item nv-links" to="/clientes">
-                Gestion de Empresas
-              </Link>
-              <Link className="navbar-item nv-links" to="/productos">
-                Gestion de Productos
-              </Link>
-              <Link className="navbar-item nv-links" to="/inventarios">
-                Gestion de Inventario
-              </Link>
+              {userData && <MenuItems />}
 
             </div>
             <div className="navbar-end ">
-              <Link className="" to="/login">
-                <div className="navbar-item ">
-                  <span className="button is-link">
-                    Ingresar</span>
-                </div>
-              </Link>
-              <Link className="" to="/registro">
-                <div className="navbar-item">
-                  <span className="button is-outline">Registrarse</span>
-                </div>
-              </Link>
+              {userData ? <SessionItems username={userData.username} /> : <SigninButtons />}
             </div>
           </div>
         </div>
@@ -71,5 +56,58 @@ const Navbar = () => {
     </>
   );
 };
+
+const SessionItems = ({ username }) => {
+  return (
+    <>
+      <div className="navbar-item">👤 Bienvenido: {username.toUpperCase()}</div>
+      <Link className="" to="/">
+        <div className="navbar-item ">
+          <span className="button is-danger" onClick={async () => await fetch("/uac/logout")}>
+            Cerrar session</span>
+        </div>
+      </Link>
+    </>
+  )
+}
+
+SessionItems.propTypes = {
+  username: PropTypes.string
+}
+
+const SigninButtons = () => {
+  return (
+    <>
+      <Link className="" to="/login">
+        <div className="navbar-item ">
+          <span className="button is-link">
+            Ingresar</span>
+        </div>
+      </Link>
+      <Link className="" to="/registro">
+        <div className="navbar-item">
+          <span className="button is-outline">Registrarse</span>
+        </div>
+      </Link>
+    </>
+  )
+}
+const MenuItems = () => {
+  return (
+    <>
+
+      <Link className="navbar-item nv-links" to="/clientes">
+        Gestion de Empresas
+      </Link>
+      <Link className="navbar-item nv-links" to="/productos">
+        Gestion de Productos
+      </Link>
+      <Link className="navbar-item nv-links" to="/inventarios">
+        Gestion de Inventario
+      </Link>
+    </>
+  )
+}
+
 
 export default Navbar;

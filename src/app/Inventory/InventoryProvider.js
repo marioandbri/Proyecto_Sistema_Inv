@@ -22,7 +22,7 @@ const useDispatch = () => useContext(InventoryContext)[1];
 export { InventoryContext, useInventory, useDispatch };
 
 InventoryProvider.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.node,
 };
 
 export default InventoryProvider;

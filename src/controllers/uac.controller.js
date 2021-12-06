@@ -12,7 +12,7 @@ export async function registerUser(req, res) {
     }
     throw new Error("Ha ocurrido un error: " + resp)
   }).catch(e => {
-    res.status(400).json({ status: "fail", erros: e })
+    res.status(400).json({ status: "fail", error: e })
   })
 }
 export function loginUser(req, res, next) {
@@ -20,7 +20,7 @@ export function loginUser(req, res, next) {
   // const result = await Usuario.findOne({ username: loginuser })
   passport.authenticate("local", (err, user,) => {
     if (err) throw err;
-    if (!user) res.json({ message: "usuario no encontrado" });
+    if (!user) res.status(400).json({ message: "Credenciales incorrectas" });
     else {
       req.logIn(user, function (err) {
         if (err) { return next(err) }
@@ -48,6 +48,11 @@ export function loginUser(req, res, next) {
   // })
 }
 
+export function userLogout(req, res) {
+  req.logout()
+  res.json({ message: "Se ha cerrado la session" })
+}
+
 export function userData(req, res) {
-  res.json({ data: req.user })
+  res.json(req.user || null)
 }
