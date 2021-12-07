@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useAppState } from "./AppProvider";
+import { useAppDispatch, useAppState } from "./AppProvider";
 import PropTypes from 'prop-types'
+import { type } from "./AppReducer";
 
 const Navbar = () => {
+
   const { userData } = useAppState()
   const { pathname } = useLocation();
   console.log(pathname);
@@ -58,15 +60,30 @@ const Navbar = () => {
 };
 
 const SessionItems = ({ username }) => {
+  const dispatch = useAppDispatch()
+  const logOutUser = async () => {
+    console.log("se ejecuto funcion logout")
+    const result = await fetch("/uac/logout")
+      .then(res => { if (res.ok) return res.json(); else throw "Ha ocurrido un error al cerrar sesion" })
+      .catch((e) => { console.error(e); return })
+    return await result
+  }
+
   return (
     <>
       <div className="navbar-item">👤 Bienvenido: {username.toUpperCase()}</div>
-      <Link className="" to="/">
-        <div className="navbar-item ">
-          <span className="button is-danger" onClick={async () => await fetch("/uac/logout")}>
-            Cerrar session</span>
-        </div>
-      </Link>
+      {/* <Link className="" to="/"> */}
+      <div className="navbar-item ">
+        <span className="button is-danger" onClick={async () => {
+          await logOutUser().then(() => {
+            dispatch({ type: type.LOG_OUT, payload: null })
+          })
+
+
+        }}>
+          Cerrar session</span>
+      </div>
+      {/* </Link> */}
     </>
   )
 }

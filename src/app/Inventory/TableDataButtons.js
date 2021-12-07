@@ -3,9 +3,11 @@ import { notificationTypes } from "../Notification";
 import { useDispatch } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 import PropTypes from "prop-types";
+import { useAppState } from "../AppProvider";
 
 const TableDataButtons = ({ row, reloadData, editRow }) => {
   const dispatch = useDispatch();
+  const appState = useAppState()
   const handleRemove = async (sn) => {
     const result = await fetch(`/inventario/${sn}`, {
       method: "DELETE",
@@ -17,12 +19,15 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
       type: type.addNotification,
       payload: {
         content: "❗ " + result.message,
-        notificationType: notificationTypes.success,
+        notificationType: notificationTypes.warning,
       },
     });
     reloadData();
   };
   const { numeroSerie } = row.original;
+  if (!appState.admin) {
+    return null
+  }
   return (
     <td align="center">
       <div className="buttons are-small">

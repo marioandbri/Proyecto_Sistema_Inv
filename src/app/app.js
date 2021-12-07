@@ -6,8 +6,8 @@ import ProductosUI from "./ProductosUI";
 import Inventory from "./Inventory";
 import LoginComponent from './LoginComponent';
 import SignupComponent from './SignupComponent';
-import { useAppDispatch } from "./AppProvider";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { useAppDispatch, useAppState } from "./AppProvider";
+import { Redirect, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { type } from "./AppReducer";
 import "../../node_modules/bulma-extensions/bulma-pageloader/dist/css/bulma-pageloader.min.css"
 // import { useUserData } from "./useUserData"
@@ -17,13 +17,13 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true)
   const { pathname } = useLocation()
   const dispatch = useAppDispatch()
-
+  const state = useAppState()
   const session = async () => {
     await fetch("/uac/user")
       .then(res => {
         if (res.ok) return res.json()
         else throw "No hay session abierta"
-      }).then((data) => dispatch({ type: type.SET_USER, payload: data ? { username: data.username, email: data.email } : null }))
+      }).then((data) => dispatch({ type: data ? type.LOG_IN : type.LOG_OUT, payload: data ? { username: data.username, email: data.email } : null }))
       .catch(e => {
         console.error(e)
       })
@@ -32,7 +32,7 @@ const App = () => {
   useEffect(async () => {
     session()
     return () => {
-
+      session()
     };
   }, [pathname]);
   useEffect(() => {
@@ -44,19 +44,19 @@ const App = () => {
       <Navbar />
       <Switch>
         <Route path="/login">
-          <LoginComponent />
+          {state.userData ? <Redirect to="/" /> : <LoginComponent />}
         </Route>
         <Route path="/registro">
-          <SignupComponent />
+          {state.userData ? <Redirect to="/" /> : <SignupComponent />}
         </Route>
         <Route path="/clientes">
-          <JsonCliente />
+          {!state.userData ? <Redirect to="/login" /> : <JsonCliente />}
         </Route>
         <Route path="/productos">
-          <ProductosUI />
+          {!state.userData ? <Redirect to="/login" /> : <ProductosUI />}
         </Route>
         <Route path="/inventarios">
-          <Inventory />
+          {!state.userData ? <Redirect to="/login" /> : <Inventory />}
         </Route>
         <Route exact path="/">
           <>

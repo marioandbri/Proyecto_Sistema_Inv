@@ -40,6 +40,7 @@ const LoginForm = () => {
         console.error(e);
         return null;
       });
+    setIsLoading(false);
     return await result;
   };
   return (
@@ -57,11 +58,10 @@ const LoginForm = () => {
               result = { username, email };
             } else {
               result = null;
+              setIsLoading(false);
             }
-            dispatch({ type: type.SET_USER, payload: result });
+            dispatch({ type: type.LOG_IN, payload: result });
             console.log(result);
-
-            setIsLoading(false);
           }}
           className="form"
         >

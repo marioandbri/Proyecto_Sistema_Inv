@@ -20,6 +20,6 @@ export const sessionMiddleware = session({
   store: sessionStore,
   cookie: {
     sameSite: true,
-    maxAge: 1000 * 120,
+    maxAge: 1000 * 1200,
   },
 });

@@ -18,7 +18,7 @@ const InventoryTableData = () => {
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   useEffect(() => {
     fetchData();
-    return () => {};
+    return () => { };
   }, []);
 
   const fetchData = async () => {
@@ -55,7 +55,7 @@ const InventoryTableData = () => {
       },
 
       {
-        Header: "Numero de Parte",
+        Header: "Part Number",
 
         accessor: "productPN",
       },
@@ -207,7 +207,7 @@ const InventoryTableData = () => {
                     key={ii}
                     className="is-size-7"
                     {...column.getHeaderProps()}
-                    // {...column.getSortByToggleProps()}
+                  // {...column.getSortByToggleProps()}
                   >
                     {column.render("Header")}
                     <span

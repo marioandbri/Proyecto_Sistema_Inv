@@ -50,7 +50,7 @@ export function loginUser(req, res, next) {
 
 export function userLogout(req, res) {
   req.logout()
-  res.json({ message: "Se ha cerrado la session" })
+  res.json({ message: "Se ha cerrado su sesion" })
 }
 
 export function userData(req, res) {

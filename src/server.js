@@ -23,6 +23,12 @@ app.use(cookieParser(process.env.SESSION_SECRET))
 app.use(passport.initialize())
 app.use(passport.session())
 AunthPassport(passport)
+
+app.use((req, res, next) => {
+  console.log(req.session)
+  console.log(req.user)
+  next()
+})
 //Globals
 
 app.use(require("./routes/ot.routes.js"));
