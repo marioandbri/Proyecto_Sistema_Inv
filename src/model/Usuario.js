@@ -18,7 +18,24 @@ const UsuariosSchema = new Schema({
   salt: {
     type: String,
     required: true
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  accessEmpresas: {
+    type: Boolean,
+    default: true
+  },
+  accessProductos: {
+    type: Boolean,
+    default: true
+  },
+  accessInventarios: {
+    type: Boolean,
+    default: true
   }
+
 })
 
 export default model('Usuarios', UsuariosSchema) 

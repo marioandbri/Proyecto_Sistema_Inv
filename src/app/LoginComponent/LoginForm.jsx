@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./bulma-switch.min.css";
 import { useAppDispatch } from "../AppProvider";
-import { type } from "../AppReducer.js";
+import { ToastNotification, type } from "../AppReducer.js";
 // import PropTypes from "prop-types";
 
 const LoginForm = () => {
@@ -23,6 +23,7 @@ const LoginForm = () => {
         else throw "Credenciales Incorrectas";
       })
       .catch((e) => {
+        ToastNotification("error", e.toString());
         console.error(e);
 
         return;
@@ -39,9 +40,13 @@ const LoginForm = () => {
       .catch((e) => {
         console.error(e);
         return null;
+      })
+      .then((data) => {
+        ToastNotification("success", `Bienvenido de nuevo, ${data.username}`);
+        return data;
       });
     setIsLoading(false);
-    return await result;
+    return result;
   };
   return (
     <>
@@ -54,8 +59,22 @@ const LoginForm = () => {
             setIsLoading(true);
             let result = await signinUser(credentials);
             if (result) {
-              const { username, email } = await fetchData();
-              result = { username, email };
+              const {
+                username,
+                email,
+                isAdmin,
+                accessEmpresas,
+                accessProductos,
+                accessInventarios,
+              } = await fetchData();
+              result = {
+                username,
+                email,
+                isAdmin,
+                accessEmpresas,
+                accessProductos,
+                accessInventarios,
+              };
             } else {
               result = null;
               setIsLoading(false);

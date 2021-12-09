@@ -198,74 +198,78 @@ const InventoryTableData = () => {
   if (!loading) {
     return (
       <>
-        <table className="table is-fullwidth" {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup, i) => (
-              <tr key={i} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, ii) => (
-                  <th
-                    key={ii}
-                    className="is-size-7"
-                    {...column.getHeaderProps()}
-                  // {...column.getSortByToggleProps()}
-                  >
-                    {column.render("Header")}
-                    <span
-                      onClick={() => {
-                        column.toggleSortBy();
-                      }}
+        <div className="table-container">
+
+          <table className="table is-fullwidth" {...getTableProps()}>
+            <thead>
+              {headerGroups.map((headerGroup, i) => (
+                <tr key={i} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column, ii) => (
+                    <th
+                      key={ii}
+                      className="is-size-7"
+                      {...column.getHeaderProps()}
+                    // {...column.getSortByToggleProps()}
                     >
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? sortUpIcon
-                          : sortDownIcon
-                        : sortIcon}
-                    </span>
-                    <div>
-                      {column.canFilter ? column.render("Filter") : null}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody className="is-size-7" {...getTableBodyProps()}>
-            {page.map((row, index) => {
-              prepareRow(row);
-              return (
-                <tr key={index} {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    rows.current[index] = false;
-                    return (
-                      <td key={index} {...cell.getCellProps()}>
-                        {cell.render("Cell")}
-                      </td>
-                    );
-                  })}
-                  {!globalState.editingRows.includes(row.index) ? (
-                    <TableDataButtons
-                      editRow={editRow}
-                      index={index}
-                      row={row}
-                      reloadData={fetchData}
-                    />
-                  ) : (
-                    <TableEditingButtons
-                      row={row}
-                      index={index}
-                      reloadData={fetchData}
-                      updateData={updateData}
-                      cancelEditRow={cancelEditRow}
-                      finalEditRow={finalEditRow}
-                      restoreData={restoreData}
-                    />
-                  )}
+                      {column.render("Header")}
+                      <span
+                        onClick={() => {
+                          column.toggleSortBy();
+                        }}
+                      >
+                        {column.isSorted
+                          ? column.isSortedDesc
+                            ? sortUpIcon
+                            : sortDownIcon
+                          : sortIcon}
+                      </span>
+                      <div>
+                        {column.canFilter ? column.render("Filter") : null}
+                      </div>
+                    </th>
+                  ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody className="is-size-7" {...getTableBodyProps()}>
+              {page.map((row, index) => {
+                prepareRow(row);
+                return (
+                  <tr key={index} {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      rows.current[index] = false;
+                      return (
+                        <td key={index} {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </td>
+                      );
+                    })}
+                    {!globalState.editingRows.includes(row.index) ? (
+                      <TableDataButtons
+                        editRow={editRow}
+                        index={index}
+                        row={row}
+                        reloadData={fetchData}
+                      />
+                    ) : (
+                      <TableEditingButtons
+                        row={row}
+                        index={index}
+                        reloadData={fetchData}
+                        updateData={updateData}
+                        cancelEditRow={cancelEditRow}
+                        finalEditRow={finalEditRow}
+                        restoreData={restoreData}
+                      />
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
         <div>{PaginationComponent}</div>
+
       </>
     );
   } else {

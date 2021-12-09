@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppState } from "./AppProvider";
 import PropTypes from 'prop-types'
-import { type } from "./AppReducer";
+import { ToastNotification, type } from "./AppReducer";
+import { toCapitalize } from "./app";
 
 const Navbar = () => {
 
@@ -71,12 +72,13 @@ const SessionItems = ({ username }) => {
 
   return (
     <>
-      <div className="navbar-item">👤 Bienvenido: {username.toUpperCase()}</div>
+      <div className="navbar-item">👤 {toCapitalize(username)}</div>
       {/* <Link className="" to="/"> */}
       <div className="navbar-item ">
         <span className="button is-danger" onClick={async () => {
           await logOutUser().then(() => {
             dispatch({ type: type.LOG_OUT, payload: null })
+            ToastNotification("info", "Hasta pronto 👋")
           })
 
 
@@ -110,18 +112,20 @@ const SigninButtons = () => {
   )
 }
 const MenuItems = () => {
+  const { userData } = useAppState()
+
   return (
     <>
 
-      <Link className="navbar-item nv-links" to="/clientes">
+      {(userData.isAdmin || userData.accessEmpresas) && <Link className="navbar-item nv-links" to="/clientes">
         Gestion de Empresas
-      </Link>
-      <Link className="navbar-item nv-links" to="/productos">
+      </Link>}
+      {(userData.isAdmin || userData.accessProductos) && <Link className="navbar-item nv-links" to="/productos">
         Gestion de Productos
-      </Link>
-      <Link className="navbar-item nv-links" to="/inventarios">
+      </Link>}
+      {(userData.isAdmin || userData.accessInventarios) && <Link className="navbar-item nv-links" to="/inventarios">
         Gestion de Inventario
-      </Link>
+      </Link>}
     </>
   )
 }

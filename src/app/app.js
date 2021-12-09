@@ -10,6 +10,9 @@ import { useAppDispatch, useAppState } from "./AppProvider";
 import { Redirect, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { type } from "./AppReducer";
 import "../../node_modules/bulma-extensions/bulma-pageloader/dist/css/bulma-pageloader.min.css"
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+import youshallnotpass from "../../you-shall-not-pass.gif"
 // import { useUserData } from "./useUserData"
 
 
@@ -23,7 +26,13 @@ const App = () => {
       .then(res => {
         if (res.ok) return res.json()
         else throw "No hay session abierta"
-      }).then((data) => dispatch({ type: data ? type.LOG_IN : type.LOG_OUT, payload: data ? { username: data.username, email: data.email } : null }))
+      }).then((data) => {
+        if (data) {
+          var { username, email, isAdmin, accessInventarios, accessEmpresas, accessProductos } = data
+        }
+        dispatch({ type: data ? type.LOG_IN : type.LOG_OUT, payload: data ? { username, email, isAdmin, accessInventarios, accessEmpresas, accessProductos } : null })
+        return
+      })
       .catch(e => {
         console.error(e)
       })
@@ -38,25 +47,26 @@ const App = () => {
   useEffect(() => {
     return setIsLoading(true)
   }, [])
-  return (
+
+  if (!isLoading) return (
     <>
       <div className={`pageloader is-info ${isLoading && "is-active"}`}><span className="title">Cargando app...</span></div>
       <Navbar />
       <Switch>
+        <Route path="/clientes">
+          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessEmpresas) ? <JsonCliente /> : <UnauthorizedComponent />}
+        </Route>
+        <Route path="/productos">
+          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessProductos) ? <ProductosUI /> : <UnauthorizedComponent />}
+        </Route>
+        <Route path="/inventarios">
+          {(!state.userData) ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessInventarios) ? <Inventory /> : <UnauthorizedComponent />}
+        </Route>
         <Route path="/login">
           {state.userData ? <Redirect to="/" /> : <LoginComponent />}
         </Route>
         <Route path="/registro">
           {state.userData ? <Redirect to="/" /> : <SignupComponent />}
-        </Route>
-        <Route path="/clientes">
-          {!state.userData ? <Redirect to="/login" /> : <JsonCliente />}
-        </Route>
-        <Route path="/productos">
-          {!state.userData ? <Redirect to="/login" /> : <ProductosUI />}
-        </Route>
-        <Route path="/inventarios">
-          {!state.userData ? <Redirect to="/login" /> : <Inventory />}
         </Route>
         <Route exact path="/">
           <>
@@ -70,14 +80,41 @@ const App = () => {
                       <i className="fas fa-tools"></i>
                     </span>
                   </p>
+                  {/* <div onClick={() => ToastNotification("info", "Informacion informativa 😅")} className="button is-large">Notify me</div> */}
                 </div>
               </section>
             </div>
           </>
         </Route>
       </Switch>
+      <ToastContainer position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored" />
     </>
 
   );
+  else return (
+    <div className={`pageloader is-info ${isLoading && "is-active"}`}><span className="title">Cargando app...</span></div>
+  )
 }
+
+const UnauthorizedComponent = () => {
+  return (
+    <div className="box has-background-danger">
+      <div className="title has-text-centered has-text-white">🚧 No tienes acceso autorizado para este modulo 🚧</div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <img src={youshallnotpass} />
+      </div>
+    </div>
+  )
+}
+
+export const toCapitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1)
 export default App;

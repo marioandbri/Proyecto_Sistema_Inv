@@ -3,9 +3,9 @@ import Usuario from "../model/Usuario";
 import passport from 'passport'
 
 export async function registerUser(req, res) {
-  const { username, email, password } = req.body
+  const { username, email, password, isAdmin, accessEmpresas, accessProductos, accessInventarios } = req.body
   const { salt, hash } = passwordGenerator(password)
-  const registerUser = new Usuario({ username, email, hash, salt })
+  const registerUser = new Usuario({ username, email, hash, salt, isAdmin, accessEmpresas, accessProductos, accessInventarios })
   await registerUser.save().then((resp) => {
     if (resp) {
       return res.json({ status: "ok", message: resp })

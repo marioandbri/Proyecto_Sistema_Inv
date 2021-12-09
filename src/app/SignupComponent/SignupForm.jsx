@@ -1,10 +1,29 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
-const SignupForm = () => {
+const SignupForm = ({ isManagingUsers }) => {
   const signupUser = async (data) => {
+    const result = await fetch("/uac/registro/admin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok) return res;
+      })
+      .then((res) => res.json())
+      .catch((e) => {
+        console.error(e);
+
+        return { status: "fail", error: e };
+      });
+    return await result;
+  };
+  const signupAdmin = async (data) => {
     const result = await fetch("/uac/registro", {
       method: "POST",
       headers: {
@@ -24,17 +43,24 @@ const SignupForm = () => {
     return await result;
   };
   const [isLoading, setIsLoading] = useState(false);
+  const [adminKey, setAdminKey] = useState("");
+
   const formik = useFormik({
     initialValues: {
       username: "",
       email: "",
       password: "",
+      isAdmin: false,
+      accessEmpresas: false,
+      accessProductos: false,
+      accessInventarios: false,
     },
     validationSchema: Yup.object({
       username: Yup.string()
         .min(5, "No puede ser un nombre tan corto")
         .max(36, "Debe ser menos de 36 carácteres")
-        .required("Obligatorio"),
+        .required("Obligatorio")
+        .lowercase(),
       email: Yup.string()
         .email("No es un formato de mail correcto")
         .required("Obligatorio"),
@@ -44,12 +70,25 @@ const SignupForm = () => {
     }),
     onSubmit: async (values) => {
       setIsLoading(true);
-      const result = await signupUser(values);
+      let result;
+      if (!isAdmin) {
+        result = signupUser(values);
+      } else {
+        result = { signupData: values, adminKey: adminKey };
+      }
       console.log(result);
       setIsLoading(false);
     },
   });
-  const { username, email, password } = formik.values;
+  const {
+    username,
+    email,
+    password,
+    isAdmin,
+    accessEmpresas,
+    accessProductos,
+    accessInventarios,
+  } = formik.values;
 
   return (
     <>
@@ -116,6 +155,77 @@ const SignupForm = () => {
               </p>
             </div>
 
+            <div className="field">
+              <input
+                type="checkbox"
+                className="switch is-info"
+                id="checkAdmin"
+                name="isAdmin"
+                checked={isAdmin}
+                onChange={formik.handleChange}
+              />
+              <label htmlFor="checkAdmin">¿Es un administrador?</label>
+            </div>
+            {isAdmin && (
+              <>
+                <label htmlFor="adminKey" className="label">
+                  Llave de administrador
+                </label>
+                <div className="field">
+                  <input
+                    id="adminKey"
+                    type="text"
+                    className="input"
+                    value={adminKey}
+                    onChange={(e) => setAdminKey(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+            {isManagingUsers && (
+              <>
+                <div className="field">
+                  <input
+                    type="checkbox"
+                    className="switch is-info"
+                    id="checkEmpresas"
+                    name="accessEmpresas"
+                    checked={accessEmpresas}
+                    onChange={formik.handleChange}
+                  />
+                  <label htmlFor="checkEmpresas">
+                    Acceso a modulo Empresas
+                  </label>
+                </div>
+                <div className="field">
+                  <input
+                    type="checkbox"
+                    className="switch is-info"
+                    id="checkProductos"
+                    name="accessProductos"
+                    checked={accessProductos}
+                    onChange={formik.handleChange}
+                  />
+                  <label htmlFor="checkProductos">
+                    Accesso a modulo Productos
+                  </label>
+                </div>
+                <div className="field">
+                  <input
+                    type="checkbox"
+                    className="switch is-info"
+                    id="checkInventarios"
+                    name="accessInventarios"
+                    checked={accessInventarios}
+                    onChange={formik.handleChange}
+                  />
+                  <label htmlFor="checkInventarios">
+                    Accesso a modulo Inventarios
+                  </label>
+                </div>
+              </>
+            )}
+
             <div className="buttons">
               <button
                 type="submit"
@@ -134,6 +244,8 @@ const SignupForm = () => {
   );
 };
 
-SignupForm.propTypes = {};
+SignupForm.propTypes = {
+  isManagingUsers: PropTypes.bool,
+};
 
 export default SignupForm;
