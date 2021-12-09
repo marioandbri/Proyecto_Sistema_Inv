@@ -25,7 +25,7 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
     reloadData();
   };
   const { numeroSerie } = row.original;
-  if (!appState.admin) {
+  if (!appState.userData.isAdmin) {
     return null
   }
   return (

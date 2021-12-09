@@ -1,11 +1,13 @@
 import { passwordGenerator } from "../helpers/paswordUtil";
 import Usuario from "../model/Usuario";
 import passport from 'passport'
+const { ADMIN_KEY } = process.env
+//ADMIN_KEY=QXJyaWVuZGFMdGRhLmtleWZvcmFkbWluaXN0cmF0aW9u
 
 export async function registerUser(req, res) {
-  const { username, email, password, isAdmin, accessEmpresas, accessProductos, accessInventarios } = req.body
+  const { username, email, password } = req.body
   const { salt, hash } = passwordGenerator(password)
-  const registerUser = new Usuario({ username, email, hash, salt, isAdmin, accessEmpresas, accessProductos, accessInventarios })
+  const registerUser = new Usuario({ username, email, hash, salt })
   await registerUser.save().then((resp) => {
     if (resp) {
       return res.json({ status: "ok", message: resp })
@@ -15,6 +17,27 @@ export async function registerUser(req, res) {
     res.status(400).json({ status: "fail", error: e })
   })
 }
+
+export async function registerAdmin(req, res) {
+  const { username, email, password, isAdmin } = req.body.signupData
+  const { adminKey } = req.body.adminKey
+  if (adminKey === ADMIN_KEY) {
+
+    const { salt, hash } = passwordGenerator(password)
+    const registerUser = new Usuario({ username, email, hash, salt, isAdmin })
+    await registerUser.save().then((resp) => {
+      if (resp) {
+        return res.json({ status: "ok", message: resp })
+      }
+      throw new Error("Ha ocurrido un error: " + resp)
+    }).catch(e => {
+      res.status(400).json({ status: "fail", error: e })
+    })
+  } else {
+    res.status(400).json({ status: "fail", error: "La clave de creacion de administrador no es valida" })
+  }
+}
+
 export function loginUser(req, res, next) {
   // const { username: loginuser, password: loginpass } = req.body
   // const result = await Usuario.findOne({ username: loginuser })

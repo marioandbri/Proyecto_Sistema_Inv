@@ -5,6 +5,29 @@ import PropTypes from "prop-types";
 
 const SignupForm = ({ isManagingUsers }) => {
   const signupUser = async (data) => {
+    const result = await fetch("/uac/registro", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+      })
+      .catch((e) => {
+        console.error(e);
+
+        return { status: "fail", error: e };
+      })
+      .then((data) => {
+        console.log(data);
+        return data;
+      });
+    return result;
+  };
+
+  const signupAdmin = async (data) => {
     const result = await fetch("/uac/registro/admin", {
       method: "POST",
       headers: {
@@ -15,32 +38,16 @@ const SignupForm = ({ isManagingUsers }) => {
       .then((res) => {
         if (res.ok) return res;
       })
-      .then((res) => res.json())
       .catch((e) => {
         console.error(e);
 
         return { status: "fail", error: e };
-      });
-    return await result;
-  };
-  const signupAdmin = async (data) => {
-    const result = await fetch("/uac/registro", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (res.ok) return res;
       })
-      .then((res) => res.json())
-      .catch((e) => {
-        console.error(e);
-
-        return { status: "fail", error: e };
+      .then((data) => {
+        console.log(data);
+        return data;
       });
-    return await result;
+    return result;
   };
   const [isLoading, setIsLoading] = useState(false);
   const [adminKey, setAdminKey] = useState("");
@@ -72,9 +79,9 @@ const SignupForm = ({ isManagingUsers }) => {
       setIsLoading(true);
       let result;
       if (!isAdmin) {
-        result = signupUser(values);
+        result = await signupUser(values);
       } else {
-        result = { signupData: values, adminKey: adminKey };
+        result = await signupAdmin({ signupData: values, adminKey: adminKey });
       }
       console.log(result);
       setIsLoading(false);
