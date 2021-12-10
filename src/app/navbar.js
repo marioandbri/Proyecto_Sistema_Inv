@@ -51,7 +51,7 @@ const Navbar = () => {
 
             </div>
             <div className="navbar-end ">
-              {userData ? <SessionItems username={userData.username} /> : <SigninButtons />}
+              {userData ? <SessionItems username={userData.username} isAdmin={userData.isAdmin} /> : <SigninButtons />}
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@ const Navbar = () => {
   );
 };
 
-const SessionItems = ({ username }) => {
+const SessionItems = ({ username, isAdmin }) => {
   const dispatch = useAppDispatch()
   const logOutUser = async () => {
     console.log("se ejecuto funcion logout")
@@ -72,8 +72,13 @@ const SessionItems = ({ username }) => {
 
   return (
     <>
-      <div className="navbar-item">👤 {toCapitalize(username)}</div>
-      {/* <Link className="" to="/"> */}
+      <div className="navbar-item has-dropdown is-hoverable">
+        <a className="navbar-link">👤 {toCapitalize(username)}</a>
+        <div className="navbar-dropdown">
+          {isAdmin && <Link className="navbar-item" to="/admin/usuarios">👥 Gestión de usuarios</Link>}
+          <Link className="navbar-item" to="#">🔐 Actualizar contraseña</Link>
+        </div>
+      </div>
       <div className="navbar-item ">
         <span className="button is-danger" onClick={async () => {
           await logOutUser().then(() => {
@@ -91,7 +96,8 @@ const SessionItems = ({ username }) => {
 }
 
 SessionItems.propTypes = {
-  username: PropTypes.string
+  username: PropTypes.string,
+  isAdmin: PropTypes.bool
 }
 
 const SigninButtons = () => {

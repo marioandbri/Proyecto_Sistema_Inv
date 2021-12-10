@@ -2,8 +2,28 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
+import { ToastNotification } from "../AppReducer";
 
-const SignupForm = ({ isManagingUsers }) => {
+const SignupForm = ({ isManagingUsers, userData }) => {
+  const initalValues = isManagingUsers
+    ? {
+        username: userData.username,
+        email: userData.email,
+        password: "",
+        isAdmin: userData.isAdmin,
+        accessEmpresas: userData.accessEmpresas,
+        accessInventarios: userData.accessInventarios,
+        accessProductos: userData.accessProductos,
+      }
+    : {
+        username: "",
+        email: "",
+        password: "",
+        isAdmin: false,
+        accessEmpresas: false,
+        accessProductos: false,
+        accessInventarios: false,
+      };
   const signupUser = async (data) => {
     const result = await fetch("/uac/registro", {
       method: "POST",
@@ -11,20 +31,9 @@ const SignupForm = ({ isManagingUsers }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-      })
-      .catch((e) => {
-        console.error(e);
-
-        return { status: "fail", error: e };
-      })
-      .then((data) => {
-        console.log(data);
-        return data;
-      });
-    return result;
+    });
+    const jsonData = await result.json();
+    return jsonData;
   };
 
   const signupAdmin = async (data) => {
@@ -34,34 +43,44 @@ const SignupForm = ({ isManagingUsers }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (res.ok) return res;
-      })
-      .catch((e) => {
-        console.error(e);
-
-        return { status: "fail", error: e };
-      })
-      .then((data) => {
-        console.log(data);
-        return data;
-      });
-    return result;
+    });
+    const jsonData = await result.json();
+    return jsonData;
   };
   const [isLoading, setIsLoading] = useState(false);
   const [adminKey, setAdminKey] = useState("");
 
+  const submitRegistration = async (values) => {
+    setIsLoading(true);
+    let result;
+    if (!isAdmin) {
+      result = await signupUser(values);
+    } else {
+      result = await signupAdmin({ signupData: values, adminKey: adminKey });
+      result.status === "fail" && ToastNotification("error", result.error);
+    }
+    result.status === "ok" &&
+      ToastNotification("success", "Usuario creado correctamente");
+    console.log(result);
+    setIsLoading(false);
+  };
+  const submitUpdate = async (values, id) => {
+    setIsLoading(true);
+    const result = await fetch(`/uac/mgmt/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const response = await result.json();
+    console.log(response);
+
+    setIsLoading(false);
+  };
+
   const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-      isAdmin: false,
-      accessEmpresas: false,
-      accessProductos: false,
-      accessInventarios: false,
-    },
+    initialValues: initalValues,
     validationSchema: Yup.object({
       username: Yup.string()
         .min(5, "No puede ser un nombre tan corto")
@@ -75,17 +94,10 @@ const SignupForm = ({ isManagingUsers }) => {
         .min(6, "Ingrese al menos 6 carácteres")
         .required("Obligatorio"),
     }),
-    onSubmit: async (values) => {
-      setIsLoading(true);
-      let result;
-      if (!isAdmin) {
-        result = await signupUser(values);
-      } else {
-        result = await signupAdmin({ signupData: values, adminKey: adminKey });
-      }
-      console.log(result);
-      setIsLoading(false);
-    },
+    onSubmit: (values) =>
+      isManagingUsers
+        ? submitUpdate(values, userData._id)
+        : submitRegistration(values),
   });
   const {
     username,
@@ -100,7 +112,9 @@ const SignupForm = ({ isManagingUsers }) => {
   return (
     <>
       <div className="box ">
-        <h1 className="title">Registro</h1>
+        <h1 className="title">
+          {isManagingUsers ? "Actualización de Datos" : "Registro"}
+        </h1>
         <form onSubmit={formik.handleSubmit} className="form">
           <fieldset disabled={isLoading}>
             <label className="label" htmlFor="username">
@@ -238,10 +252,10 @@ const SignupForm = ({ isManagingUsers }) => {
                 type="submit"
                 className={`button is-info ${isLoading && "is-loading"}`}
               >
-                📝 Registrarse
+                {isManagingUsers ? "💾 Guardar Cambios" : "📝 Registrarse"}
               </button>
               <button type="reset" className="button">
-                🧹 Limpiar campos
+                {isManagingUsers ? "🔙 Deshacer cambios" : "🧹 Limpiar campos"}
               </button>
             </div>
           </fieldset>
@@ -253,6 +267,7 @@ const SignupForm = ({ isManagingUsers }) => {
 
 SignupForm.propTypes = {
   isManagingUsers: PropTypes.bool,
+  userData: PropTypes.object,
 };
 
 export default SignupForm;

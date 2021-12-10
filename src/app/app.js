@@ -13,6 +13,7 @@ import "../../node_modules/bulma-extensions/bulma-pageloader/dist/css/bulma-page
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import youshallnotpass from "../../you-shall-not-pass.gif"
+import UsersMgmt from "./UsersMgmtComponents";
 // import { useUserData } from "./useUserData"
 
 
@@ -61,6 +62,9 @@ const App = () => {
         </Route>
         <Route path="/inventarios">
           {(!state.userData) ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessInventarios) ? <Inventory /> : <UnauthorizedComponent />}
+        </Route>
+        <Route path="/admin/usuarios">
+          {!state.userData ? <Redirect to="/login" /> : <UsersMgmt />}
         </Route>
         <Route path="/login">
           {state.userData ? <Redirect to="/" /> : <LoginComponent />}
