@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginUser, registerAdmin, registerUser, updateUser, userData, userLogout, usersList } from "../controllers/uac.controller";
+import { deleteUser, loginUser, registerAdmin, registerUser, updateUser, userData, userLogout, usersList } from "../controllers/uac.controller";
 const router = Router()
 
 
@@ -10,5 +10,6 @@ router.get('/uac/user', userData)
 router.get('/uac/logout', userLogout)
 router.put('/uac/mgmt/:id', updateUser)
 router.get('/uac/mgmt', usersList)
+router.delete('/uac/mgmt/:id', deleteUser)
 
 module.exports = router

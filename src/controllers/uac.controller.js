@@ -68,9 +68,15 @@ export async function usersList(req, res) {
 }
 
 export async function updateUser(req, res) {
-  const { email } = req.body
+  const { email, accessEmpresas, accessInventarios, accessProductos } = req.body
   const id = req.params.id
-  const result = await Usuario.updateOne({ _id: id }, { email: email }).exec()
+  const result = await Usuario.updateOne({ _id: id }, { email, accessEmpresas, accessInventarios, accessProductos }).exec()
   res.json({ status: "ok", response: result })
 
+}
+
+export async function deleteUser(req,res){
+  const id = req.params.id
+  const result = await Usuario.deleteOne({_id: id}).exec()
+  res.json({status: "ok", response: result})
 }

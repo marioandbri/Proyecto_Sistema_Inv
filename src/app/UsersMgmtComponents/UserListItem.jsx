@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SignupForm from "../SignupComponent/SignupForm";
 
 const UserListItem = (user) => {
-  let { username, email } = user;
+  let { username, email, _id } = user;
   const [userFrame, setUserFrame] = useState(null);
   const closeModal = () => {
     setUserFrame(null);
@@ -11,6 +11,13 @@ const UserListItem = (user) => {
   const editUser = () => {
     setUserFrame(<UserModal user={user} closeModal={closeModal} />);
   };
+  const deleteUser = async (id) =>{
+    const result = await fetch(`/uac/mgmt/${id}`,{
+      method:"DELETE"
+    })
+    const data = await result.json()
+    console.log(data)
+  }
   return (
     <>
       {userFrame}
@@ -25,6 +32,12 @@ const UserListItem = (user) => {
               <i className="fas fa-edit"></i>
             </span>
             <span>Editar</span>
+          </button>
+          <button onClick={() => deleteUser(_id)} className="button is-danger">
+            <span className="icon">
+              <i className="fas fa-trash"></i>
+            </span>
+            <span>Remover</span>
           </button>
         </div>
       </div>

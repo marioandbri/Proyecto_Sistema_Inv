@@ -24,16 +24,16 @@ const UsuariosSchema = new Schema({
     default: false,
   },
   accessEmpresas: {
-    type: Boolean,
-    default: false
+    type: [Boolean],
+    default: [false, false, false, false]
   },
   accessProductos: {
-    type: Boolean,
-    default: false
+    type: [Boolean],
+    default: [false, false, false, false]
   },
   accessInventarios: {
-    type: Boolean,
-    default: false
+    type: [Boolean],
+    default: [false, false, false, false]
   }
 
 })
