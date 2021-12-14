@@ -1,4 +1,4 @@
-import { passwordGenerator } from "../helpers/paswordUtil";
+import { passwordGenerator, validatePassword } from "../helpers/paswordUtil";
 import Usuario from "../model/Usuario";
 import passport from 'passport'
 const { ADMIN_KEY } = process.env
@@ -79,4 +79,21 @@ export async function deleteUser(req,res){
   const id = req.params.id
   const result = await Usuario.deleteOne({_id: id}).exec()
   res.json({status: "ok", response: result})
+}
+
+export async function updatePassword(req,res){
+  const id = req.params.id
+  const {salt: oldSalt, hash: oldHash, isAdmin} = req.user
+  const {password, oldPassword} = req.body
+  const isValid = isAdmin || validatePassword(oldPassword, oldHash, oldSalt )
+  if(isValid){
+    const { salt, hash } = passwordGenerator(password)
+    const result = await Usuario.updateOne({_id: id}, {salt, hash}).exec()
+    console.log(result)
+    res.json({status: "ok", response: result})
+  }else{
+    res.status(400).json({status:"fail", response:"La contraseña actual no coincide con las credenciales almacenadas"})
+  }
+    
+  
 }

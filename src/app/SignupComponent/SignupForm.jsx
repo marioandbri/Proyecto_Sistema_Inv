@@ -161,7 +161,7 @@ const SignupForm = ({ isManagingUsers, userData }) => {
               errors={formik.errors.email}
             />
 
-            <InputComponent
+            {!isManagingUsers && <InputComponent
               label="Contraseña"
               id="password"
               errors={formik.errors.email}
@@ -169,7 +169,7 @@ const SignupForm = ({ isManagingUsers, userData }) => {
               icon="🔑"
               value={password}
               required={isManagingUsers? false: true}
-            />
+            />}
 
             <SwitchComponent
               handleChange={formik.handleChange}
@@ -189,6 +189,7 @@ const SignupForm = ({ isManagingUsers, userData }) => {
             )}
             {isManagingUsers && (
               <>
+              <label className="label">Permisos</label>
                 <SwitchComponent
                   handleChange={formik.handleChange}
                   id="accessEmpresas[0]"

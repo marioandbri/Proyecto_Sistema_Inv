@@ -29,9 +29,9 @@ const App = () => {
         else throw "No hay session abierta"
       }).then((data) => {
         if (data) {
-          var { username, email, isAdmin, accessInventarios, accessEmpresas, accessProductos } = data
+          var { username, email, isAdmin, accessInventarios, accessEmpresas, accessProductos, _id } = data
         }
-        dispatch({ type: data ? type.LOG_IN : type.LOG_OUT, payload: data ? { username, email, isAdmin, accessInventarios, accessEmpresas, accessProductos } : null })
+        dispatch({ type: data ? type.LOG_IN : type.LOG_OUT, payload: data ? { username, email, isAdmin, accessInventarios, accessEmpresas, accessProductos, _id } : null })
         return
       })
       .catch(e => {
@@ -55,16 +55,16 @@ const App = () => {
       <Navbar />
       <Switch>
         <Route path="/clientes">
-          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessEmpresas) ? <JsonCliente /> : <UnauthorizedComponent />}
+          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessEmpresas[0]) ? <JsonCliente /> : <UnauthorizedComponent />}
         </Route>
         <Route path="/productos">
-          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessProductos) ? <ProductosUI /> : <UnauthorizedComponent />}
+          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessProductos[0]) ? <ProductosUI /> : <UnauthorizedComponent />}
         </Route>
         <Route path="/inventarios">
-          {(!state.userData) ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessInventarios) ? <Inventory /> : <UnauthorizedComponent />}
+          {(!state.userData) ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessInventarios[0]) ? <Inventory /> : <UnauthorizedComponent />}
         </Route>
         <Route path="/admin/usuarios">
-          {!state.userData ? <Redirect to="/login" /> : <UsersMgmt />}
+          {!state.userData ? <Redirect to="/login" /> : state.userData.isAdmin ? <UsersMgmt /> : <UnauthorizedComponent />}
         </Route>
         <Route path="/login">
           {state.userData ? <Redirect to="/" /> : <LoginComponent />}

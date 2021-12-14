@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppState } from "./AppProvider";
 import PropTypes from 'prop-types'
 import { ToastNotification, type } from "./AppReducer";
 import { toCapitalize } from "./app";
+import PasswordModal from "./UsersMgmtComponents/PasswordModal";
 
 const Navbar = () => {
 
@@ -51,7 +52,7 @@ const Navbar = () => {
 
             </div>
             <div className="navbar-end ">
-              {userData ? <SessionItems username={userData.username} isAdmin={userData.isAdmin} /> : <SigninButtons />}
+              {userData ? <SessionItems username={userData.username} isAdmin={userData.isAdmin} id={userData._id} /> : <SigninButtons />}
             </div>
           </div>
         </div>
@@ -60,7 +61,7 @@ const Navbar = () => {
   );
 };
 
-const SessionItems = ({ username, isAdmin }) => {
+const SessionItems = ({ username, isAdmin, id }) => {
   const dispatch = useAppDispatch()
   const logOutUser = async () => {
     console.log("se ejecuto funcion logout")
@@ -69,14 +70,20 @@ const SessionItems = ({ username, isAdmin }) => {
       .catch((e) => { console.error(e); return })
     return await result
   }
-
+  const [changePassword, setChangePassword]  = useState(null)
+  const closeModal= () =>{
+    setChangePassword(null)
+  }
+  const updatePass = ()=>{
+    setChangePassword(<PasswordModal id={id} closeModal={closeModal}/>)
+  }
   return (
     <>
       <div className="navbar-item has-dropdown is-hoverable">
         <a className="navbar-link">👤 {toCapitalize(username)}</a>
         <div className="navbar-dropdown">
           {isAdmin && <Link className="navbar-item" to="/admin/usuarios">👥 Gestión de usuarios</Link>}
-          <Link className="navbar-item" to="#">🔐 Actualizar contraseña</Link>
+          <a onClick={()=>{updatePass()}} className="navbar-item" >🔐 Actualizar contraseña</a>
         </div>
       </div>
       <div className="navbar-item ">
@@ -90,14 +97,15 @@ const SessionItems = ({ username, isAdmin }) => {
         }}>
           Cerrar session</span>
       </div>
-      {/* </Link> */}
+      {changePassword}
     </>
   )
 }
 
 SessionItems.propTypes = {
   username: PropTypes.string,
-  isAdmin: PropTypes.bool
+  isAdmin: PropTypes.bool,
+  id: PropTypes.string
 }
 
 const SigninButtons = () => {
@@ -123,13 +131,13 @@ const MenuItems = () => {
   return (
     <>
 
-      {(userData.isAdmin || userData.accessEmpresas) && <Link className="navbar-item nv-links" to="/clientes">
+      {(userData.isAdmin || userData.accessEmpresas[0]) && <Link className="navbar-item nv-links" to="/clientes">
         Gestion de Empresas
       </Link>}
-      {(userData.isAdmin || userData.accessProductos) && <Link className="navbar-item nv-links" to="/productos">
+      {(userData.isAdmin || userData.accessProductos[0]) && <Link className="navbar-item nv-links" to="/productos">
         Gestion de Productos
       </Link>}
-      {(userData.isAdmin || userData.accessInventarios) && <Link className="navbar-item nv-links" to="/inventarios">
+      {(userData.isAdmin || userData.accessInventarios[0]) && <Link className="navbar-item nv-links" to="/inventarios">
         Gestion de Inventario
       </Link>}
     </>
