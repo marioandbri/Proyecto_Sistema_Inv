@@ -5,7 +5,7 @@ import ProductoForm from "./Prod_Components/ProductoForm";
 import ProductoFilterDrop from "./Prod_Components/ProductoFilterDrop";
 import Filter from "./Filter";
 import ProductModal from "./Prod_Components/ProductModal";
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 const initialState = {
   isFormVisible: false,
   testInput: "",
@@ -336,7 +336,7 @@ class ProductosUI extends Component {
                   options={this.state.optionsList}
                 />
               </div>
-              <div className="level-right">
+              {this.props.accessProductos[2] && <div className="level-right">
                 <ProductoCreate
                   mostrarFormulario={this.mostrarFormulario}
                   isFormVisible={this.state.isFormVisible}
@@ -345,7 +345,7 @@ class ProductosUI extends Component {
                   }}
                   testInput={this.state.testInput}
                 />
-              </div>
+              </div>}
             </div>
 
             {this.state.productType != "" && !this.state.isFormVisible && (
@@ -368,6 +368,7 @@ class ProductosUI extends Component {
                   handleEdit={this.handleEdit}
                   handleRemove={this.handleRemove}
                   handleEye={this.handleEye}
+                  accessProductos={this.props.accessProductos}
                 />
               </div>
             )}
@@ -395,6 +396,10 @@ class ProductosUI extends Component {
       </>
     );
   }
+}
+
+ProductosUI.propTypes = {
+  accessProductos: PropTypes.arrayOf(PropTypes.bool).isRequired
 }
 
 export default ProductosUI;

@@ -5,11 +5,14 @@ import ProductsComp from "./ProductsComp";
 import InventoryTableData from "./InventoryTableData";
 import Notification from "../Notification";
 import { useInventory } from "./InventoryProvider";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import {  useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { useAppState } from "../AppProvider";
+import {UnauthorizedComponent} from "../app"
 
 const MainInventorySwitch = () => {
   let { id } = useParams();
   const state = useInventory();
+  const {userData} = useAppState()
   React.useEffect(() => {
     return () => {
       document.title = "Proyecto Sistema Inventario";
@@ -27,38 +30,54 @@ const MainInventorySwitch = () => {
         </>
       );
     case "ingreso":
-      document.title = "Ingreso - Proyecto Inventario Arrienda";
-      return (
-        <>
-          <InventoryHeader opType={id} />
-          <ProductsComp />
-          {state.notifications.map((e, index) => (
-            <Notification key={index} {...e} notificationIndex={index} />
-          ))}
-        </>
-      );
+      if(userData.accessInventarios[2]){
+
+        document.title = "Ingreso - Proyecto Inventario Arrienda";
+        return (
+          <>
+            <InventoryHeader opType={id} />
+            <ProductsComp />
+            {state.notifications.map((e, index) => (
+              <Notification key={index} {...e} notificationIndex={index} />
+            ))}
+          </>
+        );
+      }else{
+        return <UnauthorizedComponent />
+      }
     case "entrega":
-      document.title = "Entrega - Proyecto Inventario Arrienda";
-      return (
-        <>
-          <InventoryHeader opType={id} />
-          <ProductsComp />
-          {state.notifications.map((e, index) => (
-            <Notification key={index} {...e} notificationIndex={index} />
-          ))}
-        </>
-      );
+      if (userData.accessInventarios[2]) {
+
+        document.title = "Entrega - Proyecto Inventario Arrienda";
+        return (
+          <>
+            <InventoryHeader opType={id} />
+            <ProductsComp />
+            {state.notifications.map((e, index) => (
+              <Notification key={index} {...e} notificationIndex={index} />
+            ))}
+          </>
+        );
+      } else {
+        return <UnauthorizedComponent />
+      }
+
     case "retiro":
-      document.title = "Retiro - Proyecto Inventario Arrienda";
-      return (
-        <>
-          <InventoryHeader opType={id} />
-          <ProductsComp />
-          {state.notifications.map((e, index) => (
-            <Notification key={index} {...e} notificationIndex={index} />
-          ))}
-        </>
-      );
+      if (userData.accessInventarios[2]) {
+        document.title = "Retiro - Proyecto Inventario Arrienda";
+        return (
+          <>
+            <InventoryHeader opType={id} />
+            <ProductsComp />
+            {state.notifications.map((e, index) => (
+              <Notification key={index} {...e} notificationIndex={index} />
+            ))}
+          </>
+        );
+      } else {
+        return <UnauthorizedComponent />
+      }
+
 
     default:
       return (

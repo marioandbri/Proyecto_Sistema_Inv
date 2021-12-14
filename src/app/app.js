@@ -55,13 +55,13 @@ const App = () => {
       <Navbar />
       <Switch>
         <Route path="/clientes">
-          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessEmpresas[0]) ? <JsonCliente /> : <UnauthorizedComponent />}
+          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessEmpresas[0]) ? <JsonCliente accessEmpresas={state.userData.accessEmpresas}/> : <UnauthorizedComponent />}
         </Route>
         <Route path="/productos">
-          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessProductos[0]) ? <ProductosUI /> : <UnauthorizedComponent />}
+          {!state.userData ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessProductos[0]) ? <ProductosUI accessProductos={state.userData.accessProductos} /> : <UnauthorizedComponent />}
         </Route>
         <Route path="/inventarios">
-          {(!state.userData) ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessInventarios[0]) ? <Inventory /> : <UnauthorizedComponent />}
+          {(!state.userData) ? <Redirect to="/login" /> : (state.userData.isAdmin || state.userData.accessInventarios[0]) ? <Inventory accessInventarios={state.userData.accessInventarios} /> : <UnauthorizedComponent />}
         </Route>
         <Route path="/admin/usuarios">
           {!state.userData ? <Redirect to="/login" /> : state.userData.isAdmin ? <UsersMgmt /> : <UnauthorizedComponent />}
@@ -109,7 +109,7 @@ const App = () => {
   )
 }
 
-const UnauthorizedComponent = () => {
+export const UnauthorizedComponent = () => {
   return (
     <div className="box has-background-danger">
       <div className="title has-text-centered has-text-white">🚧 No tienes acceso autorizado para este modulo 🚧</div>

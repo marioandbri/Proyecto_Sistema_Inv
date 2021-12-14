@@ -3,6 +3,8 @@ import Cliente from "./Cliente";
 import FormCliente from "./formcliente";
 import PlusCliente from "./PlusCliente";
 import Pagination from "./Pagination";
+import PropTypes from 'prop-types';
+
 
 class JsonCliente extends Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class JsonCliente extends Component {
       telefonocontacto: "",
       personacontacto: "",
       createdat: "",
-      crearcliente: <PlusCliente key={"agregar"} cC={this.crearCliente} />,
+      crearcliente: this.props.accessEmpresas[2] && <PlusCliente key={"agregar"} cC={this.crearCliente} />,
       input: "",
       input2: "",
       input3: "",
@@ -42,7 +44,7 @@ class JsonCliente extends Component {
     };
     // this.crearCliente = this.crearCliente.bind(this)
   }
-
+  
   //Pagination
   paginate = (number) => {
     // const prevState = this.state.currentPage
@@ -59,6 +61,7 @@ class JsonCliente extends Component {
 
   componentDidMount() {
     this.fetchClientes();
+    console.log(this.props.accessEmpresas)
   }
   // componentDidUpdate(prevProps, prevState){
   //    if(this.state.actualData == prevState.actualDatas){
@@ -576,6 +579,7 @@ class JsonCliente extends Component {
                     deleteCliente={this.deleteCliente}
                     clientesPerPage={this.state.clientesPerPage}
                     currentPage={this.state.currentPage}
+                    accessEmpresas={this.props.accessEmpresas}
                   />
                   {this.state.crearcliente}
                 </tbody>
@@ -612,6 +616,10 @@ class JsonCliente extends Component {
       </>
     );
   }
+}
+
+JsonCliente.propTypes = {
+  accessEmpresas: PropTypes.arrayOf(PropTypes.bool).isRequired
 }
 
 export default JsonCliente;

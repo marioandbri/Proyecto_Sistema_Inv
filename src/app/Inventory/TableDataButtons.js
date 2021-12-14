@@ -7,7 +7,8 @@ import { useAppState } from "../AppProvider";
 
 const TableDataButtons = ({ row, reloadData, editRow }) => {
   const dispatch = useDispatch();
-  const appState = useAppState()
+  const appState = useAppState();
+  const {accessInventarios} = appState.userData
   const handleRemove = async (sn) => {
     const result = await fetch(`/inventario/${sn}`, {
       method: "DELETE",
@@ -25,13 +26,13 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
     reloadData();
   };
   const { numeroSerie } = row.original;
-  if (!appState.userData.isAdmin) {
-    return null
-  }
+  // if (!appState.userData.isAdmin || !accessInventarios[3] || !accessInventarios[1]) {
+  //   return null
+  // }
   return (
     <td align="center">
       <div className="buttons are-small">
-        <a
+        {accessInventarios[3] && <a
           title="Editar"
           className="button m-1 is-outlined is-small is-info"
           onClick={() => {
@@ -42,8 +43,8 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
           <span className="icon">
             <i className="fas fa-pen"></i>
           </span>
-        </a>
-        <a
+        </a>}
+        {accessInventarios[1] && <a
           title="Eliminar"
           className="button m-1 is-outlined is-small is-danger"
           onClick={() => {
@@ -66,7 +67,7 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
           <span className="icon">
             <i className="fas fa-minus-circle"></i>
           </span>
-        </a>
+        </a>}
       </div>
     </td>
   );

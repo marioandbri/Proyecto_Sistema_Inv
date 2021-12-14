@@ -8,6 +8,7 @@ const ProductoItem = ({
   handleEdit,
   handleEye,
   handleRemove,
+  accessProductos
 }) => {
   // console.log(
   //   productType.includes("generic/"),
@@ -19,7 +20,7 @@ const ProductoItem = ({
     return () => {};
   }, [item]);
 
-  const Botonera = ({ partnumber }) => {
+  const Botonera = ({ partnumber, accessProductos }) => {
     return (
       <td align="center">
         <div className="buttons are-small">
@@ -34,7 +35,7 @@ const ProductoItem = ({
               <i className="far fa-eye"></i>
             </span>
           </a>
-          <a
+          {accessProductos[3] &&<a
             title="Editar"
             className="button m-1 is-outlined is-small is-info"
             onClick={(e) => {
@@ -44,8 +45,8 @@ const ProductoItem = ({
             <span className="icon">
               <i className="fas fa-pen"></i>
             </span>
-          </a>
-          <a
+          </a>}
+          {accessProductos[1] && <a
             title="Eliminar"
             className="button m-1 is-outlined is-small is-danger"
             onClick={(e) => {
@@ -66,7 +67,7 @@ const ProductoItem = ({
             <span className="icon">
               <i className="fas fa-minus-circle"></i>
             </span>
-          </a>
+          </a>}
         </div>
       </td>
     );
@@ -171,7 +172,7 @@ const ProductoItem = ({
             {readMore ? "Ver menos" : "Ver mas"}
           </a>
         </td>
-        <Botonera partnumber={item.partnumber} />
+        <Botonera partnumber={item.partnumber} accessProductos={accessProductos}/>
       </tr>
     );
   }
@@ -190,6 +191,7 @@ ProductoItem.propTypes = {
   handleEdit: Ptp.func,
   handleEye: Ptp.func,
   handleRemove: Ptp.func,
+  accessProductos: Ptp.arrayOf(Ptp.bool).isRequired
 };
 
 export default ProductoItem;

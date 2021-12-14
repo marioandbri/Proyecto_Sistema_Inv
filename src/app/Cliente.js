@@ -10,6 +10,7 @@ const Cliente = ({
   deleteCliente,
   clientesPerPage,
   currentPage,
+  accessEmpresas
 }) => {
   if (loading) {
     return (
@@ -40,24 +41,24 @@ const Cliente = ({
           <td>{cliente.personacontacto}</td>
           <td>{cliente.createdat}</td>
           <td align="center">
-            <button
+            {accessEmpresas[3] && <button
               className="button is-outlined is-link is-small"
               onClick={() => handleEdit(cliente.rut)}
             >
               <span className="icon">
                 <i className="fas fa-pen"></i>
               </span>
-            </button>
+            </button>}
           </td>
           <td align="center">
-            <button
+            {accessEmpresas[1] && <button
               className="button is-outlined is-danger is-small"
               onClick={() => deleteCliente(cliente.rut, cliente.razonsocial)}
             >
               <span className="icon">
                 <i className="fas fa-minus-circle"></i>
               </span>
-            </button>
+            </button>}
           </td>
         </tr>
       ))}
@@ -71,6 +72,7 @@ Cliente.propTypes = {
   deleteCliente: PropTypes.func,
   clientesPerPage: PropTypes.number,
   currentPage: PropTypes.number,
+  accessEmpresas: PropTypes.arrayOf(PropTypes.bool).isRequired
 };
 
 export default Cliente;

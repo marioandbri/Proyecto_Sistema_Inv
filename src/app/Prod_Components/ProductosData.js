@@ -13,6 +13,7 @@ const ProductosData = ({
   handleEye,
   handleRemove,
   sortingData,
+  accessProductos
 }) => {
   // console.log(loading, productType);
   if (loading) {
@@ -107,6 +108,7 @@ const ProductosData = ({
                   productType={productType}
                   key={elem.partnumber}
                   item={elem}
+                  accessProductos={accessProductos}
                   descripcion={elem.description ? elem.description : ""}
                 />
               ))}
@@ -126,5 +128,6 @@ ProductosData.propTypes = {
   handleEye: Ptp.func,
   handleRemove: Ptp.func,
   sortingData: Ptp.func,
+  accessProductos: Ptp.arrayOf(Ptp.bool).isRequired
 };
 export default ProductosData;

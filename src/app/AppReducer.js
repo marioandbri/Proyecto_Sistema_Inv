@@ -9,6 +9,7 @@ export const type = {
 
 export const initialState = {
   userData: null,
+  loading: true
 }
 export const ToastNotification = (type, content) => {
 
@@ -32,7 +33,7 @@ const AppReducer = (state, action) => {
 
   switch (action.type) {
     case type.LOG_IN:
-      return { ...state, userData: action.payload }
+      return { ...state, userData: action.payload, loading: false }
     case type.LOG_OUT:
       return { ...state, userData: null }
     default:

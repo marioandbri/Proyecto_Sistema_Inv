@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
+import { useAppState } from "../AppProvider";
 import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 
@@ -7,7 +8,16 @@ const InventoryMenu = () => {
   const menuIcon = useRef();
   const state = useInventory();
   const dispatch = useDispatch();
-  const operations = ["Consulta", "Ingreso", "Entrega", "Retiro"];
+  let operations=["Consulta"]
+  
+  const {userData, loading} = useAppState()
+
+  if(!loading){
+    
+    userData.accessInventarios[2] && operations.push("Ingreso", "Entrega", "Retiro")
+  }
+  
+  // const operations = ["Consulta", "Ingreso", "Entrega", "Retiro"];
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const setOperationType = (e) => {
