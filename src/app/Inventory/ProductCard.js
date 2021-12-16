@@ -1,6 +1,7 @@
 import React from "react";
 import { useFetchProductsApi } from "../useFetchProductsApi";
 import PropTypes from "prop-types";
+import Placeholder from "../../../96x96.png"
 
 const ProductCard = ({ description, marca, modelo, familia, partnumber }) => {
   // console.log(partnumber);
@@ -9,7 +10,7 @@ const ProductCard = ({ description, marca, modelo, familia, partnumber }) => {
   // console.log(Boolean(data));
   const imageUrl =
     (data && data.results[0]?.picture_url) ||
-    "https://bulma.io/images/placeholders/96x96.png";
+    Placeholder;
   // console.log(imageUrl);
   const productname = `${modelo}` || (data && data.results[0]?.name);
   // console.log(loading, "loading status");

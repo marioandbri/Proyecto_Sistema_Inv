@@ -75,7 +75,7 @@ const InventoryTableData = () => {
         accessor: "poseedor",
       },
       {
-        Header: "Fecha de Compra",
+        Header: "F. Compra",
 
         accessor: "fechaCompra",
       },
@@ -143,6 +143,7 @@ const InventoryTableData = () => {
     pageCount,
     setPageSize,
     state,
+    rows: filas,
     prepareRow,
   } = tableInstance;
 
@@ -201,7 +202,7 @@ const InventoryTableData = () => {
         <div className="table-container">
 
           <table className="table is-fullwidth" {...getTableProps()}>
-            <thead>
+            <thead className="has-background-info-light">
               {headerGroups.map((headerGroup, i) => (
                 <tr key={i} {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column, ii) => (
@@ -228,10 +229,12 @@ const InventoryTableData = () => {
                       </div>
                     </th>
                   ))}
+                  <th></th>
                 </tr>
               ))}
             </thead>
             <tbody className="is-size-7" {...getTableBodyProps()}>
+
               {page.map((row, index) => {
                 prepareRow(row);
                 return (
@@ -266,6 +269,11 @@ const InventoryTableData = () => {
                 );
               })}
             </tbody>
+            <tfoot className="has-background-info-light">
+              <tr className="has-text-weight-bold">
+                <td colSpan={10} className="has-text-info">Total de elementos encontrados: <span className="has-text-weight-normal">{filas.length}</span></td>
+              </tr>
+            </tfoot>
           </table>
         </div>
         <div>{PaginationComponent}</div>

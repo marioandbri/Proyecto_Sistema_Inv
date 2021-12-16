@@ -61,7 +61,9 @@ const InventoryHeader = ({ opType }) => {
           content: "🤔 Lo siento, No se encontró ningún producto coincidente",
           notificationType: notificationTypes.warning,
         },
-      }); //
+      });
+      dispatch({ type: type.setProductData, payload: "" });
+       //
     } else {
       dispatch({ type: type.setProductData, payload: data });
     }
@@ -113,7 +115,7 @@ const InventoryHeader = ({ opType }) => {
     }
   };
   const resetState = () => {
-    dispatch({ type: type.selectClient, payload: "" });
+    dispatch({ type: type.reInitializeData, payload: "" });
     setInnerState(initalState);
   };
   useEffect(() => {

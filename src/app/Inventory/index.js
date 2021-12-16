@@ -6,6 +6,7 @@ import MainInventorySwitch from "./MainInventorySwitch";
 
 const Index = () => {
   let { path } = useRouteMatch();
+  
   return (
     <InventoryProvider>
       <div className="container is-fluid box">

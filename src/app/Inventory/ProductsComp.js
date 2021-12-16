@@ -171,10 +171,11 @@ const ProductsComp = () => {
               notificationType: notificationTypes.success,
             },
           }); // notification arguments: content, type .(index) is passed in reducer
-          state.operationType == "ingreso"
-            ? dispatch({ type: type.selectClient, payload: "" })
-            : dispatch({ type: type.selectPossesor, payload: "" });
-          dispatch({ type: type.setProductsHeader, payload: "" });
+          // state.operationType == "ingreso"
+          //   ? dispatch({ type: type.selectClient, payload: "" })
+          //   : dispatch({ type: type.selectPossesor, payload: "" });
+          // dispatch({ type: type.setProductsHeader, payload: "" });
+          dispatch({type:type.reInitializeData})
           resetInputs();
         } else {
           const errors = data.error || "";

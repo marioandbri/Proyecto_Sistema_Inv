@@ -69,6 +69,7 @@ const InventoryReducer = (state, action) => {
         partNumber: initialInventory.partNumber,
         fechaCompra: initialInventory.fechaCompra,
         fechaEvento: initialInventory.fechaEvento,
+        productData:initialInventory.productData
       };
     case type.addNotification: {
       let content = action.payload.content.concat(" ",action.payload?.detail || "")
