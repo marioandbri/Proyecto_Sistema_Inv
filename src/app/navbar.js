@@ -31,22 +31,24 @@ const Navbar = () => {
             <Link to="/" className="navbar-item">
               <img src="./arrienda.webp" className="is-spaced"></img>
             </Link>
-            <a
+            <a onClick={()=>{document.getElementById('navMenu').classList.toggle('is-active'); document.getElementById('navbar-burger').classList.toggle('is-active')}}
               role="button"
               className="navbar-burger"
               aria-label="menu"
               aria-expanded="false"
               data-target="navMenu"
+              id="navbar-burger"
+
             >
               <span aria-hidden="true"></span>
               <span aria-hidden="true"></span>
               <span aria-hidden="true"></span>
             </a>
           </div>
-          <div className="navbar-menu title is-5" id="navMenu">
+          <div className="navbar-menu title is-6" id="navMenu">
             <div className="navbar-start">
               <Link className="navbar-item nv-links" to="/">
-                Inicio
+                🏠 Inicio
               </Link>
               {userData && <MenuItems />}
 
@@ -132,13 +134,13 @@ const MenuItems = () => {
     <>
 
       {(userData.isAdmin || userData.accessEmpresas[0]) && <Link className="navbar-item nv-links" to="/clientes">
-        Gestion de Empresas
+        🏭 Gestion de Empresas
       </Link>}
       {(userData.isAdmin || userData.accessProductos[0]) && <Link className="navbar-item nv-links" to="/productos">
-        Gestion de Productos
+        💻 Gestion de Productos
       </Link>}
       {(userData.isAdmin || userData.accessInventarios[0]) && <Link className="navbar-item nv-links" to="/inventarios">
-        Gestion de Inventario
+        🧾 Gestion de Inventario
       </Link>}
     </>
   )

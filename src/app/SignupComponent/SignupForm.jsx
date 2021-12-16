@@ -75,7 +75,7 @@ const SignupForm = ({ isManagingUsers, userData }) => {
     updateData.accessEmpresas = !values.accessEmpresas[0] ? sinPermisos : values.accessEmpresas
     updateData.accessInventarios = !values.accessInventarios[0] ? sinPermisos : values.accessInventarios
     updateData.accessProductos = !values.accessProductos[0] ? sinPermisos : values.accessProductos
-    console.log(updateData)
+    // console.log(updateData)
     const result = await fetch(`/uac/mgmt/${id}`, {
       method: "PUT",
       headers: {
@@ -84,9 +84,11 @@ const SignupForm = ({ isManagingUsers, userData }) => {
       body: JSON.stringify(updateData),
     });
     const response = await result.json();
-    console.log(response);
-
+    (result.ok && ToastNotification(response.status, response.message) ) || ToastNotification(response.status, "Algo no ha ido bien:" + response.message)
+    // console.log(response);
+    
     setIsLoading(false);
+    return response
   };
 
   const handleAdminKey =(e) =>{
@@ -120,10 +122,14 @@ const SignupForm = ({ isManagingUsers, userData }) => {
   const formik = useFormik({
     initialValues: initalValues,
     validationSchema: isManagingUsers ? validateUpdate : validateSignup,
-    onSubmit: (values) =>
-      isManagingUsers
-        ? submitUpdate(values, userData._id)
-        : submitRegistration(values),
+    onSubmit: async (values) =>{
+      if(isManagingUsers){
+        return submitUpdate(values, userData._id)
+      }else{
+        return submitRegistration(values)
+      }
+
+    }
   });
   const {
     username,
@@ -161,136 +167,161 @@ const SignupForm = ({ isManagingUsers, userData }) => {
               errors={formik.errors.email}
             />
 
-            {!isManagingUsers && <InputComponent
-              label="Contraseña"
-              id="password"
-              errors={formik.errors.email}
-              handleChange={formik.handleChange}
-              icon="🔑"
-              value={password}
-              required={isManagingUsers? false: true}
-            />}
-
-            <SwitchComponent
-              handleChange={formik.handleChange}
-              id="isAdmin"
-              label="¿Es un administrador?"
-              checked={isAdmin}
-            />
-
-            {isAdmin && !isManagingUsers && (
+            {!isManagingUsers && (
               <InputComponent
-                id="adminKey"
-                label="Llave de administrador"
-                value={adminKey}
-                handleChange={(e) => handleAdminKey(e)}
-                icon="🔒"
+                label="Contraseña"
+                id="password"
+                errors={formik.errors.email}
+                handleChange={formik.handleChange}
+                icon="🔑"
+                value={password}
+                required={isManagingUsers ? false : true}
               />
             )}
+            <hr></hr>
+            <div className="box">
+              <SwitchComponent
+                handleChange={formik.handleChange}
+                id="isAdmin"
+                label="¿Es un administrador?"
+                checked={isAdmin}
+              />
+
+              {isAdmin && !isManagingUsers && (
+                <InputComponent
+                  id="adminKey"
+                  label="Llave de administrador"
+                  value={adminKey}
+                  handleChange={(e) => handleAdminKey(e)}
+                  icon="🔒"
+                />
+              )}
+            </div>
             {isManagingUsers && (
               <>
-              <label className="label">Permisos</label>
-                <SwitchComponent
-                  handleChange={formik.handleChange}
-                  id="accessEmpresas[0]"
-                  label="Acceso a modulo Empresas"
-                  checked={accessEmpresas[0]}
-                  value={accessEmpresas[0]}
-                />
-                {accessEmpresas[0] && (
-                  <div style={{ display: "flex", gap: "2em" }}>
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessEmpresas[1]"
-                      label="Eliminacion"
-                      checked={accessEmpresas[1]}
-                      value={accessEmpresas[1]}
-                    />
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessEmpresas[2]"
-                      label="Creacion"
-                      checked={accessEmpresas[2]}
-                      value={accessEmpresas[2]}
-                    />
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessEmpresas[3]"
-                      label="Actualizacion"
-                      checked={accessEmpresas[3]}
-                      value={accessEmpresas[3]}
-                    />
+                <label className="label">Permisos</label>
+                <div className="box">
+                  <SwitchComponent
+                    handleChange={formik.handleChange}
+                    id="accessEmpresas[0]"
+                    label="Acceso a modulo Empresas"
+                    checked={accessEmpresas[0]}
+                    value={accessEmpresas[0]}
+                  />
+                  {accessEmpresas[0] && (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "2em",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessEmpresas[1]"
+                        label="Eliminacion"
+                        checked={accessEmpresas[1]}
+                        value={accessEmpresas[1]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessEmpresas[2]"
+                        label="Creacion"
+                        checked={accessEmpresas[2]}
+                        value={accessEmpresas[2]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessEmpresas[3]"
+                        label="Actualizacion"
+                        checked={accessEmpresas[3]}
+                        value={accessEmpresas[3]}
+                      />
                   </div>
-                )}
+                   )}
+                </div>
 
-                <SwitchComponent
-                  handleChange={formik.handleChange}
-                  id="accessProductos[0]"
-                  label="Acceso a modulo Productos"
-                  checked={accessProductos[0]}
-                  value={accessProductos[0]}
-                />
-                {accessProductos[0] && (
-                  <div style={{ display: "flex", gap: "2em" }}>
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessProductos[1]"
-                      label="Eliminacion"
-                      checked={accessProductos[1]}
-                      value={accessProductos[1]}
-                    />
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessProductos[2]"
-                      label="Creacion"
-                      checked={accessProductos[2]}
-                      value={accessProductos[2]}
-                    />
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessProductos[3]"
-                      label="Actualizacion"
-                      checked={accessProductos[3]}
-                      value={accessProductos[3]}
-                    />
-                  </div>
-                )}
-                
+                <div className="box">
+                  <SwitchComponent
+                    handleChange={formik.handleChange}
+                    id="accessProductos[0]"
+                    label="Acceso a modulo Productos"
+                    checked={accessProductos[0]}
+                    value={accessProductos[0]}
+                  />
+                  {accessProductos[0] && (
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "2em",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessProductos[1]"
+                        label="Eliminacion"
+                        checked={accessProductos[1]}
+                        value={accessProductos[1]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessProductos[2]"
+                        label="Creacion"
+                        checked={accessProductos[2]}
+                        value={accessProductos[2]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessProductos[3]"
+                        label="Actualizacion"
+                        checked={accessProductos[3]}
+                        value={accessProductos[3]}
+                      />
+                    </div>
+                  )}
+                </div>
 
-                <SwitchComponent
-                  handleChange={formik.handleChange}
-                  id="accessInventarios[0]"
-                  label="Acceso a modulo Inventarios"
-                  checked={accessInventarios[0]}
-                  value={accessInventarios[0]}
-                />
-                {accessInventarios[0] && (
-                  <div style={{ display: "flex", gap: "2em" }}>
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessInventarios[1]"
-                      label="Eliminacion"
-                      checked={accessInventarios[1]}
-                      value={accessInventarios[1]}
-                    />
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessInventarios[2]"
-                      label="Creacion"
-                      checked={accessInventarios[2]}
-                      value={accessInventarios[2]}
-                    />
-                    <CheckboxComponent
-                      handleChange={formik.handleChange}
-                      id="accessInventarios[3]"
-                      label="Actualizacion"
-                      checked={accessInventarios[3]}
-                      value={accessInventarios[3]}
-                    />
-                  </div>
-                )}
-
-                
+                <div className="box">
+                  <SwitchComponent
+                    handleChange={formik.handleChange}
+                    id="accessInventarios[0]"
+                    label="Acceso a modulo Inventarios"
+                    checked={accessInventarios[0]}
+                    value={accessInventarios[0]}
+                  />
+                  {accessInventarios[0] && (
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "2em",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessInventarios[1]"
+                        label="Eliminacion"
+                        checked={accessInventarios[1]}
+                        value={accessInventarios[1]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessInventarios[2]"
+                        label="Creacion"
+                        checked={accessInventarios[2]}
+                        value={accessInventarios[2]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessInventarios[3]"
+                        label="Actualizacion"
+                        checked={accessInventarios[3]}
+                        value={accessInventarios[3]}
+                      />
+                    </div>
+                  )}
+                </div>
               </>
             )}
 

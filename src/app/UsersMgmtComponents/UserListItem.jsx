@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import SignupForm from "../SignupComponent/SignupForm";
 import PasswordModal from "./PasswordModal";
-import { useAppState } from "../AppProvider";
+import { useAppDispatch, useAppState } from "../AppProvider";
+import { type } from "../AppReducer";
+import { UserMgmtContext } from "./UsersMgmtUI";
 
 const UserListItem = (user) => {
   const { username, email, _id } = user;
-  const {_id: actualUserId, isAdmin} = useAppState().userData
+  const dispatch = useAppDispatch()
+  const {userData} = useAppState()
+  const {isAdmin, _id: actualUserId} = userData
   const [userFrame, setUserFrame] = useState(null);
   const closeModal = () => {
+    dispatch({ type: type.USER_MANAGEMENT, payload: false });
     setUserFrame(null);
   };
   const editUser = () => {
+    dispatch({type: type.USER_MANAGEMENT, payload: true})
     setUserFrame(<UserModal user={user} closeModal={closeModal} />);
   };
   const updatePassword = () => {
@@ -24,6 +30,7 @@ const UserListItem = (user) => {
     const data = await result.json()
     console.log(data)
   }
+  
   return (
     <>
       {userFrame}
@@ -65,11 +72,20 @@ UserListItem.propTypes = {
   email: PropTypes.string,
 };
 const UserModal = ({ user, closeModal }) => {
+  const {isManagingUsers} = useAppState()
+  const context = useContext(UserMgmtContext);
+  useEffect(() => {
+    
+    return () => {
+      context()
+      
+    };
+  }, []);
   return (
     <div className="modal is-active">
       <div className="modal-background"></div>
       <div className="modal-content">
-        <SignupForm isManagingUsers={true} userData={user} />
+        <SignupForm isManagingUsers={isManagingUsers} userData={user} />
         <button
           style={{ position: "absolute", top: "1%", right: "0.5%" }}
           onClick={() => {

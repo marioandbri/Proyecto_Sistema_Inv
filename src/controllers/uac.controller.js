@@ -70,8 +70,16 @@ export async function usersList(req, res) {
 export async function updateUser(req, res) {
   const { email, accessEmpresas, accessInventarios, accessProductos } = req.body
   const id = req.params.id
-  const result = await Usuario.updateOne({ _id: id }, { email, accessEmpresas, accessInventarios, accessProductos }).exec()
-  res.json({ status: "ok", response: result })
+  await Usuario.updateOne({ _id: id }, { email, accessEmpresas, accessInventarios, accessProductos }, (err, user)=>{
+    if(err){
+      return res.status(400).json({status:"error", message:err})
+    }
+    if(user.n != user.nModified){
+      return res.json({status:"warn",message:"No se realizaron modificaciones 😕" })
+    }else{
+      return res.json({status:"success", message:"Cambios realizados correctamente 👍"})
+    }
+  }).exec()
 
 }
 
@@ -88,11 +96,21 @@ export async function updatePassword(req,res){
   const isValid = isAdmin || validatePassword(oldPassword, oldHash, oldSalt )
   if(isValid){
     const { salt, hash } = passwordGenerator(password)
-    const result = await Usuario.updateOne({_id: id}, {salt, hash}).exec()
-    console.log(result)
-    res.json({status: "ok", response: result})
+    // const result = 
+    await Usuario.updateOne({_id: id}, {salt, hash}, (err, user)=>{
+      if (err) {
+        return res.status(400).json({ status: "error", message: err })
+      }
+      if (user.n != user.nModified) {
+        return res.json({ status: "warn", message: "No se realizaron modificaciones 😕" })
+      } else {
+        return res.json({ status: "success", message: "Cambio de contraseña realizado correctamente 👍" })
+      }
+    }).exec()
+    // console.log(result)
+    // res.json({status: "ok", response: result})
   }else{
-    res.status(400).json({status:"fail", response:"La contraseña actual no coincide con las credenciales almacenadas"})
+    res.status(400).json({status:"error", message:"La contraseña actual no coincide con las credenciales almacenadas ✖"})
   }
     
   

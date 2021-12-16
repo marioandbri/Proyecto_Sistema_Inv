@@ -6,15 +6,17 @@ const SwitchComponent = ({value, id, handleChange, label, checked}) => {
   return (
     <>
       <div className="field">
+        <label style={{display:"flex", flexDirection:"row-reverse", justifyContent:"space-between"}} className="switch is-rounded" htmlFor={id}>
         <input
           type="checkbox"
-          className="switch is-info"
           id={id}
           checked={checked}
           value={value}
           onChange={handleChange}
         />
-        <label htmlFor={id}>{label}</label>
+        <span className="check is-info"></span>
+        <span className="control-label">{label}</span>
+        </label>
       </div>
     </>
   );

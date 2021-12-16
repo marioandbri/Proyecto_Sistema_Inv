@@ -19,12 +19,14 @@ const PasswordModal = ({ id, closeModal, isAdmin}) => {
       body: JSON.stringify(data),
     });
     const response = await result.json();
-    if(result.ok){
-      ToastNotification("success", "El cambio se realizo correctamente")
+    (result.ok && ToastNotification(response.status, response.message) ) || ToastNotification(response.status, "Algo no ha ido bien:" + response.message)
+
+    // if(result.ok){
+    //   ToastNotification("success", "El cambio se realizo correctamente")
       
-    }else{
-      ToastNotification("error", response.response)
-    }
+    // }else{
+    //   ToastNotification("error", response.response)
+    // }
     return response;
   };
   return (
@@ -44,7 +46,7 @@ const PasswordModal = ({ id, closeModal, isAdmin}) => {
                 setLoading(true);
                 const action = await passUpdate();
                 setLoading(false);
-                if(action.status === "ok"){
+                if(action.status === "success"){
                   closeModal()
                 }
               }}

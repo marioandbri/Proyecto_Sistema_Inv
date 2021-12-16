@@ -6,7 +6,7 @@ import { ToastNotification, type } from "../AppReducer.js";
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const initialValues = { username: "", password: "" };
   const [credentials, setCredentials] = useState(initialValues);
@@ -121,7 +121,7 @@ const LoginForm = () => {
               </p>
             </div>
 
-            <div className="field">
+            {/* <div className="field">
               <input
                 type="checkbox"
                 className="switch is-info"
@@ -130,7 +130,7 @@ const LoginForm = () => {
                 onChange={() => setIsChecked(!isChecked)}
               />
               <label htmlFor="checkradio">Recordar datos de ingreso</label>
-            </div>
+            </div> */}
 
             <div className="buttons">
               <button

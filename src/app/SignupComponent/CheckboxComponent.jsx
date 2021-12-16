@@ -5,7 +5,7 @@ import "../../styles/bulma-radio-checkbox.min.css"
 const CheckboxComponent = ({value, id, handleChange, label, checked}) => {
   return (
     <>
-      <div className="field">
+      <div style={{marginBottom:0}} className="field">
           <div className="b-checkbox is-info ">
             <input
               type="checkbox"
