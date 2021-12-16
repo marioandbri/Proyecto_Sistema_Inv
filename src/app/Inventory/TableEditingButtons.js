@@ -3,7 +3,6 @@ import { notificationTypes } from "../Notification";
 import { useDispatch } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 import PropTypes from "prop-types";
-import { useAppState } from "../AppProvider";
 
 const TableEditingButtons = ({
   row,
@@ -11,7 +10,6 @@ const TableEditingButtons = ({
   cancelEditRow,
   restoreData,
 }) => {
-  const appState = useAppState()
   const dispatch = useDispatch();
   const { productPN, rutPoseedor, fechaCompra, rutProveedor, nroFactura } =
     row.original;
@@ -45,9 +43,7 @@ const TableEditingButtons = ({
     finalEditRow(row.index);
     // reloadData();
   };
-  if (!appState.admin) {
-    return null
-  } else {
+ 
     return (
       <td>
         <div className="buttons are-small">
@@ -72,7 +68,7 @@ const TableEditingButtons = ({
               dispatch({
                 type: type.addNotification,
                 payload: {
-                  content: `🛑 Se cancelo la operación`,
+                  content: `Se cancelo la operación`,
                   notificationType: notificationTypes.warning,
                 },
               });
@@ -86,7 +82,6 @@ const TableEditingButtons = ({
       </td>
     );
   }
-};
 TableEditingButtons.propTypes = {
   row: PropTypes.object,
   finalEditRow: PropTypes.func,

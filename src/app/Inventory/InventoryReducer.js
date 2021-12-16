@@ -1,3 +1,5 @@
+import { ToastNotification } from "../AppReducer";
+
 export const type = {
   selectClient: "SELECT_CLIENT",
   selectPossesor: "Selecciona la informacion del nuevo poseedor",
@@ -69,14 +71,17 @@ const InventoryReducer = (state, action) => {
         fechaEvento: initialInventory.fechaEvento,
       };
     case type.addNotification: {
-      let actualNotis = [...state.notifications];
-      let newNotification = {
-        detail: action.payload?.detail,
-        content: action.payload.content,
-        notificationType: action.payload.notificationType,
-      };
-      actualNotis.push(newNotification);
-      return { ...state, notifications: actualNotis };
+      let content = action.payload.content.concat(" ",action.payload?.detail || "")
+      ToastNotification(action.payload.notificationType, content )
+      return state
+      // let actualNotis = [...state.notifications];
+      // let newNotification = {
+      //   detail: action.payload?.detail,
+      //   content: action.payload.content,
+      //   notificationType: action.payload.notificationType,
+      // };
+      // actualNotis.push(newNotification);
+      // return { ...state, notifications: actualNotis };
     }
     case type.removeNotification: {
       let notificationIndex = action.payload;

@@ -3,10 +3,10 @@ import { useDispatch } from "./Inventory/InventoryProvider";
 import { type } from "./Inventory/InventoryReducer";
 import PropTypes from "prop-types";
 export const notificationTypes = {
-  success: "is-success",
-  info: "is-info",
-  danger: "is-danger",
-  warning: "is-warning",
+  success: "success",
+  info: "info",
+  danger: "error",
+  warning: "warn",
 };
 
 const Notification = ({

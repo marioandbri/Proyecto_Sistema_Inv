@@ -165,7 +165,7 @@ const ProductsComp = () => {
           dispatch({
             type: type.addNotification,
             payload: {
-              content: `✅ ${data.message}${
+              content: `👍 ${data.message}${
                 state.operationType != "ingreso" ? ": " + data.data : ""
               }`,
               notificationType: notificationTypes.success,
@@ -209,7 +209,7 @@ const ProductsComp = () => {
         dispatch({
           type: type.addNotification,
           payload: {
-            content: "⚠ Faltan datos en la cabecera",
+            content: "Faltan datos en la cabecera",
             notificationType: notificationTypes.warning,
           },
         }); //
@@ -242,6 +242,7 @@ const ProductsComp = () => {
               <span className="button is-small is-static">{index + 1}</span>
               <span className="control has-icons-right">
                 <input
+                  autoComplete="off"
                   onBlur={async (elem) => {
                     let found;
                     if (state.operationType == "ingreso") {

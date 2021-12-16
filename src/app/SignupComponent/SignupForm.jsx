@@ -218,13 +218,6 @@ const SignupForm = ({ isManagingUsers, userData }) => {
                   >
                       <CheckboxComponent
                         handleChange={formik.handleChange}
-                        id="accessEmpresas[1]"
-                        label="Eliminacion"
-                        checked={accessEmpresas[1]}
-                        value={accessEmpresas[1]}
-                      />
-                      <CheckboxComponent
-                        handleChange={formik.handleChange}
                         id="accessEmpresas[2]"
                         label="Creacion"
                         checked={accessEmpresas[2]}
@@ -236,6 +229,13 @@ const SignupForm = ({ isManagingUsers, userData }) => {
                         label="Actualizacion"
                         checked={accessEmpresas[3]}
                         value={accessEmpresas[3]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessEmpresas[1]"
+                        label="Eliminacion"
+                        checked={accessEmpresas[1]}
+                        value={accessEmpresas[1]}
                       />
                   </div>
                    )}
@@ -259,13 +259,6 @@ const SignupForm = ({ isManagingUsers, userData }) => {
                     >
                       <CheckboxComponent
                         handleChange={formik.handleChange}
-                        id="accessProductos[1]"
-                        label="Eliminacion"
-                        checked={accessProductos[1]}
-                        value={accessProductos[1]}
-                      />
-                      <CheckboxComponent
-                        handleChange={formik.handleChange}
                         id="accessProductos[2]"
                         label="Creacion"
                         checked={accessProductos[2]}
@@ -277,6 +270,13 @@ const SignupForm = ({ isManagingUsers, userData }) => {
                         label="Actualizacion"
                         checked={accessProductos[3]}
                         value={accessProductos[3]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessProductos[1]"
+                        label="Eliminacion"
+                        checked={accessProductos[1]}
+                        value={accessProductos[1]}
                       />
                     </div>
                   )}
@@ -300,13 +300,6 @@ const SignupForm = ({ isManagingUsers, userData }) => {
                     >
                       <CheckboxComponent
                         handleChange={formik.handleChange}
-                        id="accessInventarios[1]"
-                        label="Eliminacion"
-                        checked={accessInventarios[1]}
-                        value={accessInventarios[1]}
-                      />
-                      <CheckboxComponent
-                        handleChange={formik.handleChange}
                         id="accessInventarios[2]"
                         label="Creacion"
                         checked={accessInventarios[2]}
@@ -318,6 +311,13 @@ const SignupForm = ({ isManagingUsers, userData }) => {
                         label="Actualizacion"
                         checked={accessInventarios[3]}
                         value={accessInventarios[3]}
+                      />
+                      <CheckboxComponent
+                        handleChange={formik.handleChange}
+                        id="accessInventarios[1]"
+                        label="Eliminacion"
+                        checked={accessInventarios[1]}
+                        value={accessInventarios[1]}
                       />
                     </div>
                   )}

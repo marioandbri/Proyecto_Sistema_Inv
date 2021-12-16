@@ -19,8 +19,8 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
     dispatch({
       type: type.addNotification,
       payload: {
-        content: "❗ " + result.message,
-        notificationType: notificationTypes.warning,
+        content: "⛔ " + result.message,
+        notificationType: notificationTypes.info,
       },
     });
     reloadData();
@@ -57,8 +57,8 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
               dispatch({
                 type: type.addNotification,
                 payload: {
-                  content: `🛑 Se cancelo la operación`,
-                  notificationType: notificationTypes.info,
+                  content: `Se cancelo la operación`,
+                  notificationType: notificationTypes.warning,
                 },
               });
             }
