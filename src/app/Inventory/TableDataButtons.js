@@ -25,10 +25,13 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
     });
     reloadData();
   };
-  const { numeroSerie } = row.original;
+  const { numeroSerie } = row.original || false
   // if (!appState.userData.isAdmin || !accessInventarios[3] || !accessInventarios[1]) {
   //   return null
   // }
+  if(!numeroSerie){
+    return null
+  }else
   return (
     <td align="center">
       <div className="buttons are-small">

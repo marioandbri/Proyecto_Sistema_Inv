@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useTable, useSortBy, useFilters, usePagination } from "react-table";
+import { useTable, useSortBy, useFilters, usePagination, useGroupBy, useExpanded } from "react-table";
 import { UseRTPagination } from "../useRTPagination";
 import ColumnFilter from "./ColumnFilter";
 import LoadingBar from "../LoadingBar";
@@ -8,6 +8,7 @@ import EditableCell from "./EditableCell";
 import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 import TableEditingButtons from "./TableEditingButtons";
+import { useAppState } from "../AppProvider";
 
 const InventoryTableData = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const InventoryTableData = () => {
   const [loading, setLoading] = useState(true);
   const [inventoryData, setInventoryData] = useState([]);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
+  const {accessInventarios} = useAppState().userData
   useEffect(() => {
     fetchData();
     return () => { };
@@ -52,27 +54,41 @@ const InventoryTableData = () => {
         Header: "Numero de Serie",
 
         accessor: "numeroSerie", // accessor is the "key" in the data
+
+        aggregate: 'count',
+        Aggregated: ({value}) => `${value} elementos`
       },
 
       {
         Header: "Part Number",
 
         accessor: "productPN",
+
+        aggregate: 'uniqueCount',
+        Aggregated: ({value})=> `${value} Partnumbers Unicos`
       },
       {
         Header: "Descripción",
 
         accessor: "descripcion",
+        aggregate: 'uniqueCount',
+        Aggregated: ({ value }) => `${value} Descripciones`
       },
       {
         Header: "Rut Poseedor",
 
         accessor: "rutPoseedor",
+
+        aggregate: 'uniqueCount',
+        Aggregated: ({ value }) => `${value} Rut Poseedor Unico`
       },
       {
         Header: "Poseedor",
 
         accessor: "poseedor",
+
+        // aggregate: 'uniqueCount',
+        // Aggregated: ({ value }) => `${value} Poseedor Unicos`
       },
       {
         Header: "F. Compra",
@@ -83,34 +99,44 @@ const InventoryTableData = () => {
         Header: "RUT Proveedor",
 
         accessor: "rutProveedor",
+
+        aggregate: 'uniqueCount',
+        Aggregated: ({ value }) => `${value} Rut Proveedor Unicos`
       },
       {
         Header: "Proveedor",
 
         accessor: "proveedor",
+
+        // aggregate: 'uniqueCount',
+        // Aggregated: ({ value }) => `${value} Proveedor Unicos`
       },
       {
         Header: "Factura Nro",
 
         accessor: "nroFactura",
+
+        aggregate: 'uniqueCount',
+        Aggregated: ({ value }) => `${value} Facturas Unicas`
       },
     ],
     []
   );
   const sortUpIcon = (
-    <span className="icon has-text-info is-size-6 ml-1">
+    <span className="icon has-text-info is-size-7 ml-1">
       <i className="fas fa-sort-amount-up"></i>
     </span>
   );
   const sortDownIcon = (
-    <span className="icon has-text-info is-size-6 ml-1">
+    <span className="icon has-text-info is-size-7 ml-1">
       <i className="fas fa-sort-amount-down"></i>
     </span>
   );
   const sortIcon = (
-    <span className="icon is-size-6  ml-1">
-      <i className="fas fa-filter"></i>
+    <span className="icon is-size-7  ml-1">
+      <i className="fas fa-sort"></i>
     </span>
+    
   );
   const defaultColumn = React.useMemo(() => {
     return { Cell: EditableCell, Filter: ColumnFilter };
@@ -125,7 +151,9 @@ const InventoryTableData = () => {
       restoreData,
     },
     useFilters,
+    useGroupBy,
     useSortBy,
+    useExpanded,
     usePagination
   );
 
@@ -201,19 +229,24 @@ const InventoryTableData = () => {
       <>
         <div className="table-container">
 
-          <table className="table is-fullwidth" {...getTableProps()}>
+          <table style={{width:"99.5%"}} className="table is-fullwidth is-hoverable" {...getTableProps()}>
             <thead className="has-background-info-light">
               {headerGroups.map((headerGroup, i) => (
                 <tr key={i} {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column, ii) => (
-                    <th
+                    <th 
+                      style={{ position: "relative", border:".25px solid hsl(0, 0%, 86%)"}}
                       key={ii}
                       className="is-size-7"
                       {...column.getHeaderProps()}
                     // {...column.getSortByToggleProps()}
                     >
+                      {column.canGroupBy? <span {...column.getGroupByToggleProps()}>
+                        {column.isGrouped? '🛑 ': '💠 '}
+                      </span> :null}
                       {column.render("Header")}
                       <span
+                      style={{position:"absolute", right:"-.35rem", top:".25rem"}}
                         onClick={() => {
                           column.toggleSortBy();
                         }}
@@ -229,7 +262,8 @@ const InventoryTableData = () => {
                       </div>
                     </th>
                   ))}
-                  <th></th>
+                      
+                  {accessInventarios[3] && <th className="is-size-7" style={{ position: "relative", border: ".25px solid hsl(0, 0%, 86%)", lineHeight:5 , textAlign:"center"}} >Acciones</th>}
                 </tr>
               ))}
             </thead>
@@ -242,12 +276,28 @@ const InventoryTableData = () => {
                     {row.cells.map((cell) => {
                       rows.current[index] = false;
                       return (
-                        <td key={index} {...cell.getCellProps()}>
-                          {cell.render("Cell")}
-                        </td>
+                        <td key={index} {...cell.getCellProps()}
+                        style={{
+                          background: cell.isGrouped
+                          ? '#0aff0082'
+                          : cell.isAggregated
+                          ? '#ffa50078'
+                          : ""
+                        }}
+                        >
+                          {cell.isGrouped? (
+                          <>
+                          <span {...row.getToggleRowExpandedProps()}>
+                            {row.isExpanded? '⏬ ' : '⏩ '}
+                          </span>
+                            {cell.render("Cell")}({row.subRows.length})
+                          </>
+                          ): cell.isAggregated ? (cell.render('Aggregated')
+                          ):cell.isPlaceholder ? null : (cell.render('Cell'))}
+                          </td>
                       );
                     })}
-                    {!globalState.editingRows.includes(row.index) ? (
+                    {accessInventarios[3] ? ( !globalState.editingRows.includes(row.index) ? (
                       <TableDataButtons
                         editRow={editRow}
                         index={index}
@@ -264,14 +314,14 @@ const InventoryTableData = () => {
                         finalEditRow={finalEditRow}
                         restoreData={restoreData}
                       />
-                    )}
+                    )):null}
                   </tr>
                 );
               })}
             </tbody>
             <tfoot className="has-background-info-light">
               <tr className="has-text-weight-bold">
-                <td colSpan={10} className="has-text-info">Total de elementos encontrados: <span className="has-text-weight-normal">{filas.length}</span></td>
+                <td colSpan={`${accessInventarios[3]?"10":"9"}`} className="has-text-info">Total de elementos encontrados: <span className="has-text-weight-normal">{filas.length}</span></td>
               </tr>
             </tfoot>
           </table>
