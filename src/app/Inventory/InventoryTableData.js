@@ -65,14 +65,14 @@ const InventoryTableData = () => {
         accessor: "productPN",
 
         aggregate: 'uniqueCount',
-        Aggregated: ({value})=> `${value} Partnumbers Unicos`
+        Aggregated: ({value})=> `${value} Numeros de Parte`
       },
       {
         Header: "Descripción",
 
         accessor: "descripcion",
-        aggregate: 'uniqueCount',
-        Aggregated: ({ value }) => `${value} Descripciones`
+        // aggregate: 'uniqueCount',
+        // Aggregated: ({ value }) => `${value} Descripciones`
       },
       {
         Header: "Rut Poseedor",
@@ -80,7 +80,7 @@ const InventoryTableData = () => {
         accessor: "rutPoseedor",
 
         aggregate: 'uniqueCount',
-        Aggregated: ({ value }) => `${value} Rut Poseedor Unico`
+        Aggregated: ({ value }) => `${value} Poseedor Unico`
       },
       {
         Header: "Poseedor",
@@ -118,6 +118,22 @@ const InventoryTableData = () => {
 
         aggregate: 'uniqueCount',
         Aggregated: ({ value }) => `${value} Facturas Unicas`
+      },
+      {
+        Header: "Estado",
+
+        accessor: "estado",
+
+        // aggregate: 'uniqueCount',
+        // Aggregated: ({ value }) => `${value} Facturas Unicas`
+      },
+      {
+        Header:"F. Evento",
+
+        accessor: "fechaEvento",
+
+        // aggregate: 'uniqueCount',
+        // Aggregated: ({ value }) => `${value} Fechas Unicas`
       },
     ],
     []
@@ -321,11 +337,12 @@ const InventoryTableData = () => {
             </tbody>
             <tfoot className="has-background-info-light">
               <tr className="has-text-weight-bold">
-                <td colSpan={`${accessInventarios[3]?"10":"9"}`} className="has-text-info">Total de elementos encontrados: <span className="has-text-weight-normal">{filas.length}</span></td>
+                {!state.groupBy[0] && <td colSpan={`${accessInventarios[3] ? "12" : "11"}`} className="has-text-info has-text-weight-semibold">Total de elementos encontrados: <span className="has-text-weight-bold">{filas.length}</span></td>}
               </tr>
             </tfoot>
           </table>
         </div>
+        
         <div>{PaginationComponent}</div>
 
       </>

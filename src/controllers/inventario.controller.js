@@ -120,9 +120,9 @@ export async function updateInventarioMovimientos(req, res) {
   }
   let resultData = [];
   try {
-    for (const { fechaEvento, rutPoseedor, numeroSerie } of items) {
+    for (const { fechaEvento, rutPoseedor, numeroSerie, estado } of items) {
       await Inventario.update(
-        { fechaEvento: fechaEvento, rutPoseedor: rutPoseedor },
+        { fechaEvento: fechaEvento, rutPoseedor: rutPoseedor, estado: estado },
         { where: { numeroSerie: numeroSerie }, transaction: t }
       )
         .then((data) => {

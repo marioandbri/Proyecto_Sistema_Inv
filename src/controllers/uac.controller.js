@@ -22,7 +22,7 @@ export async function registerUser(req, res) {
 export async function registerAdmin(req, res) {
   const { username, email, password, isAdmin } = req.body.signupData
   const { adminKey } = req.body
-  console.log(typeof adminKey, typeof ADMIN_KEY)
+  //console.log(typeof adminKey, typeof ADMIN_KEY)
   if (adminKey === ADMIN_KEY) {
 
     const { salt, hash } = passwordGenerator(password)
@@ -107,7 +107,7 @@ export async function updatePassword(req,res){
         return res.json({ status: "success", message: "Cambio de contraseña realizado correctamente 👍" })
       }
     }).exec()
-    // console.log(result)
+    // //console.log(result)
     // res.json({status: "ok", response: result})
   }else{
     res.status(400).json({status:"error", message:"La contraseña actual no coincide con las credenciales almacenadas ✖"})

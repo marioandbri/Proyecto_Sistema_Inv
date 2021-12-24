@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../sequelize";
-import Productos from "./productos";
+// import Productos from "./productos";
 // const getDescription = async (pn) => {
 //   console.log(pn);
 //   let description = await Productos.findOne({ partnumber: pn })
@@ -25,7 +25,8 @@ const Inventario = sequelize.define(
       type: Sequelize.TEXT,
     },
     fechaEvento: {
-      type: Sequelize.TEXT,
+      type: Sequelize.DATEONLY,
+      defaultValue: "1900-01-01"
     },
     rutProveedor: {
       type: Sequelize.TEXT,
@@ -48,5 +49,5 @@ const Inventario = sequelize.define(
 );
 
 // Cliente.sync({ force: true }).then(console.log('modelo Cliente actualizado'));
-Inventario.sync({ alter: true });
+Inventario.sync({ alter: true }).catch(err=> console.log(err));
 export default Inventario;

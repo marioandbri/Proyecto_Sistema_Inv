@@ -1,19 +1,41 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { notificationTypes } from "../Notification";
 import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 
 const ProductsComp = () => {
+
+  const {id:opType} = useParams()
+  console.log(opType)
   const state = useInventory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const initialInputs = {
+  const initialInputs =  opType == "retiro" ?
+  {
     numeroSerie: "",
     isEmpty: true,
     isValid: false,
     itemStatus: [],
-  };
+    estado:""
+  }
+  :
+  {
+    numeroSerie: "",
+    isEmpty: true,
+    isValid: false,
+    itemStatus: [],
+  }
+  ;
   const [productfield, setProductField] = useState([initialInputs]);
+  const estados = ["Operativo", "Con Detalles", "Repuesto", "Por Reparar", "Garantia", "Vendido"]
+
+  const handleChange = (e, i) =>{
+    let newFieldValues = [...productfield]
+    let inputChange = e.target.value
+    newFieldValues[i][e.target.name]= inputChange
+    setProductField(newFieldValues)
+  }
 
   const handleInput = (e, i) => {
     //Creates a shallow copy of the fields
@@ -53,7 +75,8 @@ const ProductsComp = () => {
   const addField = () => {
     let newFields = [
       ...productfield,
-      { numeroSerie: "", isEmpty: true, isValid: false },
+      {...initialInputs}
+      // { numeroSerie: "", isEmpty: true, isValid: false },
     ];
     setProductField(newFields);
   };
@@ -125,10 +148,20 @@ const ProductsComp = () => {
       if (state.productsHeader) {
         productfield.forEach((e) => {
           if (e.isValid) {
-            products.push({
-              ...state.productsHeader,
-              numeroSerie: e.numeroSerie,
-            });
+            if(opType == 'retiro'){
+
+              products.push({
+                ...state.productsHeader,
+                numeroSerie: e.numeroSerie,
+                estado:e.estado
+              });
+            }else{
+
+              products.push({
+                ...state.productsHeader,
+                numeroSerie: e.numeroSerie,
+              });
+            }
           }
         });
         if (productfield.filter((e) => e.isValid == false).length > 1) {
@@ -329,6 +362,15 @@ const ProductsComp = () => {
                   </span>
                 </a>
               </span>
+              {opType=="retiro" && <div className="field ml-1"> 
+                  <span className="select is-small">
+                    <select onChange={(event) =>{handleChange(event, index)}} name="estado" id="estado" value={e.estado}>
+                      {estados.map((element, index)=>(
+                        <option key={index} value={element}>{element}</option>
+                      ))}
+                    </select>
+                  </span>
+              </div>}
               {state.operationType != "ingreso" &&
                 index != productfield.length - 1 && (
                   <span className=" m-1 tags are-normal">
@@ -412,6 +454,7 @@ const ProductsComp = () => {
             top: "90%",
             width: "fit-content",
             marginBottom: 0,
+            marginTop: "1em"
           }}
           className="buttons"
         >
