@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
-const { PGSQL_SERVER, PGSQL_PASSWORD } = process.env;
+const { PGSQL_SERVER, PGSQL_PASSWORD, PGSQL_USER } = process.env;
 
-export const sequelize = new Sequelize("postgres", "postgres", PGSQL_PASSWORD, {
+export const sequelize = new Sequelize("postgres", PGSQL_USER, PGSQL_PASSWORD, {
   host: PGSQL_SERVER,
   dialect: "postgres",
   pool: {

@@ -17,6 +17,17 @@ app.listen(app.get("port"), () => {
     .catch((e) => {
       console.log("No se ha podido conectar a postgres", e);
     });
+    if(process.env.NODE_ENV === "development"){
+
+      sequelize
+        .sync({ alter: true })
+        .then(() => {
+          console.log("Alterations executed correctly");
+        })
+        .catch((e) => {
+          console.log("Something unexpected happen when doing alterations", e);
+        });
+    }
 });
 
 console.log(process.env.NODE_ENV);
