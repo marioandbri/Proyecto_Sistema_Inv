@@ -39,7 +39,7 @@ app.use(require("./routes/impresora.routes.js"));
 app.use(require("./routes/computador.routes.js"));
 app.use(require("./routes/monitor.routes.js"));
 app.use(require("./routes/productos.routes.js"));
-app.use(require("./routes/inventario.routes.js"));
+app.use(require("./routes/inventario.mdb.routes.js"));
 app.use(require("./routes/uac.routes.js"));
 app.use(require("./routes/empresa.routes.js"));
 
