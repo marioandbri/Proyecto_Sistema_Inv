@@ -8,23 +8,57 @@ const InventarioSchema = new Schema({
 		index: true,
 		unique: true,
 	},
-	producto: {
-		type: Schema.Types.String,
-		ref: Producto,
+	productPN: {
+		type: String,
+		required: true,
 	},
-	poseedor: {
-		type: Schema.Types.String,
-		ref: Empresa,
+	rutPoseedor: {
+		type: String,
+		required: true,
+	},
+	rutProveedor: {
+		type: String,
+	},
+	fechaCompra: {
+		type: Date,
+		get: function (v) {
+			return `${v.getUTCFullYear()}-${v.getMonth() + 1}-${v.getUTCDate()}`;
+		},
+	},
+	fechaEvento: {
+		type: Date,
+		get: function (v) {
+			return `${v.getUTCFullYear()}-${v.getMonth() + 1}-${v.getUTCDate()}`;
+		},
+	},
+	nroFactura: {
+		type: String,
+	},
+	estado: {
+		type: String,
 	},
 });
-InventarioSchema.pre("save", async function () {
-	const { _id: empresa } = await Empresa.findOne({ rut: this.poseedor }).exec();
-	const { _id: producto } = await Producto.findOne({
-		partnumber: this.producto,
-	}).exec();
-	this.poseedor = empresa;
-	this.producto = producto;
-	return;
+
+InventarioSchema.virtual("producto", {
+	ref: Producto,
+	localField: "productPN",
+	foreignField: "partnumber",
+	justOne: true,
 });
+InventarioSchema.virtual("poseedor", {
+	ref: Empresa,
+	localField: "rutPoseedor",
+	foreignField: "rut",
+	justOne: true,
+});
+InventarioSchema.virtual("proveedor", {
+	ref: Empresa,
+	localField: "rutProveedor",
+	foreignField: "rut",
+	justOne: true,
+});
+
+InventarioSchema.set("toJSON", { virtuals: true, getters: true });
+InventarioSchema.set("toObject", { virtuals: true, getters: true });
 
 export default model("Inventario", InventarioSchema);

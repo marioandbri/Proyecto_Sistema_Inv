@@ -76,7 +76,7 @@ const InventoryTableData = () => {
 			{
 				Header: "Descripción",
 
-				accessor: "descripcion",
+				accessor: "producto.shortDescription",
 				// aggregate: 'uniqueCount',
 				// Aggregated: ({ value }) => `${value} Descripciones`
 			},
@@ -91,7 +91,7 @@ const InventoryTableData = () => {
 			{
 				Header: "Poseedor",
 
-				accessor: "poseedor",
+				accessor: "poseedor.razon_social",
 
 				// aggregate: 'uniqueCount',
 				// Aggregated: ({ value }) => `${value} Poseedor Unicos`
@@ -112,7 +112,7 @@ const InventoryTableData = () => {
 			{
 				Header: "Proveedor",
 
-				accessor: "proveedor",
+				accessor: "proveedor.razon_social",
 
 				// aggregate: 'uniqueCount',
 				// Aggregated: ({ value }) => `${value} Proveedor Unicos`

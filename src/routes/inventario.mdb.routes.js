@@ -15,18 +15,20 @@ import {
 router.post("/inventario", createInventario);
 
 //Read
-//Update Movements
-// router.put("/inventario/entrega", updateInventarioMovimientos);
-// router.put("/inventario/retiro", updateInventarioMovimientos);
 //By rut
 // router.get("/inventario/:sn", getInventarioBySerialNumber);
+
 // By Query
 router.get("/inventario", getInventarios);
 
+//Update Movements
+router.put("/inventario/entrega", updateInventarioMovimientos);
+router.put("/inventario/retiro", updateInventarioMovimientos);
+
 //Update
-// router.put("/inventario/:sn", updateInventario);
+router.put("/inventario/:sn", updateInventario);
 
 //Delete
-// router.delete("/inventario/:sn", deleteInventario);
+router.delete("/inventario/:sn", deleteInventario);
 
 module.exports = router;

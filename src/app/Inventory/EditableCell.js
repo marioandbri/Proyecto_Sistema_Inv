@@ -51,7 +51,7 @@ const EditableCell = ({
 };
 
 EditableCell.propTypes = {
-	value: PropTypes.string,
+	// value: PropTypes.string,
 	row: PropTypes.object,
 	column: PropTypes.object,
 	updateData: PropTypes.func,
