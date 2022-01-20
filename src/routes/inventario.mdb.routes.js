@@ -16,7 +16,7 @@ router.post("/inventario", createInventario);
 
 //Read
 //By rut
-// router.get("/inventario/:sn", getInventarioBySerialNumber);
+router.get("/inventario/:sn", getInventarioBySerialNumber);
 
 // By Query
 router.get("/inventario", getInventarios);

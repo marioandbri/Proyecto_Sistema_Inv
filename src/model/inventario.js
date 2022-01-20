@@ -1,53 +1,61 @@
-import Sequelize from "sequelize";
-import { sequelize } from "../sequelize";
-// import Productos from "./productos";
-// const getDescription = async (pn) => {
-//   console.log(pn);
-//   let description = await Productos.findOne({ partnumber: pn })
-//     .exec()
-//     .then((data) => data?.DescriptionL);
-//   // console.log(description);
-//   return description;
-// };
+import { model, Schema } from "mongoose";
+import Producto from "./productos";
+import Empresa from "./empresa";
 
-const Inventario = sequelize.define(
-  "inventario",
-  {
-    numeroSerie: {
-      type: Sequelize.TEXT,
-      primaryKey: true,
-    },
-    productPN: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
-    rutPoseedor: {
-      type: Sequelize.TEXT,
-    },
-    fechaEvento: {
-      type: Sequelize.DATEONLY,
-      defaultValue: "1900-01-01"
-    },
-    rutProveedor: {
-      type: Sequelize.TEXT,
-    },
-    fechaCompra: {
-      type: Sequelize.DATEONLY,
-    },
-    nroFactura: {
-      type: Sequelize.TEXT,
-    },
-    estado: {
-      type: Sequelize.TEXT,
-    },
-  },
-  {
-    timestamps: true,
-    updatedAt: "updatedat",
-    tableName: "inventario",
-  }
-);
+const InventarioSchema = new Schema({
+	numeroSerie: {
+		type: String,
+		index: true,
+		unique: true,
+	},
+	productPN: {
+		type: String,
+		required: true,
+	},
+	rutPoseedor: {
+		type: String,
+		required: true,
+	},
+	rutProveedor: {
+		type: String,
+	},
+	fechaCompra: {
+		type: Date,
+	},
+	fechaEvento: {
+		type: Date,
+	},
+	nroFactura: {
+		type: String,
+	},
+	estado: {
+		type: String,
+	},
+	nroGuia: {
+		type: Number,
+	},
+});
 
-// Cliente.sync({ force: true }).then(console.log('modelo Cliente actualizado'));
-Inventario.sync({ alter: true }).catch(err=> console.log(err));
-export default Inventario;
+InventarioSchema.virtual("producto", {
+	ref: Producto,
+	localField: "productPN",
+	foreignField: "partnumber",
+	justOne: true,
+});
+InventarioSchema.virtual("poseedor", {
+	ref: Empresa,
+	localField: "rutPoseedor",
+	foreignField: "rut",
+	justOne: true,
+});
+InventarioSchema.virtual("proveedor", {
+	ref: Empresa,
+	localField: "rutProveedor",
+	foreignField: "rut",
+	justOne: true,
+});
+
+InventarioSchema.set("toJSON", { virtuals: true });
+InventarioSchema.set("toObject", { virtuals: true });
+
+export default model("Inventario", InventarioSchema);

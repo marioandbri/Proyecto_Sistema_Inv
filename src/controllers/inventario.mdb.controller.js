@@ -1,5 +1,4 @@
-import Inventario from "../model/inventario copy";
-import mongoose from "mongoose";
+import Inventario from "../model/inventario";
 
 export async function getInventarios(req, res) {
 	const inventario = await Inventario.find({})
@@ -90,13 +89,21 @@ export async function updateInventarioMovimientos(req, res) {
 		return;
 	}
 	const serialnumbers = items.map((e) => e.numeroSerie);
-	const { fechaEvento, rutPoseedor, estado } = items[0];
+	const { fechaEvento, rutPoseedor, estado, nroGuia } = items[0];
 
 	const result = await Inventario.updateMany(
 		{ numeroSerie: { $in: [...serialnumbers] } },
-		{ fechaEvento: fechaEvento, rutPoseedor: rutPoseedor, estado: estado }
+		{
+			fechaEvento: fechaEvento,
+			rutPoseedor: rutPoseedor,
+			estado: estado,
+			nroGuia: nroGuia,
+		}
 	);
 	res.json(result);
 }
 
-//to-do getInventarioBySerialNumber
+export async function getInventarioBySerialNumber(req, res) {
+	const inventario = await Inventario.findOne({ numeroSerie: req.params.sn });
+	res.json(inventario);
+}

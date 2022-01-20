@@ -52,6 +52,24 @@ const InventoryTableData = () => {
 	const updateValues = (rowIndex, columnId, value) => {
 		inventoryRef.current[rowIndex][columnId] = value;
 	};
+	const onlyDate = (stringDatetime) => {
+		if (!stringDatetime) {
+			return null;
+		}
+		// console.log(stringDatetime, "////String de fecha con Problema ////");
+		const date = new Date(stringDatetime);
+		console.log(date, "////fecha con problema////");
+		const formatedDate = new Intl.DateTimeFormat("es-CL", {
+			year: "numeric",
+			month: "2-digit",
+			day: "2-digit",
+		}).format(date);
+		const result = [];
+		formatedDate.split("-").forEach((e) => {
+			result.unshift(e);
+		});
+		return result.join("-");
+	};
 	const data = React.useMemo(() => inventoryData, [inventoryData]);
 
 	const columns = React.useMemo(
@@ -96,35 +114,36 @@ const InventoryTableData = () => {
 				// aggregate: 'uniqueCount',
 				// Aggregated: ({ value }) => `${value} Poseedor Unicos`
 			},
-			{
-				Header: "F. Compra",
+			// {
+			// 	Header: "F. Compra",
 
-				accessor: "fechaCompra",
-			},
-			{
-				Header: "RUT Proveedor",
+			// 	accessor: "fechaCompra",
+			// 	Cell: ({ value }) => onlyDate(value),
+			// },
+			// {
+			// 	Header: "RUT Proveedor",
 
-				accessor: "rutProveedor",
+			// 	accessor: "rutProveedor",
 
-				aggregate: "uniqueCount",
-				Aggregated: ({ value }) => `${value} Rut Proveedor Unicos`,
-			},
-			{
-				Header: "Proveedor",
+			// 	aggregate: "uniqueCount",
+			// 	Aggregated: ({ value }) => `${value} Rut Proveedor Unicos`,
+			// },
+			// {
+			// 	Header: "Proveedor",
 
-				accessor: "proveedor.razon_social",
+			// 	accessor: "proveedor.razon_social",
 
-				// aggregate: 'uniqueCount',
-				// Aggregated: ({ value }) => `${value} Proveedor Unicos`
-			},
-			{
-				Header: "Factura Nro",
+			// 	// aggregate: 'uniqueCount',
+			// 	// Aggregated: ({ value }) => `${value} Proveedor Unicos`
+			// },
+			// {
+			// 	Header: "Factura Nro",
 
-				accessor: "nroFactura",
+			// 	accessor: "nroFactura",
 
-				aggregate: "uniqueCount",
-				Aggregated: ({ value }) => `${value} Facturas Unicas`,
-			},
+			// 	aggregate: "uniqueCount",
+			// 	Aggregated: ({ value }) => `${value} Facturas Unicas`,
+			// },
 			{
 				Header: "Estado",
 
@@ -138,8 +157,18 @@ const InventoryTableData = () => {
 
 				accessor: "fechaEvento",
 
+				Cell: ({ value }) => onlyDate(value),
+
 				// aggregate: 'uniqueCount',
 				// Aggregated: ({ value }) => `${value} Fechas Unicas`
+			},
+			{
+				Header: "Guia",
+
+				accessor: "nroGuia",
+
+				aggregate: "uniqueCount",
+				Aggregated: ({ value }) => `${value} guias únicas`,
 			},
 		],
 		[]

@@ -31,11 +31,13 @@ export async function getEmpresaByRut(req, res) {
 	return res.json(empresa);
 }
 
-export function postEmpresas(req, res) {
+export async function postEmpresas(req, res) {
 	const data = req.body;
-	const empresa = new Empresa({ ...data });
-	empresa.save();
-	return res.json(empresa);
+	await Empresa.create(data, (err, doc) => {
+		if (err) return res.status(400).json(err);
+		res.json(doc);
+	});
+	return;
 }
 
 export async function updateEmpresa(req, res) {

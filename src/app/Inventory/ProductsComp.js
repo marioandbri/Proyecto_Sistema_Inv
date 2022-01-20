@@ -163,7 +163,7 @@ const ProductsComp = () => {
 				}
 				productfield.forEach((e) => {
 					if (e.isValid) {
-						if (opType == "retiro") {
+						if (opType == "retiro" || opType == "entrega") {
 							products.push({
 								...state.productsHeader,
 								numeroSerie: e.numeroSerie,
@@ -173,6 +173,7 @@ const ProductsComp = () => {
 							products.push({
 								...state.productsHeader,
 								numeroSerie: e.numeroSerie,
+								estado: "Operativo",
 							});
 						}
 					}
@@ -310,7 +311,9 @@ const ProductsComp = () => {
 												itemStatus[index].itemStatus = [
 													found?.rutPoseedor,
 													found?.productPN,
+													found?.estado,
 												];
+												itemStatus[index].estado = found?.estado;
 											} else {
 												itemStatus[index].itemStatus = [null];
 												itemStatus[index].isValid = false;

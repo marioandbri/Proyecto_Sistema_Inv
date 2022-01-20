@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import utf8 from "utf8";
 
 export const EmpresaSchema = new Schema({
 	rut: {
@@ -20,5 +21,8 @@ export const EmpresaSchema = new Schema({
 		type: String,
 	},
 });
+
+EmpresaSchema.set("toJSON", { getters: true });
+EmpresaSchema.set("toObject", { getters: true });
 
 export default model("Empresa", EmpresaSchema);
