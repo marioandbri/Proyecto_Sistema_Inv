@@ -16,7 +16,16 @@ module.exports = {
 		rules: [
 			{
 				test: /\.m?js$/,
-				exclude: [/node_modules/, /\.dpr\.js$/],
+				exclude: [
+					/node_modules/,
+					/\.dpr\.js$/,
+					/controllers/,
+					/model/,
+					/config/,
+					/paswordUtil.js/,
+					/routes/,
+					/public/,
+				],
 				use: ["babel-loader"],
 			},
 			{

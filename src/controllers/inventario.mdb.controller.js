@@ -41,7 +41,7 @@ export async function createInventario(req, res) {
 				detail: err.message,
 			});
 		}
-		res.json(docs);
+		res.json({ message: "Productos ingresados correctamente", data: docs });
 	});
 	return;
 }
@@ -57,7 +57,7 @@ export async function updateInventario(req, res) {
 				return res
 					.status(400)
 					.json({ message: "Ha ocurrido un error", detail: err.message });
-			return res.json(doc);
+			return res.json({ messa: "Actualizado correctamente", data: doc });
 		}
 	);
 	return;
@@ -100,7 +100,10 @@ export async function updateInventarioMovimientos(req, res) {
 			nroGuia: nroGuia,
 		}
 	);
-	res.json(result);
+	res.json({
+		message: "Registros actualizados correctamente",
+		data: result.nModified,
+	});
 }
 
 export async function getInventarioBySerialNumber(req, res) {

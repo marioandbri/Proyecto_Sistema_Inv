@@ -32,12 +32,12 @@ AunthPassport(passport);
 //Globals
 
 app.use(require("./routes/ot.routes.js"));
-app.use(require("./routes/cliente.routes.js"));
+// app.use(require("./routes/cliente.routes.js"));
 app.use(require("./routes/valida.routes.js"));
 app.use(require("./routes/tipoproducto.routes.js"));
-app.use(require("./routes/impresora.routes.js"));
-app.use(require("./routes/computador.routes.js"));
-app.use(require("./routes/monitor.routes.js"));
+// app.use(require("./routes/impresora.routes.js"));
+// app.use(require("./routes/computador.routes.js"));
+// app.use(require("./routes/monitor.routes.js"));
 app.use(require("./routes/productos.routes.js"));
 app.use(require("./routes/inventario.mdb.routes.js"));
 app.use(require("./routes/uac.routes.js"));
