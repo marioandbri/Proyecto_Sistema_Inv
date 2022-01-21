@@ -1,143 +1,143 @@
 :root {
-  background-image: url("../bg.webp");
+	background-image: url("../bg.webp");
 }
 .navbar-item > img {
-  margin: 0 10px;
-  /* box-shadow: -1px 1px 2px black; */
+	margin: 0 10px;
+	/* box-shadow: -1px 1px 2px black; */
 }
 .box {
-  background-color: rgba(255, 255, 255, 0.933);
+	background-color: rgba(255, 255, 255, 0.933);
 }
 .navbar .title {
-  color: white;
+	color: white;
 }
 
 tbody tr:hover {
-  background-color: #f2f2f2;
+	background-color: #f2f2f2;
 }
 tr .button {
-  visibility: hidden;
-  width: 100%;
+	visibility: hidden;
+	width: 100%;
 }
 tr .button.is-success,
 tr .button.is-danger.cancelar,
 .is-info.buscar {
-  visibility: visible;
+	visibility: visible;
 }
 .flex-container {
-  height: 2.5rem;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-around;
-  align-items: center;
+	height: 2.5rem;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	align-items: center;
 }
 tr .button.is-success.aceptar,
 tr .button.is-danger.cancelar {
-  width: 45%;
-  /* margin: auto 0.5rem; */
+	width: 45%;
+	/* margin: auto 0.5rem; */
 }
 tr:hover .button {
-  animation: displayer 1s forwards;
+	animation: displayer 1s forwards;
 }
 @keyframes displayer {
-  from {
-    color: #f2f2f200;
-    background-color: #f2f2f200;
-  }
-  to {
-    visibility: visible;
-  }
+	from {
+		color: #f2f2f200;
+		background-color: #f2f2f200;
+	}
+	to {
+		visibility: visible;
+	}
 }
 .notification {
-  opacity: 0.7;
-  position: absolute;
-  bottom: 2%;
-  padding: 0.5rem;
-  animation: notificacion 0.5s cubic-bezier(0.52, 1.56, 0.64, 0.79);
+	opacity: 0.7;
+	position: absolute;
+	bottom: 2%;
+	padding: 0.5rem;
+	animation: notificacion 0.5s cubic-bezier(0.52, 1.56, 0.64, 0.79);
 }
 .notification:hover {
-  opacity: 1;
+	opacity: 1;
 }
 .notification > .delete {
-  position: relative;
-  right: 0%;
-  top: 0%;
-  margin-left: 0.5rem;
+	position: relative;
+	right: 0%;
+	top: 0%;
+	margin-left: 0.5rem;
 }
 @keyframes notificacion {
-  from {
-    right: -30%;
-  }
-  to {
-    right: 3%;
-  }
+	from {
+		right: -30%;
+	}
+	to {
+		right: 3%;
+	}
 }
 
 .flex-container-buscar {
-  display: flex;
-  width: 100%;
-  height: 4em;
+	display: flex;
+	width: 100%;
+	height: 4em;
 }
 .buscar {
-  align-self: flex-end;
-  align-content: space-around;
+	align-self: flex-end;
+	align-content: space-around;
 }
 .filtering {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: flex-end;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	align-items: flex-end;
 }
 .clientes-table {
-  font-size: 0.9rem;
-  font-weight: 600;
+	font-size: 0.9rem;
+	font-weight: 600;
 }
 .rut-filter {
-  max-width: 6rem;
+	max-width: 6rem;
 }
 /* .box {
   min-height: 100vh;
 } */
 
 .buttons {
-  flex-wrap: nowrap;
+	flex-wrap: nowrap;
 }
 span.icon.is-clickable {
-  color: blue;
-  display: inline;
+	color: blue;
+	display: inline;
 }
 .modal-content {
-  width: 85%;
+	width: 85%;
 }
 .inventory-notification {
-  position: relative;
+	position: relative;
 }
 
 @keyframes rotate0-180 {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(180deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(180deg);
+	}
 }
 @keyframes rotate180-0 {
-  from {
-    transform: rotate(180deg);
-  }
-  to {
-    transform: rotate(0deg);
-  }
+	from {
+		transform: rotate(180deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
 }
 
 .rotate180 {
-  animation: rotate0-180 0.3s ease-in alternate;
+	animation: rotate0-180 0.3s ease-in alternate;
 }
 .rotate0 {
-  animation: rotate180-0 0.3s ease-in alternate;
+	animation: rotate180-0 0.3s ease-in alternate;
 }
 
 .has-background-info {
-  background-color: #69b1e151;
+	background-color: #69b1e151;
 }

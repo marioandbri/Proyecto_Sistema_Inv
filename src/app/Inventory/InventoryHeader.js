@@ -7,10 +7,12 @@ import { useDispatch, useInventory } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 import ProductCard from "./ProductCard";
 import { notificationTypes } from "../Notification";
+import { useAppState } from "../AppProvider";
 
 const InventoryHeader = ({ opType }) => {
 	const state = useInventory();
 	const dispatch = useDispatch();
+	const { userData } = useAppState();
 	useEffect(() => {
 		dispatch({ type: type.setOperationType, payload: opType });
 		return () => {
@@ -27,6 +29,7 @@ const InventoryHeader = ({ opType }) => {
 		fechaCompra: "",
 		fechaEvento: "",
 		nroGuia: "",
+		esVenta: false,
 	};
 	const [innerState, setInnerState] = useState(initalState);
 
@@ -88,6 +91,7 @@ const InventoryHeader = ({ opType }) => {
 			fechaCompra,
 			fechaEvento,
 			nroGuia,
+			esVenta,
 		} = innerState;
 		let header;
 		if (opType == "ingreso") {
@@ -105,6 +109,7 @@ const InventoryHeader = ({ opType }) => {
 				fechaEvento,
 				rutPoseedor: opType == "retiro" ? "78507660-5" : state.rutPoseedor,
 				nroGuia,
+				esVenta,
 			};
 		}
 		if (
@@ -309,6 +314,24 @@ const InventoryHeader = ({ opType }) => {
 										Buscar
 									</a>
 								</div>
+								{userData.accessInventarios[1] && opType === "entrega" && (
+									<div className=" ml-4 field">
+										<input
+											type="checkbox"
+											onChange={(e) => {
+												setInnerState({
+													...innerState,
+													esVenta: e.target.checked,
+												});
+											}}
+											onBlur={() => {
+												buildHeader();
+											}}
+											checked={innerState.esVenta}
+										/>
+										<span> Marcar si es una venta</span>
+									</div>
+								)}
 							</div>
 							<a
 								className="button is-info is-small"

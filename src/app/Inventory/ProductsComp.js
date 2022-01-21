@@ -32,7 +32,6 @@ const ProductsComp = () => {
 		"Repuesto",
 		"Por Reparar",
 		"Garantia",
-		"Vendido",
 	];
 
 	const handleChange = (e, i) => {
@@ -165,15 +164,15 @@ const ProductsComp = () => {
 					if (e.isValid) {
 						if (opType == "retiro" || opType == "entrega") {
 							products.push({
-								...state.productsHeader,
 								numeroSerie: e.numeroSerie,
 								estado: e.estado,
+								...state.productsHeader,
 							});
 						} else {
 							products.push({
-								...state.productsHeader,
 								numeroSerie: e.numeroSerie,
 								estado: "Operativo",
+								...state.productsHeader,
 							});
 						}
 					}

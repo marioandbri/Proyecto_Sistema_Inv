@@ -538,7 +538,7 @@ class JsonCliente extends Component {
 												/>
 											</div>
 										</th>
-										<th id="createdat">
+										{/* <th id="createdat">
 											<a
 												onClick={() => this.sortingClientes("createdat")}
 												className="has-text-black is-unselectable"
@@ -558,7 +558,7 @@ class JsonCliente extends Component {
 													onChange={(e) => this.handleChangeInput(e)}
 												/>
 											</div>
-										</th>
+										</th> */}
 										<th colSpan="2">
 											<div className="flex-container-buscar">
 												<button
