@@ -107,15 +107,23 @@ export async function updateInventarioMovimientos(req, res) {
 		});
 		return;
 	}
-	const result = await Inventario.updateMany(
-		{ numeroSerie: { $in: [...serialnumbers] } },
-		{
-			fechaEvento: fechaEvento,
-			rutPoseedor: rutPoseedor,
-			estado: estado,
-			nroGuia: nroGuia,
-		}
-	);
+	// const result = await Inventario.updateMany(
+	// 	{ numeroSerie: { $in: [...serialnumbers] } },
+	// 	{
+	// 		fechaEvento: fechaEvento,
+	// 		rutPoseedor: rutPoseedor,
+	// 		estado: estado,
+	// 		nroGuia: nroGuia,
+	// 	}
+	// );
+	let bulkWrite = [];
+	items.forEach((e) => {
+		bulkWrite.push({
+			updateOne: { filter: { numeroSerie: e.numeroSerie }, update: { ...e } },
+		});
+	});
+	const result = await Inventario.bulkWrite(bulkWrite);
+	console.log(result);
 	res.json({
 		message: "Registros actualizados correctamente",
 		data: result.nModified,
@@ -123,6 +131,10 @@ export async function updateInventarioMovimientos(req, res) {
 }
 
 export async function getInventarioBySerialNumber(req, res) {
-	const inventario = await Inventario.findOne({ numeroSerie: req.params.sn });
+	const inventario = await Inventario.findOne({
+		numeroSerie: req.params.sn,
+	})
+		.populate("poseedor", "razon_social")
+		.populate("producto", "modelo");
 	res.json(inventario);
 }

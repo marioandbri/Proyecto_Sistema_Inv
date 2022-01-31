@@ -29,8 +29,8 @@ const ProductsComp = () => {
 	const estados = [
 		"Operativo",
 		"Con Detalles",
-		"Repuesto",
 		"Por Reparar",
+		"Repuesto",
 		"Garantia",
 	];
 
@@ -308,8 +308,8 @@ const ProductsComp = () => {
 											let itemStatus = [...productfield];
 											if (found) {
 												itemStatus[index].itemStatus = [
-													found?.rutPoseedor,
-													found?.productPN,
+													found?.poseedor,
+													found?.producto,
 													found?.estado,
 												];
 												itemStatus[index].estado = found?.estado;
@@ -417,16 +417,18 @@ const ProductsComp = () => {
 														<span
 															key={i}
 															className={
-																e != state.rutPoseedor
+																e.rut != state.rutPoseedor
 																	? "tag is-warning"
 																	: "tag is-link"
 															}
 														>
-															{e != state.rutPoseedor
-																? "🛑 " +
-																  e +
-																  " - No coincide con cliente indicado"
-																: e}
+															<abbr title={e.rut}>
+																{e.rut != state.rutPoseedor
+																	? "🛑 " +
+																	  e.razon_social +
+																	  " - No coincide con cliente indicado"
+																	: e.razon_social}
+															</abbr>
 														</span>
 													);
 												} else if (
@@ -438,20 +440,28 @@ const ProductsComp = () => {
 														<span
 															key={i}
 															className={
-																e != "78507660-5"
+																e.rut != "78507660-5"
 																	? "tag is-warning"
 																	: "tag is-link"
 															}
 														>
-															{e != "78507660-5"
-																? "🛑 " +
-																  e +
-																  " - El equipo no se encuentra en Arrienda"
-																: e}
+															<abbr title={e.rut}>
+																{e.rut != "78507660-5"
+																	? "🛑 " +
+																	  e.razon_social +
+																	  " - El equipo no se encuentra en Arrienda"
+																	: e.razon_social}
+															</abbr>
 														</span>
 													);
 												}
-												if (e) {
+												if (e?.partnumber) {
+													return (
+														<span key={i} className="tag is-link">
+															<abbr title={e.partnumber}>{e.modelo}</abbr>
+														</span>
+													);
+												} else if (estados.includes(e)) {
 													return (
 														<span key={i} className="tag is-link">
 															{e}

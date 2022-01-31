@@ -1,45 +1,27 @@
-const mongoose = require('mongoose');
-const { Schema, model } = mongoose;
-const EquipoSchema = require('./equipo');
-const ImpresoraSchema = require('./impresora');
+import { Schema, model } from "mongoose";
+import Usuarios from "./Usuario";
+const ValidaSchema = new Schema({
+	cliente: {
+		type: String,
+		// TODO completar
+	},
+	pedido: [
+		{
+			numeroSerie: String,
+			detalle: {},
+		},
+	],
+	fechaMovimiento: {
+		type: Date,
+	},
+	fechaCreacion: {
+		type: Date,
+		default: Date.now,
+	},
+	tecnico: {
+		type: Schema.Types.ObjectId,
+		ref: Usuarios,
+	},
+});
 
-const OTSchema = new Schema({
-
-   cliente: {
-      type: String
-      // TODO completar 
-   },
-   pedido: [
-      {
-         partnumber: {
-            type: String
-         },
-         cantidad: {
-            type: Number,
-            default: 1
-         },
-         mem_total: {
-            type: String
-         },
-         capacidad_alm: {
-            type: String
-         },
-         consumibles: {
-            type: String
-         }
-      }
-   ],
-   fechaEntrega: {
-      type: Date
-   },
-   fechaCreacion: {
-      type: Date,
-      default: Date.now
-   },
-   tecnico: {
-      type: String
-   }
-})
-
-
-module.exports = model('OT', OTSchema);
+module.exports = model("Valida", ValidaSchema);

@@ -141,3 +141,7 @@ span.icon.is-clickable {
 .has-background-info {
 	background-color: #69b1e151;
 }
+
+abbr {
+	cursor: help;
+}
