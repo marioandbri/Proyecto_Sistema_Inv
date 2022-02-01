@@ -1,10 +1,22 @@
 FROM node:lts
 
+WORKDIR /app
+
 COPY . .
 
-RUN "npm install"
+RUN npm install
+
 
 ENV PORT=4000
+ENV NODE_ENV=development
+ENV SESSION_SECRET=nosecret
+ENV ADMIN_KEY=TESTING
+ENV MONGODB_HOST=mongodb 
+ENV MONGODB_DATABASE=proyectoInv 
+ENV MONGODB_USERNAME=developer 
+ENV MONGODB_PASSWORD=developer
+
+
 
 EXPOSE 4000
 
