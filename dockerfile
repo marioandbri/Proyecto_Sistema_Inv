@@ -6,7 +6,6 @@ COPY . .
 
 RUN npm install
 
-ENV PORT=4000
 ENV NODE_ENV=development
 ENV SESSION_SECRET=nosecret
 ENV ADMIN_KEY=TESTING
