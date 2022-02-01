@@ -1,0 +1,16 @@
+version: '1.0'
+services:
+    app:
+      image: marioandbri/sistemainv:1.0
+      ports:
+        - "4000:4000"
+      environment:
+        MONGODB_HOST: mongodb 
+        MONGODB_DATABASE: proyectoInv 
+        MONGODB_USERNAME: developer 
+        MONGODB_PASSWORD: developer
+    mongodb:
+      image: mongo:latest
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: developer
+        MONGO_INITDB_ROOT_PASSWORD: developer
