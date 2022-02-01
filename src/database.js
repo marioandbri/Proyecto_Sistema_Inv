@@ -6,7 +6,7 @@ const {
 	MONGODB_USERNAME,
 	MONGODB_PASSWORD,
 } = process.env;
-export const MONGODB_URL = `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}`;
+export const MONGODB_URL = `mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}`;
 
 mongo
 	.connect(MONGODB_URL, {
