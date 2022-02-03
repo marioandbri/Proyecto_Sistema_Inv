@@ -1,18 +1,20 @@
 import { Router } from "express";
 import {
-  createProducto,
-  deleteProducto,
-  getAllProducts,
-  getFamilyList,
-  getProductoById,
-  getProductoByQuery,
-  getProductPN,
-  updateProducto,
+	createBulkProducto,
+	createProducto,
+	deleteProducto,
+	getAllProducts,
+	getFamilyList,
+	getProductoById,
+	getProductoByQuery,
+	getProductPN,
+	updateProducto,
 } from "../controllers/productos.controller";
 const router = Router();
 
 // Create
 router.post("/producto/", createProducto);
+router.post("/producto/bulk", createBulkProducto);
 
 //Read
 //Get by Partnumber

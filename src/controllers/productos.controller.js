@@ -99,3 +99,19 @@ export async function deleteProducto(req, res) {
 	await Productos.deleteOne({ _id: id });
 	res.json({ status: "OK", message: `Document [${id}] deleted` });
 }
+
+export async function createBulkProducto(req, res) {
+	const products = req.body;
+	if (products.length < 1) {
+		res.json({ message: "No se recibio ningún dato para ingresar" });
+		return;
+	}
+	const result = Productos.insertMany(products, (err, resolve) => {
+		if (err) {
+			console.error(err);
+			return res.json({ status: "fail", data: err });
+		}
+		return res.json({ status: "ok", data: result });
+	});
+	return;
+}

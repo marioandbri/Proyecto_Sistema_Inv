@@ -13,12 +13,14 @@ const ItemVisualizerModal = ({ data, closeModal }) => {
 						<div className="title has-text-black">Detalle de Item</div>
 						<div className="table-container">
 							<table>
-								{data.map(([index, value]) => (
-									<tr>
-										<th>{index}</th>
-										<td>{value}</td>
-									</tr>
-								))}
+								<tbody>
+									{data.map(([index, value]) => (
+										<tr key={index}>
+											<th>{index}</th>
+											<td>{value}</td>
+										</tr>
+									))}
+								</tbody>
 							</table>
 						</div>
 					</div>

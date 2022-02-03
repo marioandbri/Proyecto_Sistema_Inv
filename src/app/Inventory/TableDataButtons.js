@@ -31,7 +31,7 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
 	const { numeroSerie } = row.original || false;
 	const lookupData = (data) => {
 		const flatData = flattenData(data);
-		return Object.entries(flatData).filter(
+		let resultData = Object.entries(flatData).filter(
 			([key, value]) =>
 				!(
 					key.includes("id") ||
@@ -41,6 +41,7 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
 					key.includes("_v")
 				)
 		);
+		return resultData.map(([key, value]) => [key.toUpperCase(), value]);
 	};
 	const toggleItemModal = (data) => {
 		setIsLooking(true);

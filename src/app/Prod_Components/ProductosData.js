@@ -39,7 +39,7 @@ const ProductosData = ({
 	useEffect(() => {
 		cargarHeaders();
 		cargarData();
-		console.log("data changed");
+		// console.log("data changed");
 
 		return () => {};
 	}, [headers, data]);
@@ -55,8 +55,8 @@ const ProductosData = ({
 	const [items, setItems] = useState(data);
 	// console.log(items, 'items')
 	useEffect(() => {
-		console.log(data, items);
-		console.log("items changed");
+		// console.log(data, items);
+		// console.log("items changed");
 		return () => {};
 	}, [items]);
 

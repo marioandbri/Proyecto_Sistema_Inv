@@ -25,17 +25,27 @@ const InventoryTableData = () => {
 	const [inventoryData, setInventoryData] = useState([]);
 	const [skipPageReset, setSkipPageReset] = React.useState(false);
 	const { accessInventarios } = useAppState().userData;
+	const abortController = new AbortController();
+	const abortSignal = abortController.signal;
 	useEffect(() => {
 		fetchData();
-		return () => {};
+		return () => {
+			abortController.abort();
+		};
 	}, []);
 
 	const fetchData = async () => {
 		setLoading(true);
-		const result = await fetch("/inventario");
-		const resData = await result.json();
-		setLoading(false);
-		setInventoryData(resData);
+		const result = await fetch("/inventario", {
+			signal: abortSignal,
+		}).catch(({ message }) => {
+			console.log(message);
+		});
+		if (result) {
+			const resData = await result.json();
+			setLoading(false);
+			setInventoryData(resData);
+		}
 	};
 	const inventoryRef = useRef([]);
 
@@ -58,7 +68,7 @@ const InventoryTableData = () => {
 		}
 		// console.log(stringDatetime, "////String de fecha con Problema ////");
 		const date = new Date(stringDatetime);
-		console.log(date, "////fecha con problema////");
+		// console.log(date, "////fecha con problema////");
 		const formatedDate = new Intl.DateTimeFormat("es-CL", {
 			year: "numeric",
 			month: "2-digit",
@@ -82,9 +92,14 @@ const InventoryTableData = () => {
 				aggregate: "count",
 				Aggregated: ({ value }) => `${value} elementos`,
 			},
-
 			{
-				Header: "Part Number",
+				Header: "Tipo Producto",
+				accessor: "producto.tipoProducto",
+				aggregate: "uniqueCount",
+				Aggregated: ({ value }) => `${value} tipo de productos`,
+			},
+			{
+				Header: "Part N°",
 
 				accessor: "productPN",
 

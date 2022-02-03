@@ -90,7 +90,7 @@ export async function updateInventarioMovimientos(req, res) {
 	}
 	const serialnumbers = items.map((e) => e.numeroSerie);
 	const { fechaEvento, rutPoseedor, estado, nroGuia } = items[0];
-	console.log(items.every((e) => e.esVenta === true));
+	// console.log(items.every((e) => e.esVenta === true));
 	if (items.every((e) => e.esVenta === true)) {
 		const result = await Inventario.updateMany(
 			{ numeroSerie: { $in: [...serialnumbers] } },

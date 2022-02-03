@@ -7,9 +7,14 @@
 		"start": "node src/index.js",
 		"dev": "nodemon src/index.js",
 		"serve": "webpack serve --mode development",
-		"webpack": "webpack --mode development --watch",
+		"build-dev": "webpack --mode development --watch",
 		"build": "webpack --mode production",
 		"ddbb": "mongod"
+	},
+	"nodemonConfig": {
+		"ignore": [
+			"app/*"
+		]
 	},
 	"repository": {
 		"type": "git",
