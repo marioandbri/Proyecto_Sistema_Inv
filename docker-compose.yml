@@ -1,7 +1,7 @@
 version: '1.0'
 services:
     app:
-      image: marioandbri/sistemainv:1.0
+      image: marioandbri/sistemainv:1.1
       ports:
         - "4000:4000"
       environment:
