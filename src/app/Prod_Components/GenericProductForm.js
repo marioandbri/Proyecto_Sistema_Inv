@@ -96,7 +96,16 @@ const GenericProductForm = ({
 				onSubmit={(e) => {
 					e.preventDefault();
 					// console.log(product);
-					isAnUpdate ? handleUpdate(product) : handleCreationForm(product);
+					// console.log({
+					// 	...product,
+					// 	shortDescription: product.shortDescriptionTags,
+					// });
+					isAnUpdate
+						? handleUpdate({
+								...product,
+								shortDescription: product.shortDescriptionTags,
+						  })
+						: handleCreationForm(product);
 				}}
 				className="form"
 			>
@@ -169,9 +178,22 @@ const GenericProductForm = ({
 						<label className="label">Descripcion Corta</label>
 						<span className="control">
 							<input
-								value={product.shortDescription}
+								value={
+									!isAnEye && isAnUpdate
+										? product.shortDescriptionTags
+										: product.shortDescription
+								}
 								onChange={(e) => {
-									setProduct({ ...product, shortDescription: e.target.value });
+									if (!isAnEye && isAnUpdate) {
+										setProduct({
+											...product,
+											shortDescriptionTags: e.target.value,
+										});
+									} else
+										setProduct({
+											...product,
+											shortDescription: e.target.value,
+										});
 								}}
 								name="shortDescription"
 								type="text"

@@ -25,9 +25,6 @@ const initialState = {
 	prevItems: [],
 };
 
-const abortController = new AbortController();
-const abortSignal = abortController.signal;
-
 class ProductosUI extends Component {
 	constructor(props) {
 		super(props);
@@ -37,16 +34,10 @@ class ProductosUI extends Component {
 		this.state = initialState;
 	}
 
-	componentWillUnmount() {
-		abortController.abort();
-	}
-
 	fetchData = async (productType) => {
 		// this.setState({ loading: true })
 
-		await fetch(`/producto/${productType}`, {
-			signal: abortSignal,
-		})
+		await fetch(`/producto/${productType}`)
 			.catch(({ message }) => {
 				console.log(message);
 				return;
@@ -342,7 +333,7 @@ class ProductosUI extends Component {
 							document.getElementById("dropdown").classList.remove("is-active");
 						}
 					}}
-					className="container is-fluid"
+					className="box "
 				>
 					<div className="box">
 						<h1 className="title"> Productos</h1>

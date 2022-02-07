@@ -1,3 +1,4 @@
+import { Document, Mongoose } from "mongoose";
 import Productos from "../model/productos";
 
 export async function getProductoById(req, res) {
@@ -82,16 +83,26 @@ export async function createProducto(req, res) {
 
 export async function updateProducto(req, res) {
 	const id = req.params.id;
-	////console.log(id);
+	const body = req.body;
+	const product = await Productos.findOne({ _id: id });
+	// console.log(product.toObject());
+	for (let key in body) {
+		product[key] = body[key];
+	}
+	const result = await product.save();
+
+	// product.shortDescription = body.shortDescription;
+	// const result = await product.save();
 	////console.log(req.body);
-	const result = await Productos.updateOne({ _id: id }, req.body).catch(
-		(err) => {
-			console.error(err);
-			res.status(400).json(err);
-		}
-	);
-	////console.log(result);
-	res.json(result);
+	// const result = await Productos.updateOne({ _id: id }, req.body).catch(
+	// 	(err) => {
+	// 		console.error(err);
+	// 		res.status(400).json(err);
+	// 	}
+	// );
+
+	console.log(result);
+	res.json("");
 }
 
 export async function deleteProducto(req, res) {

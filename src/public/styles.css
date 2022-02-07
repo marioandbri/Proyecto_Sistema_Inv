@@ -145,3 +145,23 @@ span.icon.is-clickable {
 abbr {
 	cursor: help;
 }
+
+@media screen and (max-width: 480px) {
+	#dropdown {
+		max-width: 80vw;
+	}
+	[aria-controls="dropdown-menu"] {
+		font-size: 0.7rem;
+	}
+}
+a.has-text-black.is-unselectable {
+	position: relative;
+	display: inline-block;
+}
+a.has-text-black.is-unselectable > span {
+	position: absolute;
+}
+
+.field {
+	max-width: 75vw;
+}

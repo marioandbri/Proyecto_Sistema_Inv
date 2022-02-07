@@ -52,7 +52,17 @@ const Navbar = () => {
 						</a>
 					</div>
 					<div className="navbar-menu title is-6" id="navMenu">
-						<div className="navbar-start">
+						<div
+							className="navbar-start"
+							onClick={() => {
+								document
+									.getElementById("navMenu")
+									.classList.remove("is-active");
+								document
+									.getElementById("navbar-burger")
+									.classList.remove("is-active");
+							}}
+						>
 							<Link className="navbar-item nv-links" to="/">
 								🏠 Inicio
 							</Link>
