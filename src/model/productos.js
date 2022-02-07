@@ -1,4 +1,5 @@
 import { Schema, model, SchemaTypes } from "mongoose";
+import { flattenData } from "../helpers/flattenData";
 
 const ProductosSchema = new Schema({
 	tipoProducto: {
@@ -21,9 +22,25 @@ const ProductosSchema = new Schema({
 	detalle: { _id: false, type: {} },
 	shortDescription: {
 		type: String,
-		get: function (v) {
-			let description = `${this.marca} ${this.modelo} ${v}`;
-			return description.trim();
+
+		set: function (v) {
+			if (v) {
+				const fields = v.match(/\w+\.\w+|[A-z\s]+/g); //input:{marca},{modelo} => output:[marca, {modelo}]
+				let description = "";
+				const docKeys = Object.keys(flattenData(this.toObject()));
+				// console.log(docKeys);
+				console.log(fields);
+				for (let field of fields) {
+					if (docKeys.includes(field)) {
+						description += flattenData(this.toObject())[field] + " ";
+					} else {
+						description += field + " ";
+					} // [tipoProducto, marca, ...]
+				}
+				// let description = `${this.marca} ${this.modelo} ${v}`;
+				return description.trim();
+			}
+			return v;
 		},
 	},
 	extraDescription: {
@@ -37,6 +54,9 @@ const ProductosSchema = new Schema({
 			description += v;
 			return `${description}`;
 		},
+	},
+	shortDescriptionTags: {
+		type: String,
 	},
 });
 
