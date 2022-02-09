@@ -2,19 +2,7 @@ const onlyDate = (stringDatetime) => {
 	if (!stringDatetime) {
 		return null;
 	}
-	// console.log(stringDatetime, "////String de fecha con Problema ////");
-	const date = new Date(stringDatetime);
-	// console.log(date, "////fecha con problema////");
-	const formatedDate = new Intl.DateTimeFormat("es-CL", {
-		year: "numeric",
-		month: "2-digit",
-		day: "2-digit",
-	}).format(date);
-	const result = [];
-	formatedDate.split("-").forEach((e) => {
-		result.unshift(e);
-	});
-	return result.join("-");
+	return stringDatetime.substring(0, stringDatetime.indexOf("T"));
 };
 
 export const columns = [
