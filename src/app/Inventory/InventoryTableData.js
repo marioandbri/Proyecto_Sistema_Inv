@@ -136,7 +136,8 @@ const InventoryTableData = ({ advanced = false }) => {
 		setPageSize,
 		pageSize,
 	};
-	const PaginationComponent = UseRTPagination(paginationProps);
+	const PaginationComponent = (paginationProps) =>
+		UseRTPagination(paginationProps);
 	/**
 	 * nextPage => next page function ()
 	 * previousPage => previous page function ()
@@ -309,7 +310,9 @@ const InventoryTableData = ({ advanced = false }) => {
 					</table>
 				</div>
 
-				<div>{PaginationComponent}</div>
+				<div>
+					<PaginationComponent {...paginationProps} />
+				</div>
 			</>
 		);
 	} else {
