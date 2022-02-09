@@ -4,7 +4,7 @@ import { useDispatch } from "./InventoryProvider";
 import { type } from "./InventoryReducer";
 import PropTypes from "prop-types";
 import { useAppState } from "../AppProvider";
-import { flattenData } from "../../helpers/flattenData";
+import { lookupData } from "../../helpers/flattenData";
 import ItemVisualizerModal from "./ItemVisualizerModal";
 
 const TableDataButtons = ({ row, reloadData, editRow }) => {
@@ -29,20 +29,7 @@ const TableDataButtons = ({ row, reloadData, editRow }) => {
 		reloadData();
 	};
 	const { numeroSerie } = row.original || false;
-	const lookupData = (data) => {
-		const flatData = flattenData(data);
-		let resultData = Object.entries(flatData).filter(
-			([key, value]) =>
-				!(
-					key.includes("id") ||
-					key.includes("rutProveedor") ||
-					key.includes("rutPoseedor") ||
-					key.includes("productPN") ||
-					key.includes("_v")
-				)
-		);
-		return resultData.map(([key, value]) => [key.toUpperCase(), value]);
-	};
+
 	const toggleItemModal = (data) => {
 		setIsLooking(true);
 		setModalData(data);

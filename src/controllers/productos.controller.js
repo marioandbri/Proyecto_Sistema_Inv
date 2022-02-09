@@ -5,8 +5,8 @@ export async function getProductoById(req, res) {
 	const id = req.params.id;
 	// const productType = req.params.productType;
 	const result = await Productos.findById(id);
-	////console.log(result);
-	res.json(result);
+	console.log(result.toObject({ getters: false }));
+	res.json(result.toObject({ getters: false }));
 }
 
 export async function getAllProducts(req, res) {
