@@ -25,10 +25,10 @@ const ProductosSchema = new Schema({
 
 		set: function (v) {
 			if (v) {
-				const fields = v.match(/\w+\.\w+|[A-z\s]+/g); //input:{marca},{modelo} => output:[marca, {modelo}]
+				const fields = v.match(/detalle\.[\wñÑ\s]+|\w+\.\w+|[A-z\s]+/g); //input:{marca},{modelo} => output:[marca, {modelo}]
 				let description = "";
 				const docKeys = Object.keys(flattenData(this.toObject()));
-				// console.log(docKeys);
+				console.log(docKeys);
 				console.log(fields);
 				for (let field of fields) {
 					if (docKeys.includes(field)) {

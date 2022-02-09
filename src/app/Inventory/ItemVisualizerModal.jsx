@@ -8,15 +8,19 @@ const ItemVisualizerModal = ({ data, closeModal }) => {
 		<>
 			<div className="modal is-active">
 				<div className="modal-background"></div>
-				<div className="modal-content">
+				<div style={{ maxWidth: "fit-content" }} className="modal-content">
 					<div className="box">
 						<div className="title has-text-black">Detalle de Item</div>
 						<div className="table-container">
-							<table>
+							<table className="table is-striped is-narrow">
 								<tbody>
 									{data.map(([index, value]) => (
-										<tr key={index}>
-											<th>{index}</th>
+										<tr className="is-size-6" key={index}>
+											<th>
+												{index.includes("DETALLE.")
+													? index.replace("DETALLE.", "")
+													: index}
+											</th>
 											<td>{value}</td>
 										</tr>
 									))}

@@ -315,16 +315,7 @@ class ProductosUI extends Component {
 				{this.state.isAnEye && (
 					<ProductModal
 						closeModal={this.closeModal}
-						productOption={this.state.productOption}
-						handleSelection={this.handleSelection}
-						handleCreationForm={this.handleCreationForm}
-						isAnEye={this.state.isAnEye}
-						isAnUpdate={this.state.isAnUpdate}
 						productUpdate={this.state.productUpdate}
-						handleUpdate={this.handleUpdate}
-						loadOptions={this.loadOptions}
-						options={this.state.optionsList}
-						loading={this.state.loading}
 					/>
 				)}
 				<div
