@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 // const HtmlWebpackPlugin = require('html-webpack-plugin')
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
 	entry: path.join(__dirname, "/src/app/index.js"),
@@ -29,7 +28,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.m?js$/,
+				test: /\.m?jsx?$/,
 				exclude: [
 					/node_modules/,
 					/\.dpr\.js$/,
@@ -40,11 +39,6 @@ module.exports = {
 					/routes/,
 					/public/,
 				],
-				use: ["babel-loader"],
-			},
-			{
-				test: /\.m?jsx$/,
-				exclude: [/node_modules/],
 				use: ["babel-loader"],
 			},
 			{
@@ -61,10 +55,7 @@ module.exports = {
 			},
 		],
 	},
-	plugins: [
-		new NodePolyfillPlugin(),
-		new webpack.HotModuleReplacementPlugin({ multistep: true }),
-	],
+	// plugins: [new webpack.HotModuleReplacementPlugin({ multistep: true })],
 	resolve: {
 		fallback: {
 			util: require.resolve("util/"),
