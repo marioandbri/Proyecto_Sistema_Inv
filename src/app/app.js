@@ -19,6 +19,7 @@ import youshallnotpass from "../../you-shall-not-pass.gif";
 import UsersMgmt from "./UsersMgmtComponents";
 // import { useUserData } from "./useUserData"
 import ProductTypeMgmt from "./ProductTypeMgmt";
+import Movimientos from "./Movimientos";
 
 const App = () => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -124,6 +125,9 @@ const App = () => {
 					</Route>
 					<Route path="/registro">
 						{state.userData ? <Redirect to="/" /> : <SignupComponent />}
+					</Route>
+					<Route path="/movimientos">
+						<Movimientos />
 					</Route>
 					<Route path="/admin/ptype-mgmt">
 						<ProductTypeMgmt />

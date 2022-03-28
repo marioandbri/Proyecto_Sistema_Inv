@@ -60,26 +60,12 @@ const ProductosSchema = new Schema({
 	},
 });
 
-// ProductosSchema.virtual("DescriptionS").get(function () {
-// 	let description = `${this.tipoProducto}`;
-
-// 	for (let [key, value] of Object.entries(this?.detalle)) {
-// 		description += `, ${key}: ${value}`;
-// 	}
-// 	description += this.shortDescription ? `, ${this.shortDescription}` : ".";
-
-// 	return description;
-// });
-// ProductosSchema.virtual("DescriptionL").get(function () {
-// 	let description = `${this.tipoProducto}: ${this.familia} ${this.marca} ${this.modelo}`;
-
-// 	for (let [key, value] of Object.entries(this.detalle)) {
-// 		description += `, ${key}: ${value}`;
-// 	}
-// 	description += this.extraDescription ? `, ${this.extraDescription}` : ".";
-
-// 	return description;
-// });
+ProductosSchema.virtual("estructura", {
+	ref: "TipoProducto",
+	localField: "tipoProducto",
+	foreignField: "option",
+	justOne: true,
+});
 
 ProductosSchema.methods.headersOf = function () {
 	let headers = ["PartNumber", "Familia", "Marca", "Modelo"];

@@ -38,6 +38,7 @@ app.use(require("./routes/tipoproducto.routes.js"));
 // app.use(require("./routes/impresora.routes.js"));
 // app.use(require("./routes/computador.routes.js"));
 // app.use(require("./routes/monitor.routes.js"));
+app.use(require("./routes/movimientos.routes.js"));
 app.use(require("./routes/productos.routes.js"));
 app.use(require("./routes/inventario.mdb.routes.js"));
 app.use(require("./routes/uac.routes.js"));

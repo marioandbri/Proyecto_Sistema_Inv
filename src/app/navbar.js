@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import DropdownComponent from "./DropdownComponent";
 import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppState } from "./AppProvider";
 import PropTypes from "prop-types";
@@ -178,21 +179,27 @@ const MenuItems = () => {
 
 	return (
 		<>
-			{(userData.isAdmin || userData.accessEmpresas[0]) && (
-				<Link className="navbar-item nv-links" to="/clientes">
-					🏭 Gestion de Empresas
+			<DropdownComponent>
+				{(userData.isAdmin || userData.accessEmpresas[0]) && (
+					<Link className="navbar-item nv-links" to="/clientes">
+						🏭 Gestion de Empresas
+					</Link>
+				)}
+				{(userData.isAdmin || userData.accessProductos[0]) && (
+					<Link className="navbar-item nv-links" to="/productos">
+						💻 Gestion de Productos
+					</Link>
+				)}
+				{(userData.isAdmin || userData.accessInventarios[0]) && (
+					<Link className="navbar-item nv-links" to="/inventarios">
+						🧾 Gestion de Inventario
+					</Link>
+				)}
+
+				<Link className="navbar-item nv-links" to="/movimientos">
+					🔃 Gestion de Movimientos
 				</Link>
-			)}
-			{(userData.isAdmin || userData.accessProductos[0]) && (
-				<Link className="navbar-item nv-links" to="/productos">
-					💻 Gestion de Productos
-				</Link>
-			)}
-			{(userData.isAdmin || userData.accessInventarios[0]) && (
-				<Link className="navbar-item nv-links" to="/inventarios">
-					🧾 Gestion de Inventario
-				</Link>
-			)}
+			</DropdownComponent>
 		</>
 	);
 };

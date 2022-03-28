@@ -1,39 +1,40 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Filter = ({ query, setQuery }) => {
-  //   useEffect(() => {
-  //     handleFilter();
-  //     return () => {};
-  //   }, [query]);
-  return (
-    <>
-      {/* <div className="box mb-1">
+const Filter = ({ query, setQuery, aditionalClassname, style }) => {
+	//   useEffect(() => {
+	//     handleFilter();
+	//     return () => {};
+	//   }, [query]);
+	return (
+		<React.Fragment>
+			{/* <div className="box mb-1">
         <div className="level-left">
         </div>
       </div> */}
-      <span className="control has-icons-right">
-        <input
-          value={query}
-          type="text"
-          className="input"
-          placeholder="Buscar..."
-          onChange={(e) => {
-            // handleQuery(e);
-            setQuery(e.target.value);
-          }}
-        />
-        <span className="icon is-right">
-          <i className="fas fa-search"></i>
-        </span>
-      </span>
-    </>
-  );
+			<span style={style} className="control has-icons-right">
+				<input
+					style={style}
+					value={query}
+					type="text"
+					className={"input " + aditionalClassname}
+					placeholder="Buscar..."
+					onChange={(e) => {
+						// handleQuery(e);
+						setQuery(e.target.value);
+					}}
+				/>
+				<span className="icon is-right">
+					<i className="fas fa-search"></i>
+				</span>
+			</span>
+		</React.Fragment>
+	);
 };
 
 Filter.propTypes = {
-  query: PropTypes.string,
-  setQuery: PropTypes.func,
+	query: PropTypes.string,
+	setQuery: PropTypes.func,
 };
 
 export default Filter;
