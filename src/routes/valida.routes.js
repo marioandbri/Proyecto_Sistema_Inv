@@ -5,4 +5,5 @@ router.get('/valida', (req, res) =>{
    res.send('Ruta para Valida');
 });
 
-module.exports = router;
+export default router;
+// module.exports = router;

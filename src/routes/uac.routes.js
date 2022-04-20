@@ -13,4 +13,5 @@ router.get('/uac/mgmt', usersList)
 router.delete('/uac/mgmt/:id', deleteUser)
 router.put('/uac/mgmt/pass/:id', updatePassword)
 
-module.exports = router
+export default router;
+// module.exports = router

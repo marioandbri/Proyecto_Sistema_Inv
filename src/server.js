@@ -6,7 +6,7 @@ import "regenerator-runtime/runtime";
 const compression = require("compression");
 import { sessionMiddleware } from "./session";
 import passport from "passport";
-import AunthPassport from "./config/passport";
+import AuthPassport from "./config/passport";
 import cookieParser from "cookie-parser";
 // const bodyParser = require('body-parser')
 
@@ -22,7 +22,7 @@ app.use(sessionMiddleware);
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(passport.initialize());
 app.use(passport.session());
-AunthPassport(passport);
+AuthPassport(passport);
 
 // app.use((req, res, next) => {
 //   console.log(req.session)
@@ -30,19 +30,19 @@ AunthPassport(passport);
 //   next()
 // })
 //Globals
-
-app.use(require("./routes/ot.routes.js"));
-// app.use(require("./routes/cliente.routes.js"));
-app.use(require("./routes/valida.routes.js"));
-app.use(require("./routes/tipoproducto.routes.js"));
-// app.use(require("./routes/impresora.routes.js"));
-// app.use(require("./routes/computador.routes.js"));
-// app.use(require("./routes/monitor.routes.js"));
-app.use(require("./routes/movimientos.routes.js"));
-app.use(require("./routes/productos.routes.js"));
-app.use(require("./routes/inventario.mdb.routes.js"));
-app.use(require("./routes/uac.routes.js"));
-app.use(require("./routes/empresa.routes.js"));
+const routes = [
+	require("./routes/ot.routes.js"),
+	require("./routes/valida.routes.js"),
+	require("./routes/tipoproducto.routes.js"),
+	require("./routes/movimientos.routes.js"),
+	require("./routes/productos.routes.js"),
+	require("./routes/inventario.mdb.routes.js"),
+	require("./routes/uac.routes.js"),
+	require("./routes/empresa.routes.js"),
+];
+routes.forEach((e) => {
+	app.use(e.default);
+});
 
 //Static Files
 app.use(express.static(path.join(__dirname, "public")));

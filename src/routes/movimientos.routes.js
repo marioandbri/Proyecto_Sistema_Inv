@@ -12,4 +12,5 @@ router.get("/mov", getMovimientos);
 router.get("/mov/:serialNumber", getHistory);
 router.get("/mov/detalle/:id", getMovimientoByID);
 
-module.exports = router;
+export default router;
+// module.exports = router;

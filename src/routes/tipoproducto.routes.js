@@ -27,4 +27,5 @@ router.put("/producto/types/:id", updateProducto);
 //Delete
 router.delete("/producto/types/:id", deleteProducto);
 
-module.exports = router;
+export default router;
+// module.exports = router;

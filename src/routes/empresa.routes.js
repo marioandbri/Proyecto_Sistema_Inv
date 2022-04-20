@@ -21,4 +21,5 @@ router.put("/empresa/:rut", updateEmpresa);
 //Delete
 router.delete("/empresa/:rut", deleteEmpresa);
 
-module.exports = router;
+export default router;
+// module.exports = router;

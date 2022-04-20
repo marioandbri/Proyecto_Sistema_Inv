@@ -26,5 +26,6 @@ router.put('/ot/:id', updateOt);
 //Delete
 router.delete('/ot/:id', deleteOt);
 
-module.exports = router;
-// export default router;
+// module.exports = router;
+export default router;
+// 

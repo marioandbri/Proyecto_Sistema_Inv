@@ -31,4 +31,5 @@ router.put("/inventario/:sn", updateInventario);
 //Delete
 router.delete("/inventario/:sn", deleteInventario);
 
-module.exports = router;
+export default router;
+// module.exports = router;

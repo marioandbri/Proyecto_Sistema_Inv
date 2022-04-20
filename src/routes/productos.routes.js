@@ -34,4 +34,5 @@ router.put("/producto/:productType/:id", updateProducto);
 //Delete
 router.delete("/producto/:productType/:id", deleteProducto);
 
-module.exports = router;
+export default router;
+// module.exports = router;

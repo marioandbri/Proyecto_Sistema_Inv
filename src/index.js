@@ -1,5 +1,6 @@
 require("dotenv").config();
 require("@babel/register")({});
+
 const app = require("./server").default;
 require("./database");
 require("./session");

@@ -6,8 +6,8 @@ const { SESSION_SECRET } = process.env
 const sessionStore = MongoStore.create({
   mongoUrl: MONGODB_URL,
   mongoOptions: {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
+    // useUnifiedTopology: true,
+    // useNewUrlParser: true,
     authSource: "admin",
   },
   collectionName: "sessions",
