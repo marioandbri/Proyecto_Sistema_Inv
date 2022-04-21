@@ -77,4 +77,4 @@ MovimientoSchema.virtual("pedido.equipo", {
 MovimientoSchema.set("toJSON", { virtuals: true });
 MovimientoSchema.set("toObject", { virtuals: true });
 
-module.exports = model("Movimiento", MovimientoSchema);
+export default model("Movimiento", MovimientoSchema);

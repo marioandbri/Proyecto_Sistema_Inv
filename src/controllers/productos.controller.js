@@ -1,14 +1,35 @@
-import { Document, Mongoose } from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 import Productos from "../model/productos";
+
+/**
+ * @typedef {import("../types").ExpressRouterRequest} RouteRequest
+ * @typedef {import("../types").ExpressRouterFunction} RouterFunction
+ * @typedef {import("../types").ProductoModel} Producto
+ * @typedef {import("mongoose").ToObjectOptions} ToObjectOptions
+ */
+
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 
 export async function getProductoById(req, res) {
 	const id = req.params.id;
 	// const productType = req.params.productType;
+	/**
+	 * @type {Producto & {toObject: (options?:mongoose.ToObjectOptions)=>Producto}}
+	 */
 	const result = await Productos.findById(id);
-	console.log(result.toObject({ getters: false }));
+	// console.log(result.toObject({ getters: false }));
 	res.json(result.toObject({ getters: false }));
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function getAllProducts(req, res) {
 	const result = await Productos.find({});
 	// res.json({
@@ -21,6 +42,11 @@ export async function getAllProducts(req, res) {
 	// });
 	res.json(result);
 }
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function getProductPN(req, res) {
 	const result = await Productos.findOne({ partnumber: req.params.pn });
 	////console.log(result);
@@ -32,6 +58,11 @@ export async function getProductPN(req, res) {
 	});
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function getProductoByQuery(req, res) {
 	// const query = req.query;
 	try {
@@ -54,6 +85,11 @@ export async function getProductoByQuery(req, res) {
 		res.status(400).json(error);
 	}
 }
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function getFamilyList(req, res) {
 	// res.json({ message: "ruta lista familia funcionando" });
 	const resultList = await Productos.find({
@@ -61,6 +97,11 @@ export async function getFamilyList(req, res) {
 	});
 	res.json(resultList.map((e) => e.familia));
 }
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 
 export async function createProducto(req, res) {
 	const data_in = req.body;
@@ -81,6 +122,11 @@ export async function createProducto(req, res) {
 	////console.log(data_in);
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function updateProducto(req, res) {
 	const id = req.params.id;
 	const body = req.body;
@@ -105,19 +151,29 @@ export async function updateProducto(req, res) {
 	res.json("");
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function deleteProducto(req, res) {
 	const id = req.params.id;
 	await Productos.deleteOne({ _id: id });
 	res.json({ status: "OK", message: `Document [${id}] deleted` });
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function createBulkProducto(req, res) {
 	const products = req.body;
 	if (products.length < 1) {
 		res.json({ message: "No se recibio ningún dato para ingresar" });
 		return;
 	}
-	const result = Productos.insertMany(products, (err, resolve) => {
+	const result = Productos.insertMany(products, {}, (err, resolve) => {
 		if (err) {
 			console.error(err);
 			return res.json({ status: "fail", data: err });

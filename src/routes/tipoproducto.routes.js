@@ -1,17 +1,12 @@
 import { Router } from "express";
 import {
-  createProducto,
-  deleteProducto,
-  getProductoById,
-  getProductoByQuery,
-  updateProducto,
+	createProducto,
+	deleteProducto,
+	getProductoById,
+	getProductoByQuery,
+	updateProducto,
 } from "../controllers/tipoproducto.controller";
 const router = Router();
-// const fs = require('fs');
-// const path = require('path');
-// router.get('/productos', (req, res) => {
-//    res.redirect('/')
-// })
 // Create
 router.post("/producto/types", createProducto);
 
@@ -28,4 +23,3 @@ router.put("/producto/types/:id", updateProducto);
 router.delete("/producto/types/:id", deleteProducto);
 
 export default router;
-// module.exports = router;

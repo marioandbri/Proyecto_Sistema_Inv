@@ -1,6 +1,20 @@
 import Inventario from "../model/inventario";
 
+/**
+ * @typedef {import("../types").ExpressRouterRequest} RouteRequest
+ * @typedef {import("../types").ExpressRouterFunction} RouterFunction
+ * @typedef {import("../types").InventarioModel} Inventario
+ */
+
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function getInventarios(req, res) {
+	/**
+	 * @type {Inventario[]}
+	 */
 	const inventario = await Inventario.find({})
 		.populate("producto")
 		.populate("poseedor", "razon_social")
@@ -8,6 +22,11 @@ export async function getInventarios(req, res) {
 	res.json(inventario);
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function createInventario(req, res) {
 	const data = req.body;
 	if (data.length < 1) {
@@ -33,7 +52,7 @@ export async function createInventario(req, res) {
 	const handleError = (err) => {
 		return res.status(400).json(err);
 	};
-	Inventario.insertMany(data, (err, docs) => {
+	Inventario.insertMany(data, {}, (err, docs) => {
 		if (err) {
 			console.error(err);
 			return handleError({
@@ -46,12 +65,21 @@ export async function createInventario(req, res) {
 	return;
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function updateInventario(req, res) {
 	const updateData = req.body;
+	/**
+	 * @type {Pick<Inventario, "numeroSerie">}
+	 */
 	const numeroSerie = req.params.sn;
 	await Inventario.updateOne(
 		{ numeroSerie: numeroSerie },
 		updateData,
+		{},
 		(err, doc) => {
 			if (err)
 				return res
@@ -63,10 +91,16 @@ export async function updateInventario(req, res) {
 	return;
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function deleteInventario(req, res) {
 	const numeroSerie = req.params.sn;
 	await Inventario.findOneAndRemove(
 		{ numeroSerie: numeroSerie },
+		{},
 		(err, doc) => {
 			if (err)
 				return res
@@ -79,6 +113,11 @@ export async function deleteInventario(req, res) {
 	);
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function updateInventarioMovimientos(req, res) {
 	const items = req.body;
 	if (items.length < 1) {
@@ -130,6 +169,11 @@ export async function updateInventarioMovimientos(req, res) {
 	});
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function getInventarioBySerialNumber(req, res) {
 	const inventario = await Inventario.findOne({
 		numeroSerie: req.params.sn,

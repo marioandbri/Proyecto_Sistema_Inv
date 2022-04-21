@@ -1,7 +1,12 @@
+import passport from "passport";
 import { Strategy } from "passport-local";
 import { validatePassword } from "../helpers/paswordUtil";
 import Usuario from "../model/Usuario";
 
+/**
+ *
+ * @param {passport.PassportStatic} passport
+ */
 function AuthPassport(passport) {
 	passport.use(
 		new Strategy((username, password, done) => {
@@ -33,14 +38,21 @@ function AuthPassport(passport) {
 	);
 
 	passport.serializeUser((user, done) => {
-		//console.log("serializing user")
+		//@ts-ignore
 		done(null, user._id);
 	});
 	passport.deserializeUser((id, done) => {
-		//console.log("deserializing user")
-		Usuario.findById(id, (err, user) => {
-			done(err, user);
-		});
+		Usuario.findById(
+			id,
+			/**
+			 *
+			 * @param {*} err
+			 * @param {*} user
+			 */
+			(err, user) => {
+				done(err, user);
+			}
+		);
 	});
 }
 

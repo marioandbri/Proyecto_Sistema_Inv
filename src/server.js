@@ -8,7 +8,6 @@ import { sessionMiddleware } from "./session";
 import passport from "passport";
 import AuthPassport from "./config/passport";
 import cookieParser from "cookie-parser";
-// const bodyParser = require('body-parser')
 
 // Settings
 app.set("port", process.env.PORT || 4000);
@@ -24,15 +23,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 AuthPassport(passport);
 
-// app.use((req, res, next) => {
-//   console.log(req.session)
-//   console.log(req.user)
-//   next()
-// })
 //Globals
 const routes = [
-	require("./routes/ot.routes.js"),
-	require("./routes/valida.routes.js"),
 	require("./routes/tipoproducto.routes.js"),
 	require("./routes/movimientos.routes.js"),
 	require("./routes/productos.routes.js"),

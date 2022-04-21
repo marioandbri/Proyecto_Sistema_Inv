@@ -1,5 +1,17 @@
+import { NativeError } from "mongoose";
 import Empresa from "../model/empresa";
 
+/**
+ * @typedef {import("../types").ExpressRouterRequest} RouteRequest
+ * @typedef {import("../types").ExpressRouterFunction} RouterFunction
+ * @typedef {import("../types").EmpresaModel} Empresa
+ */
+
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function getEmpresas(req, res) {
 	const query = req.query;
 	const parseQuery = (query) => {
@@ -19,8 +31,16 @@ export async function getEmpresas(req, res) {
 	return res.json(empresas);
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function getEmpresaByRut(req, res) {
 	const rut = req.params.rut;
+	/**
+	 * @type {NativeError | Empresa}
+	 */
 	const empresa = await Empresa.findOne({ rut: rut }, (err, doc) => {
 		if (err) {
 			console.error(err);
@@ -31,6 +51,11 @@ export async function getEmpresaByRut(req, res) {
 	return res.json(empresa);
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function postEmpresas(req, res) {
 	const data = req.body;
 	await Empresa.create(data, (err, doc) => {
@@ -40,10 +65,15 @@ export async function postEmpresas(req, res) {
 	return;
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function updateEmpresa(req, res) {
 	const data = req.body;
 	const { rut } = req.params;
-	const result = await Empresa.updateOne({ rut: rut }, data, (err, doc) => {
+	const result = await Empresa.updateOne({ rut: rut }, data, {}, (err, doc) => {
 		if (err) {
 			console.error(err);
 			return err;
@@ -54,8 +84,14 @@ export async function updateEmpresa(req, res) {
 	return res.json(result);
 }
 
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
 export async function deleteEmpresa(req, res) {
 	const { rut } = req.params;
+
 	const result = await Empresa.deleteOne({ rut: rut }, (err, doc) => {
 		if (err) {
 			console.error(err);
