@@ -45,7 +45,7 @@ export interface TipoProductoModel {
 }
 
 export interface ProductoModel {
-	tipoProducto: Pick<TipoProductoModel, "option">;
+	tipoProducto: TipoProductoModel["option"];
 	partnumber: string;
 	marca: string;
 	modelo: string;
@@ -58,9 +58,9 @@ export interface ProductoModel {
 
 export interface InventarioModel {
 	numeroSerie: string;
-	productPn: Pick<ProductoModel, "partnumber">;
-	rutPoseedor: Pick<EmpresaModel, "rut">;
-	rutProveedor: Pick<EmpresaModel, "rut">;
+	productPn: ProductoModel["partnumber"];
+	rutPoseedor: EmpresaModel["rut"];
+	rutProveedor: EmpresaModel["rut"];
 	fechaCompra: Date;
 	fechaEvento: Date;
 	nroFactura: string;
@@ -80,14 +80,14 @@ enum EstadoMovimiento {
 }
 
 export type PedidoMovimiento = {
-	numeroSerie: Pick<InventarioModel, "numeroSerie">;
-	partnumber: Pick<ProductoModel, "partnumber">;
+	numeroSerie: InventarioModel["numeroSerie"];
+	partnumber: ProductoModel["partnumber"];
 	orientacion: "entrega" | "retiro";
 	modificaciones: any;
 };
 
 export interface MovimientoModel {
-	rut: Pick<EmpresaModel, "rut">;
+	rut: EmpresaModel["rut"];
 	tipo: tipoMovimiento;
 	guia: string;
 	estado: EstadoMovimiento;

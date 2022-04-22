@@ -8,6 +8,9 @@ import { sessionMiddleware } from "./session";
 import passport from "passport";
 import AuthPassport from "./config/passport";
 import cookieParser from "cookie-parser";
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
+import { options } from "./swaggerOptions";
 
 // Settings
 app.set("port", process.env.PORT || 4000);
@@ -23,6 +26,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 AuthPassport(passport);
 
+const swaggerConfig = swaggerJsDoc(options);
+
 //Globals
 const routes = [
 	require("./routes/tipoproducto.routes.js"),
@@ -37,6 +42,7 @@ routes.forEach((e) => {
 });
 
 //Static Files
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerConfig));
 app.use(express.static(path.join(__dirname, "public")));
 app.get("*", function (req, res) {
 	res.sendFile("index.html", { root: path.join(__dirname, "../src/public/") });

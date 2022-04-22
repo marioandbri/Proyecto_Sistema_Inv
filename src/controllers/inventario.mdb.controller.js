@@ -4,6 +4,7 @@ import Inventario from "../model/inventario";
  * @typedef {import("../types").ExpressRouterRequest} RouteRequest
  * @typedef {import("../types").ExpressRouterFunction} RouterFunction
  * @typedef {import("../types").InventarioModel} Inventario
+ * @typedef {import("../types").EmpresaModel} Empresa
  */
 
 /**
@@ -13,7 +14,7 @@ import Inventario from "../model/inventario";
  */
 export async function getInventarios(req, res) {
 	/**
-	 * @type {Inventario[]}
+	 * @type {Array<Inventario & {poseedor: Empresa["razon_social"], proveedor: Empresa["razon_social"]}>}
 	 */
 	const inventario = await Inventario.find({})
 		.populate("producto")
