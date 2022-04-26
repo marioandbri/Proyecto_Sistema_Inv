@@ -37,7 +37,7 @@ export interface EmpresaModel {
 
 export type TipoProductoFields = {
 	titulo: string;
-	tipo: ["text", "number"];
+	tipo: "text" | "number";
 };
 export interface TipoProductoModel {
 	option: string;

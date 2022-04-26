@@ -26,7 +26,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 AuthPassport(passport);
 
-const swaggerConfig = swaggerJsDoc(options);
+const swaggerSpec = swaggerJsDoc(options);
 
 //Globals
 const routes = [
@@ -42,7 +42,7 @@ routes.forEach((e) => {
 });
 
 //Static Files
-app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerConfig));
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use(express.static(path.join(__dirname, "public")));
 app.get("*", function (req, res) {
 	res.sendFile("index.html", { root: path.join(__dirname, "../src/public/") });
