@@ -21,7 +21,7 @@ export interface UserModel {
 	email: string;
 	hash: string;
 	salt: string;
-	isAdmin?: string;
+	isAdmin?: boolean;
 	accessEmpresas: boolean[];
 	accessProductos: boolean[];
 	accessInventarios: boolean[];
