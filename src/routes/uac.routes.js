@@ -213,6 +213,25 @@ router.get("/uac/mgmt", usersList);
 
 /**
  * @swagger
+ * /uac/mgmt/pass/{id}:
+ *   put:
+ *     summary: Actualización de contraseña de usuario id
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegistroUsuario'
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identificador unico del usuario a actualizar la contraseña
+ */
+router.put("/uac/mgmt/pass/:id", updatePassword);
+
+/**
+ * @swagger
  * /uac/mgmt/{id}:
  *   put:
  *     summary: Actualizacion de usuario
@@ -237,8 +256,25 @@ router.get("/uac/mgmt", usersList);
  */
 router.put("/uac/mgmt/:id", updateUser);
 
+/**
+ * @swagger
+ * /uac/mgmt/{id}:
+ *   delete:
+ *     summary: Eliminacion de usuario por id
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identificador unico del usuario a eliminar
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ResponseMessage'
+ */
 router.delete("/uac/mgmt/:id", deleteUser);
-router.put("/uac/mgmt/pass/:id", updatePassword);
 
 export default router;
 // module.exports = router

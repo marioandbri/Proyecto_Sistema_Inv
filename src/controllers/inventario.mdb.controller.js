@@ -97,28 +97,6 @@ export async function updateInventario(req, res) {
  * @param {RouteRequest} req
  * @param {*} res
  */
-export async function deleteInventario(req, res) {
-	const numeroSerie = req.params.sn;
-	await Inventario.findOneAndRemove(
-		{ numeroSerie: numeroSerie },
-		{},
-		(err, doc) => {
-			if (err)
-				return res
-					.status(400)
-					.json({ message: "Ha ocurrido un error", detail: err.message });
-			return res.json({
-				message: `Numero de serie: ${numeroSerie} borrado correctamente`,
-			});
-		}
-	);
-}
-
-/**
- * @type {RouterFunction}
- * @param {RouteRequest} req
- * @param {*} res
- */
 export async function updateInventarioMovimientos(req, res) {
 	const items = req.body;
 	if (items.length < 1) {
@@ -182,4 +160,26 @@ export async function getInventarioBySerialNumber(req, res) {
 		.populate("poseedor", "razon_social")
 		.populate("producto", "modelo");
 	res.json(inventario);
+}
+
+/**
+ * @type {RouterFunction}
+ * @param {RouteRequest} req
+ * @param {*} res
+ */
+export async function deleteInventario(req, res) {
+	const numeroSerie = req.params.sn;
+	await Inventario.findOneAndRemove(
+		{ numeroSerie: numeroSerie },
+		{},
+		(err, doc) => {
+			if (err)
+				return res
+					.status(400)
+					.json({ message: "Ha ocurrido un error", detail: err.message });
+			return res.json({
+				message: `Numero de serie: ${numeroSerie} borrado correctamente`,
+			});
+		}
+	);
 }
