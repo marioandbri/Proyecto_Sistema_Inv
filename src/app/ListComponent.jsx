@@ -1,12 +1,22 @@
 import React from "react";
 
-const ListComponent = ({ style, children, aditionalClasses }) => {
+/**
+ * @typedef {import("../types").ListComponentProps} ListComponentProps
+ *
+ */
+
+/**
+ *
+ * @param {ListComponentProps} props
+ * @returns
+ */
+const ListComponent = (props) => {
 	return (
 		<div
-			style={style}
-			className={"list has-hoverable-list-items" + " " + aditionalClasses}
+			{...props}
+			className={"list has-hoverable-list-items" + " " + props.className}
 		>
-			{children}
+			{props.children}
 		</div>
 	);
 };

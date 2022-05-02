@@ -3,11 +3,21 @@ import React from "react";
 const handleButton1 = () => {
 	console.log("This button isn't receiving a prop function");
 };
+
+/**
+ * @typedef {import("../types").ListItemProps} ListItemProps
+ */
+
+/**
+ *
+ * @param {ListItemProps} param0
+ * @returns
+ */
 const ListItemComponent = ({
 	title = "Default Title",
 	button1,
 	button2,
-	description = ["Sin descripcion"],
+	description,
 	itemIcon,
 }) => {
 	return (

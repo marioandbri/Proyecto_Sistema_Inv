@@ -60,7 +60,7 @@ const MovementsList = () => {
 				}}
 			/>
 			<ListComponent
-				aditionalClasses={"has-overflow-ellipsis has-visible-pointer-controls"}
+				className={"has-overflow-ellipsis has-visible-pointer-controls"}
 			>
 				{!loading &&
 					filteredData.map((e, index) => (

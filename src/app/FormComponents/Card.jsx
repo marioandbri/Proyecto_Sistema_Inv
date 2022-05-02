@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * @typedef {import("../../types").CardComponentProps} CardProps
+ * @param {CardProps} param0
+ * @returns {JSX.Element}
+ */
 const Card = ({
 	title = "Titulo",
 	subtitle = "Subtitulo",

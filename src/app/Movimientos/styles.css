@@ -10,15 +10,25 @@
 .init-icon {
 	transform: intial;
 	transition-timing-function: ease-in-out;
-	transition: transform 0.5s;
+	transition: all 0.5s;
 }
 .init-icon-expanded {
 	transition-timing-function: ease-in-out;
-	transition: transform 0.5s;
 	transform: rotate(-135deg);
+	transition: all 0.5s;
+}
+
+#init-button.is-danger {
+	background-color: #f14668;
+	transition: background-color 1s;
+}
+#init-button.is-success {
+	background-color: #48c78e;
+	transition: background-color 1s;
 }
 a.panel-block:hover {
 	text-shadow: 1px 0px 1px #cccccc, 0px 1px 1px;
+	background-color: rgba(189, 188, 188, 0.637);
 }
 a.panel-block.menu-item {
 	border-radius: 10px;

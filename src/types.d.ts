@@ -1,11 +1,18 @@
-import express, { Request } from "express";
+import { Properties } from "csstype";
+import { Request } from "express";
+import React, {
+	ChangeEvent,
+	ChangeEventHandler,
+	ReactNode,
+	SetStateAction,
+} from "react";
 import { string } from "yup";
 
 export type ExpressRouterRequest = Request<
 	{},
 	any,
 	any,
-	QueryString.ParsedQs,
+	qs.ParsedQs,
 	Record<string, any>
 > & {
 	params: { [key: string]: any };
@@ -67,17 +74,12 @@ export interface InventarioModel {
 	estado: string;
 	nroGuia: number;
 }
-enum TipoMovimiento {
-	ENTREGA = "ENTREGA",
-	RETIRO = "RETIRO",
-	CAMBIO = "CAMBIO",
-}
-enum EstadoMovimiento {
-	Pendiente = "Pendiente",
-	Preparacion = "En Preparacion",
-	Procesamiento = "En Procesamiento",
-	Finalizado = "Finalizado",
-}
+declare type TipoMovimiento = "ENTREGA" | "RETIRO" | "CAMBIO";
+declare type EstadoMovimiento =
+	| "Pendiente"
+	| "En Preparacion"
+	| "En Procesamiento"
+	| "Finalizado";
 
 export type PedidoMovimiento = {
 	numeroSerie: InventarioModel["numeroSerie"];
@@ -88,7 +90,7 @@ export type PedidoMovimiento = {
 
 export interface MovimientoModel {
 	rut: EmpresaModel["rut"];
-	tipo: tipoMovimiento;
+	tipo: TipoMovimiento;
 	guia: string;
 	estado: EstadoMovimiento;
 	pedido: PedidoMovimiento[];
@@ -97,3 +99,60 @@ export interface MovimientoModel {
 	fechaCreacion: Date;
 	tecnico: string;
 }
+
+export type ListComponentProps = React.PropsWithChildren<
+	React.HTMLAttributes<HTMLDivElement>
+>;
+
+export type ListItemProps = {
+	title: string | React.ReactElement;
+	button1?: (React.ReactNode & HTMLButtonElement) | React.ReactElement;
+	button2?: (React.ReactNode & HTMLButtonElement) | React.ReactElement;
+	description: string | React.ReactElement;
+	itemIcon?: React.ReactElement;
+};
+
+export type CardComponentProps = {
+	title: ReactNode;
+	subtitle: ReactNode;
+	content: ReactNode;
+};
+
+export type PanelComponentProps<T> = {
+	title: ReactNode;
+	id?: string;
+	listIcon?: ReactNode;
+	data: Array<T>;
+	mapCallback: (item: T, index: number) => ReactNode;
+	query: string;
+	setQuery: () => ChangeEventHandler<HTMLInputElement>;
+	className?: string;
+};
+
+export type DataPanelSelectorProps = {
+	urlToFetch: string;
+	title: ReactNode;
+	mapCallback: (item: any, index: number) => ReactNode;
+};
+
+export type SelectComponentProps = {
+	id: string;
+	style?: Properties;
+	className?: string;
+	value: string;
+	handleChange: () => ChangeEventHandler<HTMLSelectElement>;
+	options: Array<string>;
+};
+
+export interface Step {
+	active: boolean;
+	completed: boolean;
+	color?: "is-success" | "is-danger" | "is-info" | "is-warning" | "is-primary";
+	icon: ReactNode;
+	title: string;
+	description: string;
+}
+
+export type StepsComponentProps = {
+	steps: Step[];
+};

@@ -4,10 +4,15 @@ import { useFetch } from "../useFetch";
 import { useFilter } from "../useFilter";
 import LoadingBar from "../LoadingBar";
 
+/**
+ * @typedef {import("../../types").DataPanelSelectorProps} DataPanelProps
+ * @param {DataPanelProps} param0
+ * @returns
+ */
 const DataPanelSelector = ({
 	urlToFetch = "/",
 	title,
-	mapCallback = (element, index) => <a className="panel-block">{index}</a>,
+	mapCallback = (item, index) => <a className="panel-block">{index}</a>,
 }) => {
 	const { data, loading } = useFetch(urlToFetch);
 	const [query, setQuery] = useState("");

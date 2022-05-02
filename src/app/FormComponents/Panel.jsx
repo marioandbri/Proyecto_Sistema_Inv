@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * @typedef {import("../../types").PanelComponentProps<any>} PanelProps
+ * @param {PanelProps} param0
+ * @returns
+ */
 const Panel = ({
 	title,
 	id,
@@ -12,20 +17,13 @@ const Panel = ({
 		</a>
 	),
 	query,
-	setQuery = () => (Event) => {},
-	color,
+	setQuery = () => (ev) => {},
+	className,
 }) => {
 	return (
 		<React.Fragment>
-			<article id={id} className={"panel " + color}>
+			<article id={id} className={"panel " + className}>
 				<p className="panel-heading">{title}</p>
-				{/* <p className="panel-tabs">
-					<a className="is-active">All</a>
-					<a>Public</a>
-					<a>Private</a>
-					<a>Sources</a>
-					<a>Forks</a>
-				</p> */}
 				<div className="panel-block">
 					<p className="control has-icons-left">
 						<input

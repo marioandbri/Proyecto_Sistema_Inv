@@ -3,14 +3,22 @@ import ClientSelector from "./ClientSelector";
 import Steps from "../FormComponents/Steps";
 import Card from "../FormComponents/Card";
 import ProductSelector from "./ProductSelector";
+import { string } from "yup";
 
 const JobInit = () => {
+	/**
+	 * @type {[import("../../types").EmpresaModel, import("react").Dispatch<import("../../types").EmpresaModel>]}
+	 */
 	const [selectedClient, setSelectedClient] = useState(null);
+	/**
+	 * @type {[import("../../types").ProductoModel, import("react").Dispatch<import("../../types").ProductoModel>]}
+	 */
+	const [selectedProduct, setSelectedProduct] = useState(null);
 	const initialSteps = [
 		{
 			active: true,
 			completed: false,
-			color: "",
+
 			icon: (
 				<>
 					<ClockIcon />
@@ -23,7 +31,7 @@ const JobInit = () => {
 		{
 			active: false,
 			completed: false,
-			color: "",
+
 			icon: (
 				<>
 					<ClockIcon />
@@ -36,7 +44,7 @@ const JobInit = () => {
 		{
 			active: false,
 			completed: false,
-			color: "",
+
 			icon: (
 				<>
 					<ClockIcon />
@@ -48,7 +56,7 @@ const JobInit = () => {
 		{
 			active: false,
 			completed: false,
-			color: "",
+
 			icon: (
 				<>
 					<ClockIcon />
@@ -74,9 +82,21 @@ const JobInit = () => {
 			return newSteps;
 		});
 	};
-	const selectClient = (data) => {
+	/**
+	 *
+	 * @param {import("../../types").EmpresaModel} empresa
+	 */
+	const selectClient = (empresa) => {
 		nextStep(0);
-		setSelectedClient(data);
+		setSelectedClient(empresa);
+	};
+	/**
+	 *
+	 * @param {import("../../types").ProductoModel} producto
+	 */
+	const selectProduct = (producto) => {
+		nextStep(1);
+		setSelectedProduct(producto);
 	};
 	return (
 		<React.Fragment>
@@ -88,8 +108,15 @@ const JobInit = () => {
 					content={selectedClient.ubicacion}
 				/>
 			)}
+			{steps[1].completed && (
+				<Card
+					title={selectedProduct.shortDescription}
+					subtitle={selectedProduct.partnumber}
+					content={selectedProduct.extraDescription}
+				/>
+			)}
 			{steps[0].active && <ClientSelector setSelected={selectClient} />}
-			{steps[1].active && <ProductSelector />}
+			{steps[1].active && <ProductSelector setSelected={selectProduct} />}
 		</React.Fragment>
 	);
 };

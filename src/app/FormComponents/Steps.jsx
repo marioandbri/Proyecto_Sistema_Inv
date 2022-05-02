@@ -1,23 +1,12 @@
 import React from "react";
 import "bulma-extensions";
-const Steps = ({
-	steps = [
-		{
-			active: true,
-			completed: false,
-			color: "",
-			icon: (
-				<>
-					<span className="icon">
-						<i className="fa fa-check"></i>
-					</span>
-				</>
-			),
-			title: "Step",
-			description: "This is a step",
-		},
-	],
-}) => {
+
+/**
+ * @typedef {import("../../types").StepsComponentProps} StepsProps
+ * @param {StepsProps} param0
+ * @returns
+ */
+const Steps = ({ steps }) => {
 	return (
 		<div className="steps is-small">
 			{steps.map((elem, index) => (

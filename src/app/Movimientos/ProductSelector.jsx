@@ -3,7 +3,7 @@ import DataPanelSelector from "../FormComponents/DataPanelSelector";
 import Panel from "../FormComponents/Panel";
 import { useFetch } from "../useFetch";
 
-const ProductSelector = () => {
+const ProductSelector = ({ setSelected }) => {
 	return (
 		<>
 			<DataPanelSelector
@@ -12,7 +12,7 @@ const ProductSelector = () => {
 				mapCallback={(e, index) => (
 					<a
 						onClick={() => {
-							console.log(e);
+							setSelected(e);
 						}}
 						key={e.partnumber}
 						className="panel-block"
