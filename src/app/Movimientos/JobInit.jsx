@@ -11,9 +11,9 @@ const JobInit = () => {
 	 */
 	const [selectedClient, setSelectedClient] = useState(null);
 	/**
-	 * @type {[import("../../types").ProductoModel, import("react").Dispatch<import("../../types").ProductoModel>]}
+	 * @type {[import("../../types").ProductoModel[], import("react").Dispatch<import("../../types").ProductoModel[]>]}
 	 */
-	const [selectedProduct, setSelectedProduct] = useState(null);
+	const [selectedProduct, setSelectedProduct] = useState([]);
 	const initialSteps = [
 		{
 			active: true,
@@ -95,8 +95,8 @@ const JobInit = () => {
 	 * @param {import("../../types").ProductoModel} producto
 	 */
 	const selectProduct = (producto) => {
-		nextStep(1);
-		setSelectedProduct(producto);
+		let newProducts = [...selectedProduct, producto]
+		setSelectedProduct(newProducts);
 	};
 	return (
 		<React.Fragment>
@@ -109,13 +109,17 @@ const JobInit = () => {
 					content={selectedClient.ubicacion}
 				/>
 			)}
-			{steps[1].completed && (
-				<Card
-					style={{ marginBottom: "1em" }}
-					title={selectedProduct.shortDescription}
-					subtitle={selectedProduct.partnumber}
-					content={selectedProduct.extraDescription}
-				/>
+			{steps[1].active && (
+				selectedProduct.map((producto, index) => (
+
+					<Card
+						key={index}
+						style={{ marginBottom: "1em" }}
+						title={producto.shortDescription}
+						subtitle={producto.partnumber}
+						content={<textarea></textarea>}
+					/>
+				))
 			)}
 			{steps[0].active && <ClientSelector setSelected={selectClient} />}
 			{steps[1].active && <ProductSelector setSelected={selectProduct} />}
