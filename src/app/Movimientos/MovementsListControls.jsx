@@ -44,7 +44,7 @@ const MovementsListControls = ({ state, setters }) => {
 						Tipo de Movimiento
 					</span>
 					<Select
-						aditionalClasses="is-small"
+						className="is-small"
 						id="tipomovimiento"
 						options={tipoMovimientosOptions}
 						value={tipoMovimiento}
@@ -63,7 +63,7 @@ const MovementsListControls = ({ state, setters }) => {
 					<Filter
 						query={consulta}
 						setQuery={setConsulta}
-						aditionalClassname="is-small"
+						className="is-small"
 					/>
 				</div>
 				<div className="control is-relative">
@@ -80,7 +80,7 @@ const MovementsListControls = ({ state, setters }) => {
 						handleChange={() => (e) => {
 							setAño(e.target.value);
 						}}
-						aditionalClasses="is-small"
+						className="is-small"
 					/>
 				</div>
 				<div className="control is-relative">
@@ -92,7 +92,7 @@ const MovementsListControls = ({ state, setters }) => {
 					</span>
 					<Select
 						id="meses"
-						aditionalClasses="is-small"
+						className="is-small"
 						handleChange={() => (e) => {
 							setMes(e.target.value);
 						}}
@@ -114,7 +114,7 @@ const MovementsListControls = ({ state, setters }) => {
 						handleChange={() => (e) => {
 							setDia(e.target.value);
 						}}
-						aditionalClasses="is-small"
+						className="is-small"
 					/>
 				</div>
 				<div className="control is-relative">
@@ -127,7 +127,7 @@ const MovementsListControls = ({ state, setters }) => {
 					<Select
 						id="estados"
 						options={estados}
-						aditionalClasses="is-small"
+						className="is-small"
 						handleChange={() => (e) => {
 							setEstado(e.target.value);
 						}}

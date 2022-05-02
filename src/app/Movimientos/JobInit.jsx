@@ -103,6 +103,7 @@ const JobInit = () => {
 			<Steps steps={steps} />
 			{steps[0].completed && (
 				<Card
+					style={{ marginBottom: "1em" }}
 					title={selectedClient.razon_social}
 					subtitle={selectedClient.rut}
 					content={selectedClient.ubicacion}
@@ -110,6 +111,7 @@ const JobInit = () => {
 			)}
 			{steps[1].completed && (
 				<Card
+					style={{ marginBottom: "1em" }}
 					title={selectedProduct.shortDescription}
 					subtitle={selectedProduct.partnumber}
 					content={selectedProduct.extraDescription}

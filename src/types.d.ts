@@ -116,6 +116,7 @@ export type CardComponentProps = {
 	title: ReactNode;
 	subtitle: ReactNode;
 	content: ReactNode;
+	style?: Properties;
 };
 
 export type PanelComponentProps<T> = {
@@ -141,7 +142,7 @@ export type SelectComponentProps = {
 	className?: string;
 	value: string;
 	handleChange: () => ChangeEventHandler<HTMLSelectElement>;
-	options: Array<string>;
+	options: Array<string | number>;
 };
 
 export interface Step {

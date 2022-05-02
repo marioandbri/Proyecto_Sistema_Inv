@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Filter = ({ query, setQuery, aditionalClassname, style }) => {
+const Filter = ({ query, setQuery, className, style = {} }) => {
 	//   useEffect(() => {
 	//     handleFilter();
 	//     return () => {};
@@ -17,7 +17,7 @@ const Filter = ({ query, setQuery, aditionalClassname, style }) => {
 					style={style}
 					value={query}
 					type="text"
-					className={"input " + aditionalClassname}
+					className={"input " + className}
 					placeholder="Buscar..."
 					onChange={(e) => {
 						// handleQuery(e);
