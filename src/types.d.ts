@@ -51,13 +51,17 @@ export interface TipoProductoModel {
 	form: TipoProductoFields[];
 }
 
+type ProductoDetalle = {
+	[key: string]: string;
+};
+
 export interface ProductoModel {
 	tipoProducto: TipoProductoModel["option"];
 	partnumber: string;
 	marca: string;
 	modelo: string;
 	familia: string;
-	detalle: string;
+	detalle: ProductoDetalle;
 	shortDescription: string;
 	extraDescription: string;
 	shortDescriptionTags: string;

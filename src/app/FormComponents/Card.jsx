@@ -14,11 +14,11 @@ const Card = ({
 	return (
 		<div style={style} className="card">
 			<div className="card-content">
-				<p className="title is-5">{title}</p>
-				<p style={{ color: "#858585" }} className="subtitle is-6 mb-1">
+				<p className="title is-6">{title}</p>
+				<div style={{ color: "#555" }} className="subtitle is-6 mb-1">
 					{subtitle}
-				</p>
-				<div className="content">{content}</div>
+				</div>
+				<div className="content is-size-7">{content}</div>
 			</div>
 		</div>
 	);
