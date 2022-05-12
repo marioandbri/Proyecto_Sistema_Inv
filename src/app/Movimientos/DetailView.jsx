@@ -69,7 +69,7 @@ const DetailView = ({ data }) => {
 						return (
 							<ListItemComponent
 								key={index}
-								title={e.numeroSerie}
+								title={e?.numeroSerie}
 								description={
 									<ItemDescription
 										description={e.equipo.shortDescription}

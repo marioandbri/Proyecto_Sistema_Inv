@@ -6,7 +6,6 @@ import React, {
 	ReactNode,
 	SetStateAction,
 } from "react";
-import { string } from "yup";
 
 export type ExpressRouterRequest = Request<
 	{},
@@ -86,22 +85,22 @@ declare type EstadoMovimiento =
 	| "Finalizado";
 
 export type PedidoMovimiento = {
-	numeroSerie: InventarioModel["numeroSerie"];
+	numeroSerie?: InventarioModel["numeroSerie"];
 	partnumber: ProductoModel["partnumber"];
 	orientacion: "entrega" | "retiro";
-	modificaciones: any;
+	modificaciones?: any;
 };
 
 export interface MovimientoModel {
 	rut: EmpresaModel["rut"];
 	tipo: TipoMovimiento;
-	guia: string;
+	guia?: string;
 	estado: EstadoMovimiento;
 	pedido: PedidoMovimiento[];
-	fechaMovimiento: Date;
-	actualizaciones: string;
-	fechaCreacion: Date;
-	tecnico: string;
+	fechaMovimiento: Date | string;
+	actualizaciones?: string;
+	fechaCreacion: Date | string;
+	tecnico?: string;
 }
 
 export type ListComponentProps = React.PropsWithChildren<
