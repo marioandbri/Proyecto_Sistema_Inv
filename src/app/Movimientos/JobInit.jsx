@@ -13,8 +13,8 @@ import EmpresaCard from "./EmpresaCard";
  * @typedef {import("../../types").PedidoMovimiento} Pedido
  * @typedef {import("../../types").EmpresaModel} Empresa
  * @typedef {import("../../types").ProductoModel} Producto
- * @typedef {import("react").Dispatch<import("react").SetStateAction<Empresa>>} setEmpresa
- * @typedef {import("react").Dispatch<import("react").SetStateAction<Producto[]>>} setProductos
+ * @typedef {React.Dispatch<React.SetStateAction<Empresa>>} setEmpresa
+ * @typedef {React.Dispatch<React.SetStateAction<Producto[]>>} setProductos
  */
 
 const JobInit = () => {
@@ -27,9 +27,9 @@ const JobInit = () => {
 	 */
 	const [selectedProduct, setSelectedProduct] = useState([]);
 
-	const [cantidades, setCantidades] = useState([])
+	const [cantidades, setCantidades] = useState([]);
 
-	const [date, setDate] = useState("")
+	const [date, setDate] = useState("");
 	const initialSteps = [
 		{
 			title: "Seleccione Empresa",
@@ -43,14 +43,15 @@ const JobInit = () => {
 		},
 		{
 			title: "Revise y modifique",
-			description: "Confirme los datos de la orden, y revise antes de continuar",
+			description:
+				"Confirme los datos de la orden, y revise antes de continuar",
 		},
 		{
 			title: "Finalizado",
 			description: "La orden ha sido creada",
 		},
 	];
-	const { steps, previousStep, nextStep } = useSteps(initialSteps)
+	const { steps, previousStep, nextStep } = useSteps(initialSteps);
 
 	/**
 	 *
@@ -65,58 +66,60 @@ const JobInit = () => {
 	 * @param {import("../../types").ProductoModel} producto
 	 */
 	const selectProduct = (producto) => {
-		let newProducts = [...selectedProduct, producto]
+		let newProducts = [...selectedProduct, producto];
 		setSelectedProduct(newProducts);
 	};
 
 	const removeSelectedProduct = (index) => {
 		setSelectedProduct((productos) => {
-			let newProducts = [...productos]
-			newProducts.splice(index, 1)
-			return newProducts
-		})
+			let newProducts = [...productos];
+			newProducts.splice(index, 1);
+			return newProducts;
+		});
 		setCantidades((oldCantidades) => {
-			let newCantidades = [...oldCantidades]
-			newCantidades.splice(index, 1)
-			return newCantidades
-		})
-	}
+			let newCantidades = [...oldCantidades];
+			newCantidades.splice(index, 1);
+			return newCantidades;
+		});
+	};
 
 	const handleInput = (index) => (key) => (ev) => {
-		let producto = [...selectedProduct]
-		producto[index].detalle[key] = ev.target.value
-		setSelectedProduct(producto)
-	}
+		let producto = [...selectedProduct];
+		producto[index].detalle[key] = ev.target.value;
+		setSelectedProduct(producto);
+	};
 
 	const handleCantidad = (index) => (e) => {
 		setCantidades((oldCantidades) => {
-			let newCantidades = [...oldCantidades]
-			newCantidades[index] = e.target.value
-			return newCantidades
-		})
-	}
+			let newCantidades = [...oldCantidades];
+			newCantidades[index] = e.target.value;
+			return newCantidades;
+		});
+	};
 
 	const buildOrder = () => {
-
 		const repeat = (objeto, cantidad) => {
-			let container = []
+			let container = [];
 			for (let i = 0; i < cantidad; i++) {
-				container = [...container, objeto]
+				container = [...container, objeto];
 			}
-			return container
-		}
+			return container;
+		};
 
-		const pedido = []
+		const pedido = [];
 
 		selectedProduct.forEach((e, index) => {
-			pedido.push(...repeat({
-				partnumber: e.partnumber,
-				modificaciones: e.detalle,
-				orientacion: "entrega"
-			}, cantidades[index]))
-		})
-
-
+			pedido.push(
+				...repeat(
+					{
+						partnumber: e.partnumber,
+						modificaciones: e.detalle,
+						orientacion: "entrega",
+					},
+					cantidades[index]
+				)
+			);
+		});
 
 		/**
 		 * @type {Movimiento}
@@ -127,44 +130,46 @@ const JobInit = () => {
 			estado: "Pendiente",
 			fechaCreacion: new Date().toISOString(),
 			fechaMovimiento: date,
-			guia: new Date().toISOString() + (Math.ceil(Math.random() * 10)),
-			pedido: pedido
+			guia: new Date().toISOString() + Math.ceil(Math.random() * 10),
+			pedido: pedido,
+		};
 
-		}
-
-		return order
-	}
+		return order;
+	};
 
 	const confirmOrder = async () => {
-		nextStep()
-		const result = await createOrder(buildOrder())
+		nextStep();
+		const result = await createOrder(buildOrder());
 		if (result.ok) {
-			const response = await result.json()
-			console.log(response)
+			const response = await result.json();
+			console.log(response);
 		} else {
-			console.log({ message: "Error en solicitud" })
+			console.log({ message: "Error en solicitud" });
 		}
-	}
+	};
 
 	const createOrder = async (order) => {
 		const request = await fetch("/mov", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(order)
-		})
-		return request
-	}
+			body: JSON.stringify(order),
+		});
+		return request;
+	};
 	return (
 		<React.Fragment>
 			<Steps steps={steps} />
 			{steps[0].completed && (
-				<EmpresaCard date={date} setDate={setDate} selectedClient={selectedClient} />
+				<EmpresaCard
+					date={date}
+					setDate={setDate}
+					selectedClient={selectedClient}
+				/>
 			)}
-			{(steps[1].active || steps[1].completed) && (
+			{(steps[1].active || steps[1].completed) &&
 				selectedProduct.map((producto, index) => (
-
 					<ProductCard
 						key={index}
 						producto={producto}
@@ -173,14 +178,25 @@ const JobInit = () => {
 						handleCantidad={handleCantidad(index)}
 						removeSelectedProduct={() => removeSelectedProduct(index)}
 					/>
-				))
-			)}
+				))}
 			{steps[0].active && <ClientSelector setSelected={selectClient} />}
-			{steps[1].active && <ProductSelector setSelected={selectProduct} handleClick={() => nextStep()} />}
-			{steps[2].active && <button onClick={confirmOrder} style={{ width: "100%" }} className="button is-success is-large">Confirmar</button>}
+			{steps[1].active && (
+				<ProductSelector
+					setSelected={selectProduct}
+					handleClick={() => nextStep()}
+				/>
+			)}
+			{steps[2].active && (
+				<button
+					onClick={confirmOrder}
+					style={{ width: "100%" }}
+					className="button is-success is-large"
+				>
+					Confirmar
+				</button>
+			)}
 		</React.Fragment>
 	);
 };
-
 
 export default JobInit;

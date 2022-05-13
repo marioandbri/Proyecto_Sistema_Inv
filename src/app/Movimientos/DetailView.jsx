@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { groupBy } from "../../helpers/groupBy";
 import ListComponent from "../ListComponent";
 import ListItemComponent from "../ListItemComponent";
@@ -12,9 +12,18 @@ const DetailView = ({ data }) => {
 		pedido.push(...group[key]);
 	}
 	data.pedido = pedido;
+	const [pedidoValida, setPedidoValida] = useState(data.pedido);
 	const isModified = (modifications) => {
 		if (!modifications) return false;
 		return !!Object.values(modifications).toString();
+	};
+
+	const handleSNInputs = (index) => (e) => {
+		setPedidoValida((oldPedido) => {
+			const newPedido = [...oldPedido];
+			newPedido[index].numeroSerie = e.target.value;
+			return newPedido;
+		});
 	};
 	return (
 		<div className="box">
@@ -64,12 +73,17 @@ const DetailView = ({ data }) => {
 				className="box"
 			>
 				<ListComponent>
-					{data.pedido.map((e, index) => {
+					{pedidoValida.map((e, index) => {
 						if (e.equipo.detalle.CPU) delete e.equipo.detalle.CPU;
 						return (
 							<ListItemComponent
 								key={index}
-								title={e?.numeroSerie}
+								title={
+									<input
+										onChange={handleSNInputs(index)}
+										value={e.numeroSerie}
+									/>
+								}
 								description={
 									<ItemDescription
 										description={e.equipo.shortDescription}
