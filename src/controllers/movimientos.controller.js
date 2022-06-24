@@ -84,3 +84,17 @@ export async function getMovimientoByID(req, res) {
 
 	res.json(result);
 }
+
+export async function deleteMovimientoById(req, res) {
+	const { id } = null ?? req.params;
+	Movimientos.findByIdAndDelete(id, {}, (err, doc) => {
+		if (err) res.json({ message: "Ha ido fatal" });
+		else {
+			res.json({ message: "Todo bien", data: doc });
+		}
+	});
+}
+
+export async function updateMovimiento(req, res) {
+	//TODO
+}

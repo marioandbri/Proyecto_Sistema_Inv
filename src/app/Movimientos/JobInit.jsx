@@ -7,6 +7,7 @@ import { useSteps } from "../CustomHooks/steps";
 import { CheckIcon, ClockIcon } from "../Icons";
 import ProductCard from "./ProductCard";
 import EmpresaCard from "./EmpresaCard";
+import { useHistory } from "react-router-dom";
 
 /**
  * @typedef {import("../../types").MovimientoModel} Movimiento
@@ -15,7 +16,9 @@ import EmpresaCard from "./EmpresaCard";
  * @typedef {import("../../types").ProductoModel} Producto
  * @typedef {React.Dispatch<React.SetStateAction<Empresa>>} setEmpresa
  * @typedef {React.Dispatch<React.SetStateAction<Producto[]>>} setProductos
+ * @typedef {import("../../types").Step} Step
  */
+
 
 const JobInit = () => {
 	/**
@@ -28,8 +31,10 @@ const JobInit = () => {
 	const [selectedProduct, setSelectedProduct] = useState([]);
 
 	const [cantidades, setCantidades] = useState([]);
-
 	const [date, setDate] = useState("");
+	/**
+	 * @type {Partial<Step>[]}
+	 */
 	const initialSteps = [
 		{
 			title: "Seleccione Empresa",
@@ -52,6 +57,8 @@ const JobInit = () => {
 		},
 	];
 	const { steps, previousStep, nextStep } = useSteps(initialSteps);
+
+	const history = useHistory()
 
 	/**
 	 *
@@ -127,7 +134,7 @@ const JobInit = () => {
 		const order = {
 			rut: selectedClient.rut,
 			tipo: "ENTREGA",
-			estado: "Pendiente",
+			estado: "Laboratorio",
 			fechaCreacion: new Date().toISOString(),
 			fechaMovimiento: date,
 			guia: new Date().toISOString() + Math.ceil(Math.random() * 10),
@@ -195,6 +202,15 @@ const JobInit = () => {
 					Confirmar
 				</button>
 			)}
+			{steps[3].active && (
+				<button onClick={() => history.push("/movimientos")}
+					style={{ width: "100%" }}
+					className="button is-success is-large">
+					Finalizar
+				</button>
+			)
+
+			}
 		</React.Fragment>
 	);
 };

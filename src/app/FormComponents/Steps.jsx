@@ -12,17 +12,14 @@ const Steps = ({ steps }) => {
 			{steps.map((elem, index) => (
 				<div
 					key={index}
-					className={`step-item ${elem.completed && "is-completed"} ${
-						elem.active && "is-active"
-					} ${elem.color}`}
+					className={`step-item ${elem.completed && "is-completed"} ${elem.active && "is-active"
+						} ${elem.color}`}
 				>
 					<div className="step-marker">{elem.icon}</div>
-					{elem.active && (
-						<div className="step-details">
-							<p className="step-title">{elem.title}</p>
-							<p>{elem.description}</p>
-						</div>
-					)}
+					<div className="step-details">
+						<p className="step-title">{elem.title}</p>
+						<p>{elem.description}</p>
+					</div>
 				</div>
 			))}
 		</div>

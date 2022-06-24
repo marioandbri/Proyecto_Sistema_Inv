@@ -79,9 +79,10 @@ export interface InventarioModel {
 }
 declare type TipoMovimiento = "ENTREGA" | "RETIRO" | "CAMBIO";
 declare type EstadoMovimiento =
-	| "Pendiente"
-	| "En Preparacion"
-	| "En Procesamiento"
+	| "Laboratorio"
+	| "Operaciones"
+	| "Transporte"
+	| "Bodega"
 	| "Finalizado";
 
 export type PedidoMovimiento = {

@@ -17,7 +17,7 @@ const MovimientoSchema = new Schema({
 	},
 	estado: {
 		type: String,
-		enum: ["Pendiente", "En Preparacion", "En Procesamiento", "Finalizado"],
+		enum: ["Laboratorio", "Operaciones", "Transporte", "Bodega", "Finalizado"],
 	},
 	pedido: {
 		type: [

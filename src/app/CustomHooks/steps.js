@@ -12,20 +12,32 @@ export const useSteps = (stepsObject) => {
 		title: "",
 		description: "",
 	};
-	let initializedSteps = stepsObject.map(({ title, description }, index) => {
-		let stepUnit = { ...step, title, description };
-		if (index === 0) {
-			stepUnit.active = true;
+	let initializedSteps = stepsObject.map(
+		({ title, description, color, icon }, index) => {
+			let stepUnit = {
+				...step,
+				icon: icon ?? step.icon,
+				title,
+				description,
+				color,
+			};
+			if (index === 0) {
+				stepUnit.active = true;
+			}
+			return stepUnit;
 		}
-		return stepUnit;
-	});
+	);
 
 	const [steps, setSteps] = useState(initializedSteps);
 
 	const nextStep = () => {
 		let index = steps.findIndex((e) => e.active);
+		if (index < 0) {
+			return;
+		}
 		setSteps((oldSteps) => {
 			const newSteps = [...oldSteps];
+
 			newSteps[index].completed = true;
 			newSteps[index].active = false;
 			newSteps[index].icon = (
@@ -33,6 +45,9 @@ export const useSteps = (stepsObject) => {
 					<CheckIcon />
 				</>
 			);
+			if (!newSteps[index + 1]) {
+				return newSteps;
+			}
 			newSteps[index + 1].active = true;
 			return newSteps;
 		});
@@ -40,16 +55,19 @@ export const useSteps = (stepsObject) => {
 
 	const previousStep = () => {
 		let index = steps.findIndex((e) => e.active);
+		if (index < 0) {
+			return;
+		}
 		setSteps((oldSteps) => {
 			const newSteps = [...oldSteps];
+
 			newSteps[index].active = false;
-			newSteps[index].icon = (
-				<>
-					<ClockIcon />
-				</>
-			);
+			newSteps[index].completed = false;
+			newSteps[index].icon = stepsObject[index].icon;
+			newSteps[index - 1].icon = stepsObject[index - 1].icon;
 			newSteps[index - 1].active = true;
 			newSteps[index - 1].completed = false;
+
 			return newSteps;
 		});
 	};

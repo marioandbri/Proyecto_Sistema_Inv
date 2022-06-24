@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { groupBy } from "../../helpers/groupBy";
 import ListComponent from "../ListComponent";
 import ListItemComponent from "../ListItemComponent";
@@ -6,6 +7,12 @@ import IconoEstado from "./IconoEstado";
 import ItemDescription from "./ItemDescription";
 
 const DetailView = ({ data }) => {
+	/**
+	 * @type {{id:string}}
+	 */
+	const { id } = useParams()
+	const history = useHistory()
+	const [createValida, setCreateValida] = useState(false)
 	let group = groupBy(data.pedido, "partnumber");
 	let pedido = [];
 	for (let key in group) {
@@ -25,7 +32,24 @@ const DetailView = ({ data }) => {
 			return newPedido;
 		});
 	};
-	return (
+	return (<>
+		<div className="buttons is-pulled-right">
+			<button onClick={async () => {
+				const result = await fetch(`/mov/${id}`, {
+					method: "DELETE"
+				})
+				if (result.ok) {
+					history.push("/movimientos")
+				}
+			}} className="button is-danger">Eliminar 🗑️</button>
+			{data.estado === "Laboratorio" && <button onClick={() => setCreateValida(!createValida)} className="button is-info has-text-weight-bold
+
+
+">Crear Valida 📜</button>}
+			<button className="button has-text-weight-bold">
+				Pasar a operaciones
+			</button>
+		</div>
 		<div className="box">
 			<nav className="level">
 				<div className="level-left">
@@ -61,7 +85,6 @@ const DetailView = ({ data }) => {
 				</div>
 				<div className="level-right">
 					<div className="level-item">
-						<span className="title is-6 mr-2">{data.estado}</span>
 						<IconoEstado estado={data.estado} />
 					</div>
 				</div>
@@ -79,10 +102,13 @@ const DetailView = ({ data }) => {
 							<ListItemComponent
 								key={index}
 								title={
-									<input
-										onChange={handleSNInputs(index)}
-										value={e.numeroSerie}
-									/>
+									createValida ?
+										<input className="input"
+											placeholder="Numero de serie"
+											onChange={handleSNInputs(index)}
+											value={e.numeroSerie}
+										/> :
+										(e.numeroSerie || "")
 								}
 								description={
 									<ItemDescription
@@ -101,6 +127,7 @@ const DetailView = ({ data }) => {
 				</ListComponent>
 			</div>
 		</div>
+	</>
 	);
 };
 
